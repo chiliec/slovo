@@ -51,18 +51,18 @@ kotlin {
 
 sqldelight {
     databases {
-        register("SlovoDatabase") { packageName.set("com.axveer.slovo.db") }
+        register("SlovoDatabase") { packageName.set("cx.viz.slovo.db") }
     }
 }
 
 android {
-    namespace = "com.axveer.slovo"
+    namespace = "cx.viz.slovo"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     defaultConfig {
-        applicationId = "com.axveer.slovo"
+        applicationId = "cx.viz.slovo"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
