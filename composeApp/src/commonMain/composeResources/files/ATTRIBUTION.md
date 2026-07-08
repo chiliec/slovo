@@ -1,0 +1,54 @@
+# Audio attribution
+
+All clips are CC-BY from Tatoeba (https://tatoeba.org).
+
+- greet-hello-0.m4a — Tatoeba sentence #466968 (audio #35632) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/466968
+- greet-hello-1.m4a — Tatoeba sentence #329715 (audio #25296) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/329715
+- greet-hello-2.m4a — Tatoeba sentence #348097 (audio #28601) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/348097
+- greet-hello-3.m4a — Tatoeba sentence #1103035 (audio #63550) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/1103035
+- greet-hello-4.m4a — Tatoeba sentence #6764750 (audio #748284) by yatomoya — CC-BY — https://tatoeba.org/en/sentences/show/6764750
+- greet-intro-0.m4a — Tatoeba sentence #370373 (audio #29088) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/370373
+- greet-intro-1.m4a — Tatoeba sentence #370796 (audio #29165) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/370796
+- greet-intro-2.m4a — Tatoeba sentence #473035 (audio #35722) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/473035
+- greet-intro-3.m4a — Tatoeba sentence #2630084 (audio #152969) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/2630084
+- greet-listen-0.m4a — Tatoeba sentence #351795 (audio #28776) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/351795
+- greet-listen-1.m4a — Tatoeba sentence #13231301 (audio #1265102) by EugeneGS — CC-BY — https://tatoeba.org/en/sentences/show/13231301
+- greet-listen-2.m4a — Tatoeba sentence #2521977 (audio #928136) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/2521977
+- cafe-order-0.m4a — Tatoeba sentence #2443439 (audio #679202) by fjay69 — CC-BY — https://tatoeba.org/en/sentences/show/2443439
+- cafe-order-1.m4a — Tatoeba sentence #375922 (audio #29658) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/375922
+- cafe-order-2.m4a — Tatoeba sentence #374656 (audio #29575) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/374656
+- cafe-order-3.m4a — Tatoeba sentence #2430284 (audio #679198) by fjay69 — CC-BY — https://tatoeba.org/en/sentences/show/2430284
+- cafe-order-4.m4a — Tatoeba sentence #2447613 (audio #679205) by fjay69 — CC-BY — https://tatoeba.org/en/sentences/show/2447613
+- cafe-food-0.m4a — Tatoeba sentence #375925 (audio #29660) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/375925
+- cafe-food-1.m4a — Tatoeba sentence #337493 (audio #28065) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/337493
+- cafe-food-2.m4a — Tatoeba sentence #374876 (audio #29620) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/374876
+- cafe-food-3.m4a — Tatoeba sentence #374870 (audio #29616) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/374870
+- cafe-recall-0.m4a — Tatoeba sentence #337539 (audio #28075) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/337539
+- cafe-recall-1.m4a — Tatoeba sentence #2264255 (audio #679182) by fjay69 — CC-BY — https://tatoeba.org/en/sentences/show/2264255
+- cafe-recall-2.m4a — Tatoeba sentence #381258 (audio #31173) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/381258
+- basics-polite-0.m4a — Tatoeba sentence #374869 (audio #29615) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/374869
+- basics-polite-1.m4a — Tatoeba sentence #379409 (audio #30632) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/379409
+- basics-polite-2.m4a — Tatoeba sentence #586592 (audio #40346) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/586592
+- basics-polite-3.m4a — Tatoeba sentence #351535 (audio #28717) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/351535
+- basics-polite-4.m4a — Tatoeba sentence #585788 (audio #40340) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/585788
+- basics-understand-0.m4a — Tatoeba sentence #338488 (audio #28233) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/338488
+- basics-understand-1.m4a — Tatoeba sentence #5412 (audio #1694) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/5412
+- basics-understand-2.m4a — Tatoeba sentence #5411 (audio #1693) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/5411
+- basics-understand-3.m4a — Tatoeba sentence #5460 (audio #1728) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/5460
+- basics-understand-4.m4a — Tatoeba sentence #2484095 (audio #1267462) by EugeneGS — CC-BY — https://tatoeba.org/en/sentences/show/2484095
+- basics-listen-0.m4a — Tatoeba sentence #670460 (audio #42475) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/670460
+- basics-listen-1.m4a — Tatoeba sentence #5441 (audio #1709) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/5441
+- basics-listen-2.m4a — Tatoeba sentence #379335 (audio #30598) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/379335
+- numbers-clock-0.m4a — Tatoeba sentence #374866 (audio #29612) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/374866
+- numbers-clock-1.m4a — Tatoeba sentence #380025 (audio #30834) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/380025
+- numbers-clock-2.m4a — Tatoeba sentence #379987 (audio #30797) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/379987
+- numbers-clock-3.m4a — Tatoeba sentence #447037 (audio #724796) by fjay69 — CC-BY — https://tatoeba.org/en/sentences/show/447037
+- numbers-clock-4.m4a — Tatoeba sentence #6892405 (audio #661107) by fjay69 — CC-BY — https://tatoeba.org/en/sentences/show/6892405
+- numbers-count-0.m4a — Tatoeba sentence #379963 (audio #30774) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/379963
+- numbers-count-1.m4a — Tatoeba sentence #338469 (audio #28225) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/338469
+- numbers-count-2.m4a — Tatoeba sentence #351587 (audio #28722) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/351587
+- numbers-count-3.m4a — Tatoeba sentence #381233 (audio #31149) by Inego — CC-BY — https://tatoeba.org/en/sentences/show/381233
+- numbers-math-0.m4a — Tatoeba sentence #13198272 (audio #1264385) by EugeneGS — CC-BY — https://tatoeba.org/en/sentences/show/13198272
+- numbers-math-1.m4a — Tatoeba sentence #11270462 (audio #1264804) by EugeneGS — CC-BY — https://tatoeba.org/en/sentences/show/11270462
+- numbers-math-2.m4a — Tatoeba sentence #13190708 (audio #1264978) by EugeneGS — CC-BY — https://tatoeba.org/en/sentences/show/13190708
+- numbers-math-3.m4a — Tatoeba sentence #11206977 (audio #1264767) by EugeneGS — CC-BY — https://tatoeba.org/en/sentences/show/11206977

@@ -1,0 +1,123 @@
+{
+  "lessons": [
+    {
+      "id": "cafe-order",
+      "title": "Ordering drinks",
+      "kind": "VOCAB",
+      "cardIds": [
+        "cafe-order-0",
+        "cafe-order-1",
+        "cafe-order-2",
+        "cafe-order-3",
+        "cafe-order-4"
+      ]
+    },
+    {
+      "id": "cafe-food",
+      "title": "Ordering food",
+      "kind": "VOCAB",
+      "cardIds": [
+        "cafe-food-0",
+        "cafe-food-1",
+        "cafe-food-2",
+        "cafe-food-3"
+      ]
+    },
+    {
+      "id": "cafe-recall",
+      "title": "Say it in Russian",
+      "kind": "RECALL",
+      "cardIds": [
+        "cafe-recall-0",
+        "cafe-recall-1",
+        "cafe-recall-2"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "cafe-order-0",
+      "russian": "Кофе, пожалуйста.",
+      "transliteration": "Kofe, pozhaluysta.",
+      "english": "Coffee, please.",
+      "audio": "cafe-order-0.m4a"
+    },
+    {
+      "id": "cafe-order-1",
+      "russian": "Мне, пожалуйста, чашку кофе.",
+      "transliteration": "Mne, pozhaluysta, chashku kofe.",
+      "english": "A cup of coffee for me, please.",
+      "audio": "cafe-order-1.m4a"
+    },
+    {
+      "id": "cafe-order-2",
+      "russian": "Мне чай с лимоном, пожалуйста.",
+      "transliteration": "Mne chay s limonom, pozhaluysta.",
+      "english": "Tea with lemon for me, please.",
+      "audio": "cafe-order-2.m4a"
+    },
+    {
+      "id": "cafe-order-3",
+      "russian": "Воды, пожалуйста.",
+      "transliteration": "Vody, pozhaluysta.",
+      "english": "Water, please.",
+      "audio": "cafe-order-3.m4a"
+    },
+    {
+      "id": "cafe-order-4",
+      "russian": "Ещё кофе, пожалуйста.",
+      "transliteration": "Eshchyo kofe, pozhaluysta.",
+      "english": "More coffee, please.",
+      "audio": "cafe-order-4.m4a"
+    },
+    {
+      "id": "cafe-food-0",
+      "russian": "Мне рыбу, пожалуйста.",
+      "transliteration": "Mne rybu, pozhaluysta.",
+      "english": "Fish for me, please.",
+      "audio": "cafe-food-0.m4a"
+    },
+    {
+      "id": "cafe-food-1",
+      "russian": "Дайте, пожалуйста, стакан воды.",
+      "transliteration": "Dayte, pozhaluysta, stakan vody.",
+      "english": "Please give me a glass of water.",
+      "audio": "cafe-food-1.m4a"
+    },
+    {
+      "id": "cafe-food-2",
+      "russian": "Я Вам счёт сейчас принесу.",
+      "transliteration": "Ya Vam schyot seychas prinesu.",
+      "english": "I will bring you the bill now.",
+      "audio": "cafe-food-2.m4a"
+    },
+    {
+      "id": "cafe-food-3",
+      "russian": "Он заказал пиво.",
+      "transliteration": "On zakazal pivo.",
+      "english": "He ordered a beer.",
+      "audio": "cafe-food-3.m4a"
+    },
+    {
+      "id": "cafe-recall-0",
+      "russian": "Я заказал два гамбургера.",
+      "transliteration": "Ya zakazal dva gamburgera.",
+      "english": "I ordered two hamburgers.",
+      "audio": "cafe-recall-0.m4a"
+    },
+    {
+      "id": "cafe-recall-1",
+      "russian": "Сколько за вход?",
+      "transliteration": "Skol'ko za vkhod?",
+      "english": "How much for entry?",
+      "audio": "cafe-recall-1.m4a"
+    },
+    {
+      "id": "cafe-recall-2",
+      "russian": "Садитесь, пожалуйста.",
+      "transliteration": "Sadites', pozhaluysta.",
+      "english": "Please have a seat.",
+      "audio": "cafe-recall-2.m4a"
+    }
+  ]
+}

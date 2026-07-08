@@ -1,0 +1,124 @@
+{
+  "lessons": [
+    {
+      "id": "greet-hello",
+      "title": "Hello & goodbye",
+      "kind": "VOCAB",
+      "cardIds": [
+        "greet-hello-0",
+        "greet-hello-1",
+        "greet-hello-2",
+        "greet-hello-3",
+        "greet-hello-4"
+      ]
+    },
+    {
+      "id": "greet-intro",
+      "title": "Introducing yourself",
+      "kind": "VOCAB",
+      "cardIds": [
+        "greet-intro-0",
+        "greet-intro-1",
+        "greet-intro-2",
+        "greet-intro-3"
+      ]
+    },
+    {
+      "id": "greet-listen",
+      "title": "Catch the greeting",
+      "kind": "LISTENING",
+      "cardIds": [
+        "greet-listen-0",
+        "greet-listen-1",
+        "greet-listen-2"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "greet-hello-0",
+      "russian": "Привет!",
+      "transliteration": "Privet!",
+      "english": "Hi!",
+      "audio": "greet-hello-0.m4a"
+    },
+    {
+      "id": "greet-hello-1",
+      "russian": "Доброе утро!",
+      "transliteration": "Dobroe utro!",
+      "english": "Good morning!",
+      "audio": "greet-hello-1.m4a"
+    },
+    {
+      "id": "greet-hello-2",
+      "russian": "Добро пожаловать!",
+      "transliteration": "Dobro pozhalovat'!",
+      "english": "Welcome!",
+      "audio": "greet-hello-2.m4a"
+    },
+    {
+      "id": "greet-hello-3",
+      "russian": "Увидимся.",
+      "transliteration": "Uvidimsya.",
+      "english": "See you.",
+      "audio": "greet-hello-3.m4a"
+    },
+    {
+      "id": "greet-hello-4",
+      "russian": "Пока, Том.",
+      "transliteration": "Poka, Tom.",
+      "english": "Bye, Tom.",
+      "audio": "greet-hello-4.m4a",
+      "note": "Informal farewell"
+    },
+    {
+      "id": "greet-intro-0",
+      "russian": "Как Вас зовут?",
+      "transliteration": "Kak Vas zovut?",
+      "english": "What is your name?",
+      "audio": "greet-intro-0.m4a"
+    },
+    {
+      "id": "greet-intro-1",
+      "russian": "Меня зовут Кирилл, рад познакомиться.",
+      "transliteration": "Menya zovut Kirill, rad poznakomit'sya.",
+      "english": "My name is Kirill, nice to meet you.",
+      "audio": "greet-intro-1.m4a"
+    },
+    {
+      "id": "greet-intro-2",
+      "russian": "Как дела?",
+      "transliteration": "Kak dela?",
+      "english": "How are you?",
+      "audio": "greet-intro-2.m4a"
+    },
+    {
+      "id": "greet-intro-3",
+      "russian": "Всё хорошо.",
+      "transliteration": "Vsyo khorosho.",
+      "english": "Everything is fine.",
+      "audio": "greet-intro-3.m4a"
+    },
+    {
+      "id": "greet-listen-0",
+      "russian": "Спокойной ночи, мама.",
+      "transliteration": "Spokoynoy nochi, mama.",
+      "english": "Good night, mom.",
+      "audio": "greet-listen-0.m4a"
+    },
+    {
+      "id": "greet-listen-1",
+      "russian": "Привет! Меня зовут Башир.",
+      "transliteration": "Privet! Menya zovut Bashir.",
+      "english": "Hi! My name is Bashir.",
+      "audio": "greet-listen-1.m4a"
+    },
+    {
+      "id": "greet-listen-2",
+      "russian": "Завтра увидимся.",
+      "transliteration": "Zavtra uvidimsya.",
+      "english": "See you tomorrow.",
+      "audio": "greet-listen-2.m4a"
+    }
+  ]
+}

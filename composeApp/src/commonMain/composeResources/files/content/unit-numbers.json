@@ -1,0 +1,131 @@
+{
+  "lessons": [
+    {
+      "id": "numbers-clock",
+      "title": "Numbers in context: time",
+      "kind": "VOCAB",
+      "cardIds": [
+        "numbers-clock-0",
+        "numbers-clock-1",
+        "numbers-clock-2",
+        "numbers-clock-3",
+        "numbers-clock-4"
+      ]
+    },
+    {
+      "id": "numbers-count",
+      "title": "Numbers in context: counting",
+      "kind": "VOCAB",
+      "cardIds": [
+        "numbers-count-0",
+        "numbers-count-1",
+        "numbers-count-2",
+        "numbers-count-3"
+      ]
+    },
+    {
+      "id": "numbers-math",
+      "title": "Simple arithmetic",
+      "kind": "RECALL",
+      "cardIds": [
+        "numbers-math-0",
+        "numbers-math-1",
+        "numbers-math-2",
+        "numbers-math-3"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "numbers-clock-0",
+      "russian": "Я встаю в шесть часов почти каждый день.",
+      "transliteration": "Ya vstayu v shest' chasov pochti kazhdyy den'.",
+      "english": "I get up at six o'clock almost every day.",
+      "audio": "numbers-clock-0.m4a"
+    },
+    {
+      "id": "numbers-clock-1",
+      "russian": "Тогда я обычно вставала в пять утра.",
+      "transliteration": "Togda ya obychno vstavala v pyat' utra.",
+      "english": "Back then I usually got up at five in the morning.",
+      "audio": "numbers-clock-1.m4a"
+    },
+    {
+      "id": "numbers-clock-2",
+      "russian": "В Лондоне сейчас семь.",
+      "transliteration": "V Londone seychas sem'.",
+      "english": "It is seven o'clock now in London.",
+      "audio": "numbers-clock-2.m4a"
+    },
+    {
+      "id": "numbers-clock-3",
+      "russian": "Самолёт вылетает в восемь часов утра.",
+      "transliteration": "Samolyot vyletaet v vosem' chasov utra.",
+      "english": "The plane departs at eight in the morning.",
+      "audio": "numbers-clock-3.m4a"
+    },
+    {
+      "id": "numbers-clock-4",
+      "russian": "Мы начнём завтра в девять часов.",
+      "transliteration": "My nachnyom zavtra v devyat' chasov.",
+      "english": "We will start tomorrow at nine o'clock.",
+      "audio": "numbers-clock-4.m4a"
+    },
+    {
+      "id": "numbers-count-0",
+      "russian": "В моей семье четыре человека.",
+      "transliteration": "V moey sem'e chetyre cheloveka.",
+      "english": "There are four people in my family.",
+      "audio": "numbers-count-0.m4a"
+    },
+    {
+      "id": "numbers-count-1",
+      "russian": "Билл старше меня на два года.",
+      "transliteration": "Bill starshe menya na dva goda.",
+      "english": "Bill is two years older than me.",
+      "audio": "numbers-count-1.m4a"
+    },
+    {
+      "id": "numbers-count-2",
+      "russian": "Он старше меня на три года.",
+      "transliteration": "On starshe menya na tri goda.",
+      "english": "He is three years older than me.",
+      "audio": "numbers-count-2.m4a"
+    },
+    {
+      "id": "numbers-count-3",
+      "russian": "Её часы отстают на десять минут.",
+      "transliteration": "Eyo chasy otstayut na desyat' minut.",
+      "english": "Her watch is ten minutes slow.",
+      "audio": "numbers-count-3.m4a"
+    },
+    {
+      "id": "numbers-math-0",
+      "russian": "Два плюс два — это сколько?",
+      "transliteration": "Dva plyus dva — eto skol'ko?",
+      "english": "What is two plus two?",
+      "audio": "numbers-math-0.m4a"
+    },
+    {
+      "id": "numbers-math-1",
+      "russian": "Шесть плюс два — восемь.",
+      "transliteration": "Shest' plyus dva — vosem'.",
+      "english": "Six plus two is eight.",
+      "audio": "numbers-math-1.m4a"
+    },
+    {
+      "id": "numbers-math-2",
+      "russian": "Пять и пять — это сколько?",
+      "transliteration": "Pyat' i pyat' — eto skol'ko?",
+      "english": "What is five and five?",
+      "audio": "numbers-math-2.m4a"
+    },
+    {
+      "id": "numbers-math-3",
+      "russian": "Два в квадрате — четыре.",
+      "transliteration": "Dva v kvadrate — chetyre.",
+      "english": "Two squared is four.",
+      "audio": "numbers-math-3.m4a"
+    }
+  ]
+}

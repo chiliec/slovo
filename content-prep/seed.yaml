@@ -1,0 +1,114 @@
+units:
+  - id: unit-greetings
+    title: "Greetings"
+    lessons:
+      - id: greet-hello
+        title: "Hello & goodbye"
+        kind: VOCAB
+        phrases:
+          - { russian: "Привет!", english: "Hi!", tatoebaSentenceId: 466968, tatoebaAudioId: 35632, speaker: "Inego" }
+          - { russian: "Доброе утро!", english: "Good morning!", tatoebaSentenceId: 329715, tatoebaAudioId: 25296, speaker: "Inego" }
+          - { russian: "Добро пожаловать!", english: "Welcome!", tatoebaSentenceId: 348097, tatoebaAudioId: 28601, speaker: "Inego" }
+          - { russian: "Увидимся.", english: "See you.", tatoebaSentenceId: 1103035, tatoebaAudioId: 63550, speaker: "Inego" }
+          - { russian: "Пока, Том.", english: "Bye, Tom.", tatoebaSentenceId: 6764750, tatoebaAudioId: 748284, speaker: "yatomoya", note: "Informal farewell" }
+      - id: greet-intro
+        title: "Introducing yourself"
+        kind: VOCAB
+        phrases:
+          - { russian: "Как Вас зовут?", english: "What is your name?", tatoebaSentenceId: 370373, tatoebaAudioId: 29088, speaker: "Inego" }
+          - { russian: "Меня зовут Кирилл, рад познакомиться.", english: "My name is Kirill, nice to meet you.", tatoebaSentenceId: 370796, tatoebaAudioId: 29165, speaker: "Inego" }
+          - { russian: "Как дела?", english: "How are you?", tatoebaSentenceId: 473035, tatoebaAudioId: 35722, speaker: "Inego" }
+          - { russian: "Всё хорошо.", english: "Everything is fine.", tatoebaSentenceId: 2630084, tatoebaAudioId: 152969, speaker: "Inego" }
+      - id: greet-listen
+        title: "Catch the greeting"
+        kind: LISTENING
+        phrases:
+          - { russian: "Спокойной ночи, мама.", english: "Good night, mom.", tatoebaSentenceId: 351795, tatoebaAudioId: 28776, speaker: "Inego" }
+          - { russian: "Привет! Меня зовут Башир.", english: "Hi! My name is Bashir.", tatoebaSentenceId: 13231301, tatoebaAudioId: 1265102, speaker: "EugeneGS" }
+          - { russian: "Завтра увидимся.", english: "See you tomorrow.", tatoebaSentenceId: 2521977, tatoebaAudioId: 928136, speaker: "Inego" }
+
+  - id: unit-cafe
+    title: "Food & Cafés"
+    lessons:
+      - id: cafe-order
+        title: "Ordering drinks"
+        kind: VOCAB
+        phrases:
+          - { russian: "Кофе, пожалуйста.", english: "Coffee, please.", tatoebaSentenceId: 2443439, tatoebaAudioId: 679202, speaker: "fjay69" }
+          - { russian: "Мне, пожалуйста, чашку кофе.", english: "A cup of coffee for me, please.", tatoebaSentenceId: 375922, tatoebaAudioId: 29658, speaker: "Inego" }
+          - { russian: "Мне чай с лимоном, пожалуйста.", english: "Tea with lemon for me, please.", tatoebaSentenceId: 374656, tatoebaAudioId: 29575, speaker: "Inego" }
+          - { russian: "Воды, пожалуйста.", english: "Water, please.", tatoebaSentenceId: 2430284, tatoebaAudioId: 679198, speaker: "fjay69" }
+          - { russian: "Ещё кофе, пожалуйста.", english: "More coffee, please.", tatoebaSentenceId: 2447613, tatoebaAudioId: 679205, speaker: "fjay69" }
+      - id: cafe-food
+        title: "Ordering food"
+        kind: VOCAB
+        phrases:
+          - { russian: "Мне рыбу, пожалуйста.", english: "Fish for me, please.", tatoebaSentenceId: 375925, tatoebaAudioId: 29660, speaker: "Inego" }
+          - { russian: "Дайте, пожалуйста, стакан воды.", english: "Please give me a glass of water.", tatoebaSentenceId: 337493, tatoebaAudioId: 28065, speaker: "Inego" }
+          - { russian: "Я Вам счёт сейчас принесу.", english: "I will bring you the bill now.", tatoebaSentenceId: 374876, tatoebaAudioId: 29620, speaker: "Inego" }
+          - { russian: "Он заказал пиво.", english: "He ordered a beer.", tatoebaSentenceId: 374870, tatoebaAudioId: 29616, speaker: "Inego" }
+      - id: cafe-recall
+        title: "Say it in Russian"
+        kind: RECALL
+        phrases:
+          - { russian: "Я заказал два гамбургера.", english: "I ordered two hamburgers.", tatoebaSentenceId: 337539, tatoebaAudioId: 28075, speaker: "Inego" }
+          - { russian: "Сколько за вход?", english: "How much for entry?", tatoebaSentenceId: 2264255, tatoebaAudioId: 679182, speaker: "fjay69" }
+          - { russian: "Садитесь, пожалуйста.", english: "Please have a seat.", tatoebaSentenceId: 381258, tatoebaAudioId: 31173, speaker: "Inego" }
+
+  - id: unit-basics
+    title: "Basics & Politeness"
+    lessons:
+      - id: basics-polite
+        title: "Please & thank you"
+        kind: VOCAB
+        phrases:
+          - { russian: "Спасибо!", english: "Thank you!", tatoebaSentenceId: 374869, tatoebaAudioId: 29615, speaker: "Inego" }
+          - { russian: "Пожалуйста.", english: "You're welcome. / Please.", tatoebaSentenceId: 379409, tatoebaAudioId: 30632, speaker: "Inego" }
+          - { russian: "Извините.", english: "Excuse me. / I'm sorry.", tatoebaSentenceId: 586592, tatoebaAudioId: 40346, speaker: "Inego" }
+          - { russian: "Прости меня, пожалуйста.", english: "Please forgive me.", tatoebaSentenceId: 351535, tatoebaAudioId: 28717, speaker: "Inego" }
+          - { russian: "Конечно.", english: "Of course.", tatoebaSentenceId: 585788, tatoebaAudioId: 40340, speaker: "Inego" }
+      - id: basics-understand
+        title: "Do you understand?"
+        kind: VOCAB
+        phrases:
+          - { russian: "Я не понимаю.", english: "I don't understand.", tatoebaSentenceId: 338488, tatoebaAudioId: 28233, speaker: "Inego" }
+          - { russian: "Что это?", english: "What is this?", tatoebaSentenceId: 5412, tatoebaAudioId: 1694, speaker: "Inego" }
+          - { russian: "Что ты делаешь?", english: "What are you doing?", tatoebaSentenceId: 5411, tatoebaAudioId: 1693, speaker: "Inego" }
+          - { russian: "Ты уверен?", english: "Are you sure?", tatoebaSentenceId: 5460, tatoebaAudioId: 1728, speaker: "Inego" }
+          - { russian: "Ладно.", english: "Okay. / Alright.", tatoebaSentenceId: 2484095, tatoebaAudioId: 1267462, speaker: "EugeneGS" }
+      - id: basics-listen
+        title: "Listen & respond"
+        kind: LISTENING
+        phrases:
+          - { russian: "Да, я знаю.", english: "Yes, I know.", tatoebaSentenceId: 670460, tatoebaAudioId: 42475, speaker: "Inego" }
+          - { russian: "Не беспокойся.", english: "Don't worry.", tatoebaSentenceId: 5441, tatoebaAudioId: 1709, speaker: "Inego" }
+          - { russian: "Иди медленнее.", english: "Go slower.", tatoebaSentenceId: 379335, tatoebaAudioId: 30598, speaker: "Inego" }
+
+  - id: unit-numbers
+    title: "Numbers 1–10"
+    lessons:
+      - id: numbers-clock
+        title: "Numbers in context: time"
+        kind: VOCAB
+        phrases:
+          - { russian: "Я встаю в шесть часов почти каждый день.", english: "I get up at six o'clock almost every day.", tatoebaSentenceId: 374866, tatoebaAudioId: 29612, speaker: "Inego" }
+          - { russian: "Тогда я обычно вставала в пять утра.", english: "Back then I usually got up at five in the morning.", tatoebaSentenceId: 380025, tatoebaAudioId: 30834, speaker: "Inego" }
+          - { russian: "В Лондоне сейчас семь.", english: "It is seven o'clock now in London.", tatoebaSentenceId: 379987, tatoebaAudioId: 30797, speaker: "Inego" }
+          - { russian: "Самолёт вылетает в восемь часов утра.", english: "The plane departs at eight in the morning.", tatoebaSentenceId: 447037, tatoebaAudioId: 724796, speaker: "fjay69" }
+          - { russian: "Мы начнём завтра в девять часов.", english: "We will start tomorrow at nine o'clock.", tatoebaSentenceId: 6892405, tatoebaAudioId: 661107, speaker: "fjay69" }
+      - id: numbers-count
+        title: "Numbers in context: counting"
+        kind: VOCAB
+        phrases:
+          - { russian: "В моей семье четыре человека.", english: "There are four people in my family.", tatoebaSentenceId: 379963, tatoebaAudioId: 30774, speaker: "Inego" }
+          - { russian: "Билл старше меня на два года.", english: "Bill is two years older than me.", tatoebaSentenceId: 338469, tatoebaAudioId: 28225, speaker: "Inego" }
+          - { russian: "Он старше меня на три года.", english: "He is three years older than me.", tatoebaSentenceId: 351587, tatoebaAudioId: 28722, speaker: "Inego" }
+          - { russian: "Её часы отстают на десять минут.", english: "Her watch is ten minutes slow.", tatoebaSentenceId: 381233, tatoebaAudioId: 31149, speaker: "Inego" }
+      - id: numbers-math
+        title: "Simple arithmetic"
+        kind: RECALL
+        phrases:
+          - { russian: "Два плюс два — это сколько?", english: "What is two plus two?", tatoebaSentenceId: 13198272, tatoebaAudioId: 1264385, speaker: "EugeneGS" }
+          - { russian: "Шесть плюс два — восемь.", english: "Six plus two is eight.", tatoebaSentenceId: 11270462, tatoebaAudioId: 1264804, speaker: "EugeneGS" }
+          - { russian: "Пять и пять — это сколько?", english: "What is five and five?", tatoebaSentenceId: 13190708, tatoebaAudioId: 1264978, speaker: "EugeneGS" }
+          - { russian: "Два в квадрате — четыре.", english: "Two squared is four.", tatoebaSentenceId: 11206977, tatoebaAudioId: 1264767, speaker: "EugeneGS" }

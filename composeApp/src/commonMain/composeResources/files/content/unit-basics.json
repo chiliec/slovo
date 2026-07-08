@@ -1,0 +1,131 @@
+{
+  "lessons": [
+    {
+      "id": "basics-polite",
+      "title": "Please & thank you",
+      "kind": "VOCAB",
+      "cardIds": [
+        "basics-polite-0",
+        "basics-polite-1",
+        "basics-polite-2",
+        "basics-polite-3",
+        "basics-polite-4"
+      ]
+    },
+    {
+      "id": "basics-understand",
+      "title": "Do you understand?",
+      "kind": "VOCAB",
+      "cardIds": [
+        "basics-understand-0",
+        "basics-understand-1",
+        "basics-understand-2",
+        "basics-understand-3",
+        "basics-understand-4"
+      ]
+    },
+    {
+      "id": "basics-listen",
+      "title": "Listen & respond",
+      "kind": "LISTENING",
+      "cardIds": [
+        "basics-listen-0",
+        "basics-listen-1",
+        "basics-listen-2"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "basics-polite-0",
+      "russian": "Спасибо!",
+      "transliteration": "Spasibo!",
+      "english": "Thank you!",
+      "audio": "basics-polite-0.m4a"
+    },
+    {
+      "id": "basics-polite-1",
+      "russian": "Пожалуйста.",
+      "transliteration": "Pozhaluysta.",
+      "english": "You're welcome. / Please.",
+      "audio": "basics-polite-1.m4a"
+    },
+    {
+      "id": "basics-polite-2",
+      "russian": "Извините.",
+      "transliteration": "Izvinite.",
+      "english": "Excuse me. / I'm sorry.",
+      "audio": "basics-polite-2.m4a"
+    },
+    {
+      "id": "basics-polite-3",
+      "russian": "Прости меня, пожалуйста.",
+      "transliteration": "Prosti menya, pozhaluysta.",
+      "english": "Please forgive me.",
+      "audio": "basics-polite-3.m4a"
+    },
+    {
+      "id": "basics-polite-4",
+      "russian": "Конечно.",
+      "transliteration": "Konechno.",
+      "english": "Of course.",
+      "audio": "basics-polite-4.m4a"
+    },
+    {
+      "id": "basics-understand-0",
+      "russian": "Я не понимаю.",
+      "transliteration": "Ya ne ponimayu.",
+      "english": "I don't understand.",
+      "audio": "basics-understand-0.m4a"
+    },
+    {
+      "id": "basics-understand-1",
+      "russian": "Что это?",
+      "transliteration": "Chto eto?",
+      "english": "What is this?",
+      "audio": "basics-understand-1.m4a"
+    },
+    {
+      "id": "basics-understand-2",
+      "russian": "Что ты делаешь?",
+      "transliteration": "Chto ty delaesh'?",
+      "english": "What are you doing?",
+      "audio": "basics-understand-2.m4a"
+    },
+    {
+      "id": "basics-understand-3",
+      "russian": "Ты уверен?",
+      "transliteration": "Ty uveren?",
+      "english": "Are you sure?",
+      "audio": "basics-understand-3.m4a"
+    },
+    {
+      "id": "basics-understand-4",
+      "russian": "Ладно.",
+      "transliteration": "Ladno.",
+      "english": "Okay. / Alright.",
+      "audio": "basics-understand-4.m4a"
+    },
+    {
+      "id": "basics-listen-0",
+      "russian": "Да, я знаю.",
+      "transliteration": "Da, ya znayu.",
+      "english": "Yes, I know.",
+      "audio": "basics-listen-0.m4a"
+    },
+    {
+      "id": "basics-listen-1",
+      "russian": "Не беспокойся.",
+      "transliteration": "Ne bespokoysya.",
+      "english": "Don't worry.",
+      "audio": "basics-listen-1.m4a"
+    },
+    {
+      "id": "basics-listen-2",
+      "russian": "Иди медленнее.",
+      "transliteration": "Idi medlennee.",
+      "english": "Go slower.",
+      "audio": "basics-listen-2.m4a"
+    }
+  ]
+}

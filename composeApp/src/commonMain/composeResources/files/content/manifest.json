@@ -1,0 +1,24 @@
+{
+  "units": [
+    {
+      "id": "unit-greetings",
+      "title": "Greetings",
+      "lessonCount": 3
+    },
+    {
+      "id": "unit-cafe",
+      "title": "Food & Cafés",
+      "lessonCount": 3
+    },
+    {
+      "id": "unit-basics",
+      "title": "Basics & Politeness",
+      "lessonCount": 3
+    },
+    {
+      "id": "unit-numbers",
+      "title": "Numbers 1–10",
+      "lessonCount": 3
+    }
+  ]
+}
