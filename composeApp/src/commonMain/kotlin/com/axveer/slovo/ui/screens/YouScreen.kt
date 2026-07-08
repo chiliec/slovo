@@ -8,30 +8,37 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.axveer.slovo.domain.UnitMeta
 import com.axveer.slovo.domain.UserStats
 import com.axveer.slovo.ui.AppModule
 import com.axveer.slovo.ui.components.MishaCard
 import com.axveer.slovo.ui.components.MishaStatChip
 import com.axveer.slovo.ui.theme.Slovo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-private class ProfileViewModel(private val module: AppModule) : ViewModel() {
+private class ProfileViewModel(private val module: AppModule) {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     var stats by mutableStateOf(UserStats()); private set
     var unitPercents by mutableStateOf<List<Pair<UnitMeta, Int>>>(emptyList()); private set
-    init { viewModelScope.launch {
+    init { scope.launch {
         stats = module.progress.stats()
         unitPercents = module.content.units().map { meta ->
             val cardIds = module.content.unit(meta.id).cards.map { it.id }
             meta to module.progress.percent(cardIds)
         }
     } }
+
+    fun dispose() = scope.cancel()
 }
 
 @Composable fun YouScreen(module: AppModule) {
     val vm = remember { ProfileViewModel(module) }
+    DisposableEffect(vm) { onDispose { vm.dispose() } }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
            verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("YOU", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)

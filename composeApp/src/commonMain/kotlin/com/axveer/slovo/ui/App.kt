@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.savedstate.read
 import com.axveer.slovo.ui.nav.Dest
 import com.axveer.slovo.ui.nav.bottomTabs
 import com.axveer.slovo.ui.screens.*
@@ -63,8 +64,8 @@ fun App(module: AppModule) = SlovoTheme {
             composable(Dest.Lesson.route) { back ->
                 LessonScreen(
                     module = module,
-                    unitId = back.arguments?.getString("unitId").orEmpty(),
-                    lessonId = back.arguments?.getString("lessonId").orEmpty(),
+                    unitId = back.arguments?.read { getStringOrNull("unitId") }.orEmpty(),
+                    lessonId = back.arguments?.read { getStringOrNull("lessonId") }.orEmpty(),
                     onDone = { nav.popBackStack() },
                 )
             }

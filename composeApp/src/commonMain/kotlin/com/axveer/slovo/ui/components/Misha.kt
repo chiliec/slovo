@@ -122,7 +122,7 @@ fun LessonRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Box(Modifier.background(Slovo.Yellow)
                 .border(3.dp, Slovo.Ink).padding(horizontal = 10.dp, vertical = 6.dp)) {
-                Text("%02d".format(index), color = Slovo.Ink,
+                Text(index.toString().padStart(2, '0'), color = Slovo.Ink,
                      style = MaterialTheme.typography.labelSmall)
             }
             Column(Modifier.weight(1f)) {

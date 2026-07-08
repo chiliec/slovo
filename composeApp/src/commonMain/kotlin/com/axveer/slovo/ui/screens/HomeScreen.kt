@@ -9,23 +9,27 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.axveer.slovo.domain.Lesson
 import com.axveer.slovo.domain.LearnUnit
 import com.axveer.slovo.domain.UserStats
 import com.axveer.slovo.ui.AppModule
 import com.axveer.slovo.ui.components.*
 import com.axveer.slovo.ui.theme.Slovo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-private class HomeViewModel(private val module: AppModule) : ViewModel() {
+private class HomeViewModel(private val module: AppModule) {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     var unit by mutableStateOf<LearnUnit?>(null); private set
     var completed by mutableStateOf<Set<String>>(emptySet()); private set
     var stats by mutableStateOf(UserStats()); private set
 
     init { refresh() }
-    fun refresh() = viewModelScope.launch {
+    fun refresh() = scope.launch {
         val first = module.content.units().first()
         unit = module.content.unit(first.id)
         completed = module.progress.completedLessonIds()
@@ -33,11 +37,14 @@ private class HomeViewModel(private val module: AppModule) : ViewModel() {
     }
     fun isUnlocked(lessons: List<Lesson>, index: Int): Boolean =
         index == 0 || lessons[index - 1].id in completed
+
+    fun dispose() = scope.cancel()
 }
 
 @Composable
 fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit) {
     val vm = remember { HomeViewModel(module) }
+    DisposableEffect(vm) { onDispose { vm.dispose() } }
     LaunchedEffect(Unit) { vm.refresh() }
     val unit = vm.unit ?: run { Text("Loading…", Modifier.padding(24.dp)); return }
     val lessons = unit.lessons

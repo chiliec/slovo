@@ -9,14 +9,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.axveer.slovo.domain.*
 import com.axveer.slovo.platform.todayEpochDay
 import com.axveer.slovo.ui.AppModule
 import com.axveer.slovo.ui.components.MishaButton
 import com.axveer.slovo.ui.components.MishaCard
 import com.axveer.slovo.ui.theme.Slovo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -24,7 +26,9 @@ private enum class Phase { LOADING, STUDY, QUIZ, RESULT }
 
 private class LessonViewModel(
     private val module: AppModule, private val unitId: String, private val lessonId: String,
-) : ViewModel() {
+) {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     var phase by mutableStateOf(Phase.LOADING); private set
     var cards by mutableStateOf<List<Card>>(emptyList()); private set
     var kind by mutableStateOf(LessonKind.VOCAB); private set
@@ -33,7 +37,7 @@ private class LessonViewModel(
     var correctCount by mutableStateOf(0); private set
     var finalStats by mutableStateOf(UserStats()); private set
 
-    init { viewModelScope.launch {
+    init { scope.launch {
         val unit = module.content.unit(unitId)
         val lesson = unit.lessons.first { it.id == lessonId }
         kind = lesson.kind
@@ -63,12 +67,14 @@ private class LessonViewModel(
         phase = Phase.RESULT
     }
 
-    fun playAudio(file: String) = viewModelScope.launch { module.audio.play(file) }
+    fun playAudio(file: String) = scope.launch { module.audio.play(file) }
+    fun dispose() = scope.cancel()
 }
 
 @Composable
 fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: () -> Unit) {
     val vm = remember { LessonViewModel(module, unitId, lessonId) }
+    DisposableEffect(vm) { onDispose { vm.dispose() } }
     when (vm.phase) {
         Phase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
         Phase.STUDY -> StudyView(vm, onPractice = vm::startQuiz)

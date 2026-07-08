@@ -8,10 +8,16 @@ CREATE TABLE lesson_progress (
 selectAll:
 SELECT lesson_id, completed, best_correct FROM lesson_progress;
 
-upsert:
-INSERT INTO lesson_progress(lesson_id, completed, best_correct, last_seen)
-VALUES (:lessonId, 1, :correct, :now)
-ON CONFLICT(lesson_id) DO UPDATE SET
+-- Upsert as insert-or-ignore + update rather than ON CONFLICT DO UPDATE:
+-- the latter needs SQLite 3.24+, unavailable on Android API 24–29 and rejected
+-- by SQLDelight's default sqlite_3_18 dialect.
+insertOrIgnore:
+INSERT OR IGNORE INTO lesson_progress(lesson_id, completed, best_correct, last_seen)
+VALUES (:lessonId, 0, 0, NULL);
+
+markComplete:
+UPDATE lesson_progress SET
     completed = 1,
     best_correct = MAX(best_correct, :correct),
-    last_seen = :now;
+    last_seen = :now
+WHERE lesson_id = :lessonId;

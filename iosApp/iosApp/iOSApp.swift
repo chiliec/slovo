@@ -1,10 +1,1 @@
-import SwiftUI
-
-@main
-struct iOSApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
-}
+// Entry point is AppDelegate — see AppDelegate.swift and SceneDelegate.swift

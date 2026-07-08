@@ -20,7 +20,7 @@ class ProgressRepository(private val db: SlovoDatabase) {
             cardId = cardId,
             correctInc = if (correct) 1L else 0L,
             wrongInc = if (correct) 0L else 1L,
-            now = 0L,
+            now = 0L,  // v1: last_seen unused; SRS scheduling is deferred
         )
     }
 
@@ -47,7 +47,8 @@ class ProgressRepository(private val db: SlovoDatabase) {
     }
 
     fun completeLesson(lessonId: String, correctCount: Int, todayEpochDay: Long): UserStats {
-        lessons.upsert(lessonId = lessonId, correct = correctCount.toLong(), now = todayEpochDay)
+        lessons.insertOrIgnore(lessonId = lessonId)
+        lessons.markComplete(lessonId = lessonId, correct = correctCount.toLong(), now = todayEpochDay)
         val prev = stats()
         val newStreak = StreakCalculator.next(prev.streakDays, prev.lastActiveEpochDay, todayEpochDay)
         val newXp = prev.xp + XpCalculator.sessionXp(correctCount)

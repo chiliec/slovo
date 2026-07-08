@@ -9,20 +9,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.axveer.slovo.domain.*
 import com.axveer.slovo.ui.AppModule
 import com.axveer.slovo.ui.components.MishaButton
 import com.axveer.slovo.ui.components.MishaCard
 import com.axveer.slovo.ui.theme.Slovo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-private class DrillViewModel(private val module: AppModule) : ViewModel() {
+private class DrillViewModel(private val module: AppModule) {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     var questions by mutableStateOf<List<Question>>(emptyList()); private set
     var index by mutableStateOf(0); private set
-    init { viewModelScope.launch {
+    init { scope.launch {
         val all = module.content.allCards()
         val progress = module.progress.forCards(all.map { it.id })
         val f = QuestionFactory(Random(all.size + 1))
@@ -35,11 +39,13 @@ private class DrillViewModel(private val module: AppModule) : ViewModel() {
         module.progress.recordAnswer(q.card.id, i == q.correctIndex)
         if (index + 1 < questions.size) index++ else index = 0 // loop for MVP
     }
-    fun play(file: String) = viewModelScope.launch { module.audio.play(file) }
+    fun play(file: String) = scope.launch { module.audio.play(file) }
+    fun dispose() = scope.cancel()
 }
 
 @Composable fun DrillScreen(module: AppModule) {
     val vm = remember { DrillViewModel(module) }
+    DisposableEffect(vm) { onDispose { vm.dispose() } }
     if (vm.questions.isEmpty()) { Text("Loading…", Modifier.padding(24.dp)); return }
     val q = vm.questions[vm.index]
     var chosen by remember(vm.index) { mutableStateOf<Int?>(null) }
