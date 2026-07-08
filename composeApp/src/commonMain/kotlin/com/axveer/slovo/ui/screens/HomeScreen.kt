@@ -51,7 +51,7 @@ fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit) {
             Text("SLOVO", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
             MishaCard(shadow = 3.dp, background = Slovo.Bear) { MishaMascot(34.dp, Modifier.padding(4.dp)) }
         }
-        MishaTicker("DAY ${vm.stats.streakDays} STREAK  ◆  ${vm.stats.xp} XP  ◆  SILVER LEAGUE  ◆  ")
+        MishaTicker("DAY ${vm.stats.streakDays} STREAK  ◆  ${vm.stats.xp} XP  ◆  LEAGUE COMING SOON  ◆  ")
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             MishaStatChip("${vm.stats.streakDays}", "DAY STREAK", Slovo.Card, Slovo.Ink, Modifier.weight(1f))
             MishaStatChip("${vm.stats.xp}", "XP", Slovo.Red, Slovo.Card, Modifier.weight(1f))
