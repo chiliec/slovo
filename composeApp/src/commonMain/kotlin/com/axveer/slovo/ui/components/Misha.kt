@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -59,7 +60,7 @@ fun MishaButton(
                 .padding(horizontal = 20.dp, vertical = 12.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(text, color = Slovo.Card, style = androidx.compose.material3.MaterialTheme.typography.labelSmall)
+            Text(text, color = Slovo.Card, style = MaterialTheme.typography.labelSmall)
         }
     }
 }
@@ -74,8 +75,8 @@ fun MishaStatChip(
 ) {
     MishaCard(modifier, shadow = 4.dp, background = background) {
         Column(Modifier.padding(10.dp)) {
-            Text(value, color = textColor, style = androidx.compose.material3.MaterialTheme.typography.headlineMedium)
-            Text(label, color = textColor.copy(alpha = 0.7f), style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
+            Text(value, color = textColor, style = MaterialTheme.typography.headlineMedium)
+            Text(label, color = textColor.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
@@ -99,7 +100,40 @@ fun MishaTicker(text: String, modifier: Modifier = Modifier) {
             modifier = Modifier.offset(x = shift.dp),
             maxLines = 1,
             color = Slovo.Ink,
-            style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium,
         )
+    }
+}
+
+@Composable
+fun LessonRow(
+    index: Int, title: String, subtitle: String,
+    done: Boolean, current: Boolean, locked: Boolean, onClick: () -> Unit,
+) {
+    val bg = when { current -> Slovo.Ink; else -> Slovo.Card }
+    val fg = if (current) Slovo.Card else Slovo.Ink
+    MishaCard(
+        modifier = Modifier.fillMaxWidth()
+            .let { if (locked) it else it.clickable { onClick() } },
+        shadow = 3.dp, background = if (locked) Slovo.Sand else bg,
+    ) {
+        Row(Modifier.padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Box(Modifier.background(Slovo.Yellow)
+                .border(3.dp, Slovo.Ink).padding(horizontal = 10.dp, vertical = 6.dp)) {
+                Text("%02d".format(index), color = Slovo.Ink,
+                     style = MaterialTheme.typography.labelSmall)
+            }
+            Column(Modifier.weight(1f)) {
+                Text(title, color = if (locked) fg.copy(alpha = 0.5f) else fg,
+                     style = MaterialTheme.typography.titleMedium)
+                Text(if (locked) "LOCKED" else subtitle, color = fg.copy(alpha = 0.55f),
+                     style = MaterialTheme.typography.bodyMedium)
+            }
+            Text(when { done -> "DONE"; current -> "GO →"; locked -> "🔒"; else -> "" },
+                 color = if (current) Slovo.Yellow else Slovo.Red,
+                 style = MaterialTheme.typography.labelSmall)
+        }
     }
 }
