@@ -1,0 +1,12 @@
+.superpowers/
+.gradle/
+build/
+*.iml
+.idea/
+local.properties
+xcuserdata/
+.DS_Store
+content-prep/node_modules/
+content-prep/.audio-cache/
+.design-handoff/
+*design-handoff*.zip
