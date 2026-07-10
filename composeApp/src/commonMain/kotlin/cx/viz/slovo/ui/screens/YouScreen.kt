@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.UnitMeta
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.platform.DebugClock
+import cx.viz.slovo.platform.isDebugBuild
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
@@ -57,10 +58,12 @@ private class ProfileViewModel(private val module: AppModule) {
                 }
             }
         }
-        var dayOffset by remember { mutableStateOf(DebugClock.dayOffset) }
-        MishaButton("+1 DAY (debug) · now +$dayOffset", background = Slovo.Blue) {
-            DebugClock.dayOffset += 1
-            dayOffset = DebugClock.dayOffset
+        if (isDebugBuild) {
+            var dayOffset by remember { mutableStateOf(DebugClock.dayOffset) }
+            MishaButton("+1 DAY (debug) · now +$dayOffset", background = Slovo.Blue) {
+                DebugClock.dayOffset += 1
+                dayOffset = DebugClock.dayOffset
+            }
         }
     }
 }
