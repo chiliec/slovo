@@ -3,6 +3,7 @@ package cx.viz.slovo.data
 import cx.viz.slovo.db.SlovoDatabase
 import cx.viz.slovo.domain.CardProgress
 import cx.viz.slovo.domain.MasteryCalculator
+import cx.viz.slovo.domain.SrsScheduler
 import cx.viz.slovo.domain.StreakCalculator
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.domain.XpCalculator
@@ -16,11 +17,13 @@ class ProgressRepository(private val db: SlovoDatabase) {
 
     fun recordAnswer(cardId: String, correct: Boolean, todayEpochDay: Long) {
         cards.insertOrIgnore(cardId = cardId)
+        val currentBox = cards.selectBox(cardId).executeAsOne().toInt()
         cards.updateAnswer(
             cardId = cardId,
             correctInc = if (correct) 1L else 0L,
             wrongInc = if (correct) 0L else 1L,
-            now = todayEpochDay,  // stamps last_seen for future SRS scheduling
+            now = todayEpochDay,
+            box = SrsScheduler.nextBox(currentBox, correct).toLong(),
         )
     }
 
@@ -32,12 +35,26 @@ class ProgressRepository(private val db: SlovoDatabase) {
                 seen = row.seen.toInt(),
                 correct = row.correct.toInt(),
                 wrong = row.wrong.toInt(),
+                box = row.box.toInt(),
+                lastSeenDay = row.last_seen,
             )
         }
     }
 
     fun percent(cardIds: List<String>): Int =
         MasteryCalculator.percent(cardIds, forCards(cardIds))
+
+    /** Card ids to serve in a review drill: due first, padded with seen-but-not-due. */
+    fun pickDrill(cardIds: List<String>, today: Long, size: Int): List<String> {
+        val seen = forCards(cardIds).values.filter { it.lastSeenDay != null }
+        return SrsScheduler.pickForDrill(seen, today, size)
+    }
+
+    /** How many already-seen cards are due for review as of [today]. */
+    fun dueCount(cardIds: List<String>, today: Long): Int {
+        val seen = forCards(cardIds).values.filter { it.lastSeenDay != null }
+        return SrsScheduler.dueCount(seen, today)
+    }
 
     fun completedLessonIds(): Set<String> =
         lessons.selectAll().executeAsList().filter { it.completed == 1L }.map { it.lesson_id }.toSet()
