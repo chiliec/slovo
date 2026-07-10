@@ -17,7 +17,7 @@ class ProgressRepositoryTest {
     }
 
     @Test fun recording_a_correct_answer_masters_the_card() {
-        repo.recordAnswer("c1", correct = true)
+        repo.recordAnswer("c1", correct = true, todayEpochDay = 20000)
         assertEquals(100, repo.percent(listOf("c1")))
     }
 

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.*
+import cx.viz.slovo.platform.todayEpochDay
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
@@ -55,7 +56,7 @@ private class DrillViewModel(private val module: AppModule) {
         val q = questions[index]
         val correct = i == q.correctIndex
         if (correct) correctCount++
-        module.progress.recordAnswer(q.card.id, correct)
+        module.progress.recordAnswer(q.card.id, correct, todayEpochDay())
         if (index + 1 < questions.size) index++ else finish()
     }
 
