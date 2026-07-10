@@ -34,4 +34,17 @@ class ProgressRepositoryTest {
         assertEquals(90, stats.xp)          // 50 + (2*10 + 20)
         assertEquals(2, stats.streakDays)
     }
+
+    @Test fun finishing_a_drill_awards_xp_without_touching_streak() {
+        val stats = repo.recordDrillResult(correctCount = 4)
+        assertEquals(40, stats.xp)          // 4*10, no completion bonus
+        assertEquals(0, stats.streakDays)   // drills don't advance the streak
+    }
+
+    @Test fun drill_xp_accumulates_and_preserves_an_existing_streak() {
+        repo.completeLesson("l1", 3, 20000)     // 50 xp, streak 1
+        val stats = repo.recordDrillResult(correctCount = 2)
+        assertEquals(70, stats.xp)          // 50 + 2*10
+        assertEquals(1, stats.streakDays)   // streak untouched
+    }
 }

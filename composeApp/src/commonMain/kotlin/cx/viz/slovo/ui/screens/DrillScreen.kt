@@ -23,24 +23,48 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+private enum class DrillPhase { LOADING, DRILL, RESULT }
+
+private const val DRILL_SIZE = 10
+
 private class DrillViewModel(private val module: AppModule) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
+    var phase by mutableStateOf(DrillPhase.LOADING); private set
     var questions by mutableStateOf<List<Question>>(emptyList()); private set
     var index by mutableStateOf(0); private set
-    init { scope.launch {
+    var correctCount by mutableStateOf(0); private set
+    var finalStats by mutableStateOf(UserStats()); private set
+
+    // A rotating seed so "DRILL AGAIN" reshuffles instead of repeating the same 10.
+    private var round = 0
+
+    init { load() }
+
+    private fun load() = scope.launch {
         val all = module.content.allCards()
         val progress = module.progress.forCards(all.map { it.id })
-        val f = QuestionFactory(Random(all.size + 1))
-        questions = all.shuffled(Random(all.size + 2)).take(10).map { c ->
+        val f = QuestionFactory(Random(all.size + 1 + round * 31))
+        questions = all.shuffled(Random(all.size + 2 + round * 31)).take(DRILL_SIZE).map { c ->
             f.build(c, all, LessonKind.VOCAB, MasteryCalculator.isMastered(progress[c.id]))
         }
-    } }
+        index = 0; correctCount = 0; phase = DrillPhase.DRILL
+    }
+
     fun answer(i: Int) {
         val q = questions[index]
-        module.progress.recordAnswer(q.card.id, i == q.correctIndex)
-        if (index + 1 < questions.size) index++ else index = 0 // loop for MVP
+        val correct = i == q.correctIndex
+        if (correct) correctCount++
+        module.progress.recordAnswer(q.card.id, correct)
+        if (index + 1 < questions.size) index++ else finish()
     }
+
+    private fun finish() {
+        finalStats = module.progress.recordDrillResult(correctCount)
+        phase = DrillPhase.RESULT
+    }
+
+    fun drillAgain() { round++; phase = DrillPhase.LOADING; load() }
     fun play(file: String) = scope.launch { module.audio.play(file) }
     fun dispose() = scope.cancel()
 }
@@ -48,7 +72,14 @@ private class DrillViewModel(private val module: AppModule) {
 @Composable fun DrillScreen(module: AppModule) {
     val vm = remember { DrillViewModel(module) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
-    if (vm.questions.isEmpty()) { Text("Loading…", Modifier.padding(24.dp)); return }
+    when (vm.phase) {
+        DrillPhase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
+        DrillPhase.DRILL -> DrillQuestionView(vm)
+        DrillPhase.RESULT -> DrillResultView(vm)
+    }
+}
+
+@Composable private fun DrillQuestionView(vm: DrillViewModel) {
     val q = vm.questions[vm.index]
     var chosen by remember(vm.index) { mutableStateOf<Int?>(null) }
     Column(Modifier.fillMaxSize().padding(16.dp)) {
@@ -75,7 +106,26 @@ private class DrillViewModel(private val module: AppModule) {
         }
         if (chosen != null) {
             Spacer(Modifier.height(12.dp))
-            MishaButton("NEXT →", Modifier.fillMaxWidth()) { vm.answer(chosen!!) }
+            val last = vm.index + 1 == vm.questions.size
+            MishaButton(if (last) "FINISH →" else "NEXT →", Modifier.fillMaxWidth()) { vm.answer(chosen!!) }
         }
+    }
+}
+
+@Composable private fun DrillResultView(vm: DrillViewModel) {
+    Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+           verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Spacer(Modifier.weight(1f))
+        Text("DRILL DONE", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
+        MishaCard(shadow = 5.dp, background = Slovo.Yellow) {
+            Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("+${XpCalculator.drillXp(vm.correctCount)} XP",
+                     style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
+                Text("${vm.correctCount} / ${vm.questions.size} correct", color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+                Text("${vm.finalStats.xp} XP total", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+        Spacer(Modifier.weight(1f))
+        MishaButton("DRILL AGAIN", Modifier.fillMaxWidth()) { vm.drillAgain() }
     }
 }

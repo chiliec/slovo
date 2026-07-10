@@ -46,6 +46,14 @@ class ProgressRepository(private val db: SlovoDatabase) {
         UserStats(xp = it.xp.toInt(), streakDays = it.streak_days.toInt(), lastActiveEpochDay = it.last_active_day)
     }
 
+    /** Awards drill XP on top of the current total; leaves streak and last-active day untouched. */
+    fun recordDrillResult(correctCount: Int): UserStats {
+        val prev = stats()
+        val newXp = prev.xp + XpCalculator.drillXp(correctCount)
+        statsQ.update(xp = newXp.toLong(), streak = prev.streakDays.toLong(), day = prev.lastActiveEpochDay)
+        return stats()
+    }
+
     fun completeLesson(lessonId: String, correctCount: Int, todayEpochDay: Long): UserStats {
         lessons.insertOrIgnore(lessonId = lessonId)
         lessons.markComplete(lessonId = lessonId, correct = correctCount.toLong(), now = todayEpochDay)
