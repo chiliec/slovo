@@ -8,11 +8,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cx.viz.slovo.domain.SrsSnapshot
 import cx.viz.slovo.domain.UnitMeta
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.platform.DebugClock
+import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.platform.isDebugBuild
 import cx.viz.slovo.ui.AppModule
+import cx.viz.slovo.ui.components.Bar
+import cx.viz.slovo.ui.components.MishaBarChart
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
 import cx.viz.slovo.ui.components.MishaStatChip
@@ -28,12 +32,17 @@ private class ProfileViewModel(private val module: AppModule) {
 
     var stats by mutableStateOf(UserStats()); private set
     var unitPercents by mutableStateOf<List<Pair<UnitMeta, Int>>>(emptyList()); private set
+    var srs by mutableStateOf<SrsSnapshot?>(null); private set
     init { scope.launch {
         stats = module.progress.stats()
         unitPercents = module.content.units().map { meta ->
             val cardIds = module.content.unit(meta.id).cards.map { it.id }
             meta to module.progress.percent(cardIds)
         }
+        val allIds = module.content.units()
+            .flatMap { module.content.unit(it.id).cards }
+            .map { it.id }.distinct()
+        srs = module.progress.srsSnapshot(allIds, currentEpochDay())
     } }
 
     fun dispose() = scope.cancel()
@@ -55,6 +64,41 @@ private class ProfileViewModel(private val module: AppModule) {
                 Row(Modifier.padding(14.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(meta.title, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
                     Text("$pct%", color = Slovo.Red, style = MaterialTheme.typography.titleMedium)
+                }
+            }
+        }
+        val srs = vm.srs
+        if (srs != null) {
+            Text("SPACED REPETITION", style = MaterialTheme.typography.labelSmall, color = Slovo.Ink,
+                 modifier = Modifier.padding(top = 6.dp))
+            if (srs.seenCount == 0) {
+                MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp) {
+                    Text("Study a lesson to start building your review deck.",
+                         Modifier.padding(14.dp), color = Slovo.Ink,
+                         style = MaterialTheme.typography.bodyMedium)
+                }
+            } else {
+                MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp) {
+                    Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text("BOX STRENGTH", color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+                        MishaBarChart(
+                            bars = srs.boxCounts.mapIndexed { i, c -> Bar(i.toString(), c) },
+                            barColor = Slovo.Red,
+                        )
+                        Text("new → mastered", color = Slovo.Ink.copy(alpha = 0.6f),
+                             style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+                MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp) {
+                    Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text("DUE FORECAST", color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+                        MishaBarChart(
+                            bars = srs.dueForecast.mapIndexed { i, c -> Bar(if (i == 0) "NOW" else "+$i", c) },
+                            barColor = Slovo.Blue,
+                        )
+                        Text("today … +6d", color = Slovo.Ink.copy(alpha = 0.6f),
+                             style = MaterialTheme.typography.bodyMedium)
+                    }
                 }
             }
         }
