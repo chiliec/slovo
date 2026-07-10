@@ -3,6 +3,7 @@ package cx.viz.slovo.data
 import cx.viz.slovo.domain.Card
 import cx.viz.slovo.domain.LearnUnit
 import cx.viz.slovo.domain.Lesson
+import cx.viz.slovo.domain.LessonKind
 import cx.viz.slovo.domain.UnitMeta
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -12,9 +13,32 @@ import slovo.composeapp.generated.resources.Res
 
 const val MIXED_ID = "mixed"
 
+// Wire DTOs keep kotlinx.serialization out of the domain layer; they map to plain
+// domain models on read so nothing downstream depends on the JSON shape.
 @Serializable internal data class ManifestEntry(val id: String, val title: String, val lessonCount: Int)
 @Serializable internal data class Manifest(val units: List<ManifestEntry>)
-@Serializable internal data class UnitFile(val lessons: List<Lesson>, val cards: List<Card>)
+
+@Serializable internal data class CardDto(
+    val id: String,
+    val russian: String,
+    val transliteration: String,
+    val english: String,
+    val audio: String,
+    val note: String? = null,
+) {
+    fun toDomain() = Card(id, russian, transliteration, english, audio, note)
+}
+
+@Serializable internal data class LessonDto(
+    val id: String,
+    val title: String,
+    val kind: LessonKind,
+    val cardIds: List<String>,
+) {
+    fun toDomain() = Lesson(id, title, kind, cardIds)
+}
+
+@Serializable internal data class UnitFile(val lessons: List<LessonDto>, val cards: List<CardDto>)
 
 internal fun parseManifest(json: Json, text: String): List<UnitMeta> =
     json.decodeFromString(Manifest.serializer(), text).units.map { UnitMeta(it.id, it.title, it.lessonCount) }
@@ -41,7 +65,8 @@ class ContentRepository {
         val meta = units().first { it.id == unitId }
         val text = Res.readBytes("files/content/$unitId.json").decodeToString()
         val file = parseUnitFile(json, text)
-        return LearnUnit(meta, file.lessons, file.cards).also { cacheMutex.withLock { unitCache[unitId] = it } }
+        val unit = LearnUnit(meta, file.lessons.map { it.toDomain() }, file.cards.map { it.toDomain() })
+        return unit.also { cacheMutex.withLock { unitCache[unitId] = it } }
     }
 
     suspend fun allCards(): List<Card> =

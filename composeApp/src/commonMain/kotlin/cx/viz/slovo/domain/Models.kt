@@ -1,11 +1,8 @@
 package cx.viz.slovo.domain
 
-import kotlinx.serialization.Serializable
-
 enum class QuestionMode { LISTEN, READ, PRODUCE }
 enum class LessonKind { VOCAB, LISTENING, RECALL }
 
-@Serializable
 data class Card(
     val id: String,
     val russian: String,
@@ -15,7 +12,6 @@ data class Card(
     val note: String? = null,
 )
 
-@Serializable
 data class Lesson(
     val id: String,
     val title: String,
