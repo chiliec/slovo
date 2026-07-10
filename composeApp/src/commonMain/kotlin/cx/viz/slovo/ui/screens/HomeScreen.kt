@@ -9,8 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cx.viz.slovo.domain.Lesson
 import cx.viz.slovo.domain.LearnUnit
+import cx.viz.slovo.domain.Lesson
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.*
@@ -24,31 +24,37 @@ import kotlinx.coroutines.launch
 private class HomeViewModel(private val module: AppModule) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
-    var unit by mutableStateOf<LearnUnit?>(null); private set
+    var units by mutableStateOf<List<LearnUnit>>(emptyList()); private set
     var completed by mutableStateOf<Set<String>>(emptySet()); private set
     var stats by mutableStateOf(UserStats()); private set
 
     init { refresh() }
     fun refresh() = scope.launch {
-        val first = module.content.units().first()
-        unit = module.content.unit(first.id)
+        units = module.content.units().map { module.content.unit(it.id) }
         completed = module.progress.completedLessonIds()
         stats = module.progress.stats()
     }
-    fun isUnlocked(lessons: List<Lesson>, index: Int): Boolean =
-        index == 0 || lessons[index - 1].id in completed
 
     fun dispose() = scope.cancel()
 }
+
+/** One lesson placed in the global, cross-unit study sequence. */
+private data class FlatLesson(val unit: LearnUnit, val lesson: Lesson, val position: Int)
 
 @Composable
 fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit) {
     val vm = remember { HomeViewModel(module) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
     LaunchedEffect(Unit) { vm.refresh() }
-    val unit = vm.unit ?: run { Text("Loading…", Modifier.padding(24.dp)); return }
-    val lessons = unit.lessons
-    val firstIncomplete = lessons.firstOrNull { it.id !in vm.completed }
+    val units = vm.units
+    if (units.isEmpty()) { Text("Loading…", Modifier.padding(24.dp)); return }
+
+    // Flatten every unit's lessons into one ordered sequence so unlocking carries across units:
+    // a lesson opens once the lesson directly before it (even in the previous unit) is complete.
+    val flat = units.flatMap { u -> u.lessons.map { u to it } }
+        .mapIndexed { pos, (u, l) -> FlatLesson(u, l, pos) }
+    val firstIncomplete = flat.firstOrNull { it.lesson.id !in vm.completed }
+    fun unlocked(pos: Int): Boolean = pos == 0 || flat[pos - 1].lesson.id in vm.completed
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
            verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -64,31 +70,37 @@ fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit) {
             MishaStatChip("${vm.stats.xp}", "XP", Slovo.Red, Slovo.Card, Modifier.weight(1f))
             MishaStatChip("SOON", "LEAGUE", Slovo.Blue, Slovo.Card, Modifier.weight(1f))
         }
-        // UP NEXT
+        // UP NEXT — the first incomplete lesson anywhere in the sequence
         if (firstIncomplete != null) {
             MishaCard(shadow = 5.dp) {
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("UP NEXT · ${unit.meta.title}".uppercase(),
+                    Text("UP NEXT · ${firstIncomplete.unit.meta.title}".uppercase(),
                          style = MaterialTheme.typography.labelSmall, color = Slovo.Ink)
-                    Text(firstIncomplete.title, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
-                    Text("${firstIncomplete.kind} · +30 XP", style = MaterialTheme.typography.bodyMedium, color = Slovo.Ink)
+                    Text(firstIncomplete.lesson.title, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
+                    Text("${firstIncomplete.lesson.kind} · +30 XP", style = MaterialTheme.typography.bodyMedium, color = Slovo.Ink)
                     MishaButton("START →", Modifier.fillMaxWidth()) {
-                        onOpenLesson(unit.meta.id, firstIncomplete.id)
+                        onOpenLesson(firstIncomplete.unit.meta.id, firstIncomplete.lesson.id)
                     }
                 }
             }
         } else {
-            MishaCard(shadow = 5.dp) { Text("Unit complete! 🎉", Modifier.padding(16.dp), color = Slovo.Ink) }
+            MishaCard(shadow = 5.dp) { Text("All units complete! 🎉", Modifier.padding(16.dp), color = Slovo.Ink) }
         }
-        // lesson list
-        lessons.forEachIndexed { i, lesson ->
-            val done = lesson.id in vm.completed
-            val unlocked = vm.isUnlocked(lessons, i)
-            LessonRow(
-                index = i + 1, title = lesson.title, subtitle = lesson.kind.name,
-                done = done, current = lesson.id == firstIncomplete?.id, locked = !unlocked,
-                onClick = { if (unlocked) onOpenLesson(unit.meta.id, lesson.id) },
-            )
+        // Unit sections — each unit's title followed by its lessons, numbered across the whole course
+        units.forEachIndexed { uIdx, unit ->
+            Text("UNIT ${uIdx + 1} · ${unit.meta.title}".uppercase(),
+                 style = MaterialTheme.typography.labelSmall, color = Slovo.Ink,
+                 modifier = Modifier.padding(top = 6.dp))
+            unit.lessons.forEach { lesson ->
+                val pos = flat.first { it.lesson.id == lesson.id }.position
+                val open = unlocked(pos)
+                LessonRow(
+                    index = pos + 1, title = lesson.title, subtitle = lesson.kind.name,
+                    done = lesson.id in vm.completed,
+                    current = lesson.id == firstIncomplete?.lesson?.id, locked = !open,
+                    onClick = { if (open) onOpenLesson(unit.meta.id, lesson.id) },
+                )
+            }
         }
     }
 }
