@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.*
-import cx.viz.slovo.platform.todayEpochDay
+import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
@@ -24,7 +24,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-private enum class DrillPhase { LOADING, DRILL, RESULT }
+private enum class DrillPhase { LOADING, EMPTY, DRILL, RESULT }
 
 private const val DRILL_SIZE = 10
 
@@ -36,6 +36,7 @@ private class DrillViewModel(private val module: AppModule) {
     var index by mutableStateOf(0); private set
     var correctCount by mutableStateOf(0); private set
     var finalStats by mutableStateOf(UserStats()); private set
+    var dueTotal by mutableStateOf(0); private set
 
     // A rotating seed so "DRILL AGAIN" reshuffles instead of repeating the same 10.
     private var round = 0
@@ -44,11 +45,18 @@ private class DrillViewModel(private val module: AppModule) {
 
     private fun load() = scope.launch {
         val all = module.content.allCards()
-        val progress = module.progress.forCards(all.map { it.id })
-        val f = QuestionFactory(Random(all.size + 1 + round * 31))
-        questions = all.shuffled(Random(all.size + 2 + round * 31)).take(DRILL_SIZE).map { c ->
+        val today = currentEpochDay()
+        val allIds = all.map { it.id }
+        val ids = module.progress.pickDrill(allIds, today, DRILL_SIZE)
+        if (ids.isEmpty()) { phase = DrillPhase.EMPTY; return@launch }
+        val byId = all.associateBy { it.id }
+        val picked = ids.mapNotNull { byId[it] }
+        val progress = module.progress.forCards(ids)
+        val f = QuestionFactory(Random(picked.size + 1 + round * 31))
+        questions = picked.map { c ->
             f.build(c, all, LessonKind.VOCAB, MasteryCalculator.isMastered(progress[c.id]))
         }
+        dueTotal = module.progress.dueCount(allIds, today)
         index = 0; correctCount = 0; phase = DrillPhase.DRILL
     }
 
@@ -56,7 +64,7 @@ private class DrillViewModel(private val module: AppModule) {
         val q = questions[index]
         val correct = i == q.correctIndex
         if (correct) correctCount++
-        module.progress.recordAnswer(q.card.id, correct, todayEpochDay())
+        module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
         if (index + 1 < questions.size) index++ else finish()
     }
 
@@ -66,17 +74,35 @@ private class DrillViewModel(private val module: AppModule) {
     }
 
     fun drillAgain() { round++; phase = DrillPhase.LOADING; load() }
+    fun reload() { if (phase != DrillPhase.DRILL) load() }
     fun play(file: String) = scope.launch { module.audio.play(file) }
     fun dispose() = scope.cancel()
 }
 
-@Composable fun DrillScreen(module: AppModule) {
+@Composable fun DrillScreen(module: AppModule, onOpenLearn: () -> Unit) {
     val vm = remember { DrillViewModel(module) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
+    LaunchedEffect(Unit) { vm.reload() }
     when (vm.phase) {
         DrillPhase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
+        DrillPhase.EMPTY -> DrillEmptyView(onOpenLearn)
         DrillPhase.DRILL -> DrillQuestionView(vm)
         DrillPhase.RESULT -> DrillResultView(vm)
+    }
+}
+
+@Composable private fun DrillEmptyView(onOpenLearn: () -> Unit) {
+    Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+           verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Spacer(Modifier.weight(1f))
+        Text("NOTHING TO REVIEW", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink, textAlign = TextAlign.Center)
+        MishaCard(shadow = 5.dp) {
+            Text("Finish a lesson first — cards you learn show up here for review.",
+                 Modifier.padding(18.dp), color = Slovo.Ink, textAlign = TextAlign.Center,
+                 style = MaterialTheme.typography.titleMedium)
+        }
+        Spacer(Modifier.weight(1f))
+        MishaButton("GO TO LEARN →", Modifier.fillMaxWidth()) { onOpenLearn() }
     }
 }
 
@@ -88,7 +114,8 @@ private class DrillViewModel(private val module: AppModule) {
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text("DRILL · ${vm.index + 1}/${vm.questions.size}", color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
+            Text("DRILL · ${vm.index + 1}/${vm.questions.size}  ·  ${vm.dueTotal} DUE",
+                 color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
                 Column(Modifier.padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
