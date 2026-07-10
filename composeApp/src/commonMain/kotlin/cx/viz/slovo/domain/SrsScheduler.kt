@@ -26,6 +26,28 @@ object SrsScheduler {
     fun dueCount(seen: List<CardProgress>, today: Long): Int =
         seen.count { isDue(it, today) }
 
+    /** Count of seen cards in each Leitner box → size MAX_BOX+1 (6), indexed by box. */
+    fun boxHistogram(seen: List<CardProgress>): IntArray {
+        val out = IntArray(MAX_BOX + 1)
+        for (p in seen) out[p.box.coerceIn(0, MAX_BOX)]++
+        return out
+    }
+
+    /**
+     * Review load over the next [days] days. Index 0 = due today OR overdue;
+     * index d = due exactly today+d. Cards due beyond the window are dropped.
+     * Callers pass seen cards only, so dueDay is never null.
+     */
+    fun dueForecast(seen: List<CardProgress>, today: Long, days: Int = 7): IntArray {
+        val out = IntArray(days)
+        for (p in seen) {
+            val due = dueDay(p) ?: continue
+            val idx = maxOf(0L, due - today).toInt()   // overdue & today both land at 0
+            if (idx < days) out[idx]++
+        }
+        return out
+    }
+
     /**
      * Card ids for a review drill: due cards first (most overdue first),
      * then seen-but-not-due cards (soonest due first), capped at [size].
