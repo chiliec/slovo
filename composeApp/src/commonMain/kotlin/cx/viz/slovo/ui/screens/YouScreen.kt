@@ -10,7 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.UnitMeta
 import cx.viz.slovo.domain.UserStats
+import cx.viz.slovo.platform.DebugClock
 import cx.viz.slovo.ui.AppModule
+import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
 import cx.viz.slovo.ui.components.MishaStatChip
 import cx.viz.slovo.ui.theme.Slovo
@@ -54,6 +56,11 @@ private class ProfileViewModel(private val module: AppModule) {
                     Text("$pct%", color = Slovo.Red, style = MaterialTheme.typography.titleMedium)
                 }
             }
+        }
+        var dayOffset by remember { mutableStateOf(DebugClock.dayOffset) }
+        MishaButton("+1 DAY (debug) · now +$dayOffset", background = Slovo.Blue) {
+            DebugClock.dayOffset += 1
+            dayOffset = DebugClock.dayOffset
         }
     }
 }

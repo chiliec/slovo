@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.*
-import cx.viz.slovo.platform.todayEpochDay
+import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
@@ -60,12 +60,12 @@ private class LessonViewModel(
         val q = questions[index]
         val correct = optionIndex == q.correctIndex
         if (correct) correctCount++
-        module.progress.recordAnswer(q.card.id, correct, todayEpochDay())
+        module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
         if (index + 1 < questions.size) index++ else finish()
     }
 
     private fun finish() {
-        finalStats = module.progress.completeLesson(lessonId, correctCount, todayEpochDay())
+        finalStats = module.progress.completeLesson(lessonId, correctCount, currentEpochDay())
         phase = Phase.RESULT
     }
 
