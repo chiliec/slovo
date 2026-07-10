@@ -3,20 +3,25 @@ CREATE TABLE card_progress (
     seen      INTEGER NOT NULL DEFAULT 0,
     correct   INTEGER NOT NULL DEFAULT 0,
     wrong     INTEGER NOT NULL DEFAULT 0,
-    last_seen INTEGER
+    last_seen INTEGER,
+    box       INTEGER NOT NULL DEFAULT 0
 );
 
 selectByIds:
-SELECT card_id, seen, correct, wrong FROM card_progress WHERE card_id IN ?;
+SELECT card_id, seen, correct, wrong, last_seen, box FROM card_progress WHERE card_id IN ?;
+
+selectBox:
+SELECT box FROM card_progress WHERE card_id = :cardId;
 
 insertOrIgnore:
-INSERT OR IGNORE INTO card_progress(card_id, seen, correct, wrong, last_seen)
-VALUES (:cardId, 0, 0, 0, NULL);
+INSERT OR IGNORE INTO card_progress(card_id, seen, correct, wrong, last_seen, box)
+VALUES (:cardId, 0, 0, 0, NULL, 0);
 
 updateAnswer:
 UPDATE card_progress SET
     seen = seen + 1,
     correct = correct + :correctInc,
     wrong = wrong + :wrongInc,
-    last_seen = :now
+    last_seen = :now,
+    box = :box
 WHERE card_id = :cardId;
