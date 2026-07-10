@@ -36,6 +36,8 @@ data class CardProgress(
     val seen: Int = 0,
     val correct: Int = 0,
     val wrong: Int = 0,
+    val box: Int = 0,
+    val lastSeenDay: Long? = null,
 )
 
 data class LessonProgress(
