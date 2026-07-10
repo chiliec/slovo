@@ -60,7 +60,7 @@ private class LessonViewModel(
         val q = questions[index]
         val correct = optionIndex == q.correctIndex
         if (correct) correctCount++
-        module.progress.recordAnswer(q.card.id, correct)
+        module.progress.recordAnswer(q.card.id, correct, todayEpochDay())
         if (index + 1 < questions.size) index++ else finish()
     }
 

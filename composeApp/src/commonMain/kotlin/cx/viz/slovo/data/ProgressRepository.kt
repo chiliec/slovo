@@ -14,13 +14,13 @@ class ProgressRepository(private val db: SlovoDatabase) {
 
     init { statsQ.initRow() }
 
-    fun recordAnswer(cardId: String, correct: Boolean) {
+    fun recordAnswer(cardId: String, correct: Boolean, todayEpochDay: Long) {
         cards.insertOrIgnore(cardId = cardId)
         cards.updateAnswer(
             cardId = cardId,
             correctInc = if (correct) 1L else 0L,
             wrongInc = if (correct) 0L else 1L,
-            now = 0L,  // v1: last_seen unused; SRS scheduling is deferred
+            now = todayEpochDay,  // stamps last_seen for future SRS scheduling
         )
     }
 
