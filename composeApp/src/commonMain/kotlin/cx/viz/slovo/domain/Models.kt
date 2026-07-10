@@ -40,6 +40,13 @@ data class CardProgress(
     val lastSeenDay: Long? = null,
 )
 
+/** Read-only snapshot of the review deck for the SRS visualization. */
+data class SrsSnapshot(
+    val boxCounts: List<Int>,    // size 6, index = box 0..5
+    val dueForecast: List<Int>,  // size 7, index 0 = today/overdue … 6 = +6 days
+    val seenCount: Int,          // seen cards total; drives the empty state
+)
+
 data class LessonProgress(
     val lessonId: String,
     val completed: Boolean = false,

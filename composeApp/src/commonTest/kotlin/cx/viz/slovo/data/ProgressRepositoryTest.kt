@@ -75,4 +75,21 @@ class ProgressRepositoryTest {
         repo.recordAnswer("c", correct = true, todayEpochDay = 20050)  // due 20052
         assertEquals(2, repo.dueCount(listOf("a", "b", "c", "neverSeen"), today = 20003))
     }
+
+    @Test fun srsSnapshot_counts_only_seen_cards_in_box_histogram() {
+        repo.recordAnswer("a", correct = true, todayEpochDay = 20000)   // box 1
+        repo.recordAnswer("b", correct = true, todayEpochDay = 20000)   // box 1
+        repo.recordAnswer("c", correct = false, todayEpochDay = 20000)  // box 0 (seen)
+        val snap = repo.srsSnapshot(listOf("a", "b", "c", "neverSeen"), today = 20000)
+        assertEquals(3, snap.seenCount)          // neverSeen excluded
+        assertEquals(6, snap.boxCounts.size)
+        assertEquals(1, snap.boxCounts[0])       // c
+        assertEquals(2, snap.boxCounts[1])       // a, b
+    }
+
+    @Test fun srsSnapshot_forecast_shifts_left_as_today_advances() {
+        repo.recordAnswer("a", correct = true, todayEpochDay = 20000)  // box 1 interval 2 -> due 20002
+        assertEquals(1, repo.srsSnapshot(listOf("a"), today = 20000).dueForecast[2]) // offset 2
+        assertEquals(1, repo.srsSnapshot(listOf("a"), today = 20002).dueForecast[0]) // now due
+    }
 }

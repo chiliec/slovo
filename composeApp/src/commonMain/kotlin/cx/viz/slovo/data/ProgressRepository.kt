@@ -4,6 +4,7 @@ import cx.viz.slovo.db.SlovoDatabase
 import cx.viz.slovo.domain.CardProgress
 import cx.viz.slovo.domain.MasteryCalculator
 import cx.viz.slovo.domain.SrsScheduler
+import cx.viz.slovo.domain.SrsSnapshot
 import cx.viz.slovo.domain.StreakCalculator
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.domain.XpCalculator
@@ -54,6 +55,16 @@ class ProgressRepository(private val db: SlovoDatabase) {
     fun dueCount(cardIds: List<String>, today: Long): Int {
         val seen = forCards(cardIds).values.filter { it.lastSeenDay != null }
         return SrsScheduler.dueCount(seen, today)
+    }
+
+    /** Box histogram + 7-day due forecast over seen cards, for the YOU-screen SRS view. */
+    fun srsSnapshot(cardIds: List<String>, today: Long): SrsSnapshot {
+        val seen = forCards(cardIds).values.filter { it.lastSeenDay != null }.toList()
+        return SrsSnapshot(
+            boxCounts = SrsScheduler.boxHistogram(seen).toList(),
+            dueForecast = SrsScheduler.dueForecast(seen, today).toList(),
+            seenCount = seen.size,
+        )
     }
 
     fun completedLessonIds(): Set<String> =
