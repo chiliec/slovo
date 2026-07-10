@@ -68,9 +68,13 @@ fun App(module: AppModule) = SlovoTheme {
             popExitTransition = { fadeOut(tween(150)) },
         ) {
             composable(Dest.Learn.route) {
-                HomeScreen(module) { unitId, lessonId -> nav.navigate(Dest.Lesson.of(unitId, lessonId)) }
+                HomeScreen(
+                    module,
+                    onOpenLesson = { unitId, lessonId -> nav.navigate(Dest.Lesson.of(unitId, lessonId)) },
+                    onOpenDrill = { switchTab(nav, Dest.Drill.route) },
+                )
             }
-            composable(Dest.Drill.route) { DrillScreen(module) }
+            composable(Dest.Drill.route) { DrillScreen(module, onOpenLearn = { switchTab(nav, Dest.Learn.route) }) }
             composable(Dest.League.route) { LeagueScreen() }
             composable(Dest.You.route) { YouScreen(module) }
             composable(Dest.Lesson.route) { back ->
@@ -82,5 +86,13 @@ fun App(module: AppModule) = SlovoTheme {
                 )
             }
         }
+    }
+}
+
+private fun switchTab(nav: androidx.navigation.NavHostController, route: String) {
+    nav.navigate(route) {
+        popUpTo(nav.graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+        restoreState = true
     }
 }
