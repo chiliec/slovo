@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.LearnUnit
 import cx.viz.slovo.domain.Lesson
 import cx.viz.slovo.domain.UserStats
+import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.*
 import cx.viz.slovo.ui.theme.Slovo
@@ -27,12 +28,15 @@ private class HomeViewModel(private val module: AppModule) {
     var units by mutableStateOf<List<LearnUnit>>(emptyList()); private set
     var completed by mutableStateOf<Set<String>>(emptySet()); private set
     var stats by mutableStateOf(UserStats()); private set
+    var dueCount by mutableStateOf(0); private set
 
     init { refresh() }
     fun refresh() = scope.launch {
         units = module.content.units().map { module.content.unit(it.id) }
         completed = module.progress.completedLessonIds()
         stats = module.progress.stats()
+        val allIds = units.flatMap { it.cards }.map { it.id }.distinct()
+        dueCount = module.progress.dueCount(allIds, currentEpochDay())
     }
 
     fun dispose() = scope.cancel()
@@ -42,7 +46,7 @@ private class HomeViewModel(private val module: AppModule) {
 private data class FlatLesson(val unit: LearnUnit, val lesson: Lesson, val position: Int)
 
 @Composable
-fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit) {
+fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit, onOpenDrill: () -> Unit) {
     val vm = remember { HomeViewModel(module) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
     LaunchedEffect(Unit) { vm.refresh() }
@@ -64,11 +68,21 @@ fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit) {
             Text("SLOVO", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
             MishaCard(shadow = 3.dp, background = Slovo.Bear) { MishaMascot(34.dp, Modifier.padding(4.dp)) }
         }
-        MishaTicker("DAY ${vm.stats.streakDays} STREAK  ◆  ${vm.stats.xp} XP  ◆  LEAGUE COMING SOON  ◆  ")
+        val duePart = if (vm.dueCount > 0) "${vm.dueCount} CARDS DUE  ◆  " else ""
+        MishaTicker("${duePart}DAY ${vm.stats.streakDays} STREAK  ◆  ${vm.stats.xp} XP  ◆  LEAGUE COMING SOON  ◆  ")
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             MishaStatChip("${vm.stats.streakDays}", "DAY STREAK", Slovo.Card, Slovo.Ink, Modifier.weight(1f))
             MishaStatChip("${vm.stats.xp}", "XP", Slovo.Red, Slovo.Card, Modifier.weight(1f))
             MishaStatChip("SOON", "LEAGUE", Slovo.Blue, Slovo.Card, Modifier.weight(1f))
+        }
+        if (vm.dueCount > 0) {
+            MishaCard(shadow = 5.dp, background = Slovo.Yellow) {
+                Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("${vm.dueCount} CARDS DUE", style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
+                    Text("Keep your words fresh.", style = MaterialTheme.typography.bodyMedium, color = Slovo.Ink)
+                    MishaButton("REVIEW NOW →", Modifier.fillMaxWidth()) { onOpenDrill() }
+                }
+            }
         }
         // UP NEXT — the first incomplete lesson anywhere in the sequence
         if (firstIncomplete != null) {
