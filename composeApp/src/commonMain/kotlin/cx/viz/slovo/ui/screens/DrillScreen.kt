@@ -54,7 +54,7 @@ private class DrillViewModel(private val module: AppModule) {
         val progress = module.progress.forCards(ids)
         val f = QuestionFactory(Random(picked.size + 1 + round * 31))
         questions = picked.map { c ->
-            f.build(c, all, LessonKind.VOCAB, MasteryCalculator.isMastered(progress[c.id]))
+            f.build(c, all, LessonKind.VOCAB, MasteryCalculator.isMastered(progress[c.id]), preferTyping = true)
         }
         dueTotal = module.progress.dueCount(allIds, today)
         index = 0; correctCount = 0; phase = DrillPhase.DRILL
@@ -63,6 +63,13 @@ private class DrillViewModel(private val module: AppModule) {
     fun answer(i: Int) {
         val q = questions[index]
         val correct = i == q.correctIndex
+        if (correct) correctCount++
+        module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
+        if (index + 1 < questions.size) index++ else finish()
+    }
+
+    fun recordTyped(correct: Boolean) {
+        val q = questions[index]
         if (correct) correctCount++
         module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
         if (index + 1 < questions.size) index++ else finish()
@@ -108,6 +115,15 @@ private class DrillViewModel(private val module: AppModule) {
 
 @Composable private fun DrillQuestionView(vm: DrillViewModel) {
     val q = vm.questions[vm.index]
+    if (q.mode == QuestionMode.TYPE) {
+        cx.viz.slovo.ui.components.TypedQuestionContent(
+            question = q,
+            header = "DRILL · ${vm.index + 1}/${vm.questions.size}  ·  ${vm.dueTotal} DUE",
+            onPlay = { vm.play(it) },
+            onContinue = { vm.recordTyped(it) },
+        )
+        return
+    }
     var chosen by remember(vm.index) { mutableStateOf<Int?>(null) }
     Column(Modifier.fillMaxSize().padding(16.dp)) {
         Column(
