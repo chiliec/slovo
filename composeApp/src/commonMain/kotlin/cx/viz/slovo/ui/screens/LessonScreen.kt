@@ -64,6 +64,13 @@ private class LessonViewModel(
         if (index + 1 < questions.size) index++ else finish()
     }
 
+    fun recordTyped(correct: Boolean) {
+        val q = questions[index]
+        if (correct) correctCount++
+        module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
+        if (index + 1 < questions.size) index++ else finish()
+    }
+
     private fun finish() {
         finalStats = module.progress.completeLesson(lessonId, correctCount, currentEpochDay())
         phase = Phase.RESULT
@@ -119,6 +126,15 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
 
 @Composable private fun QuizView(vm: LessonViewModel) {
     val q = vm.questions[vm.index]
+    if (q.mode == QuestionMode.TYPE) {
+        cx.viz.slovo.ui.components.TypedQuestionContent(
+            question = q,
+            header = "${vm.index + 1} / ${vm.questions.size}",
+            onPlay = { vm.playAudio(it) },
+            onContinue = { vm.recordTyped(it) },
+        )
+        return
+    }
     var chosen by remember(vm.index) { mutableStateOf<Int?>(null) }
     Column(Modifier.fillMaxSize().padding(16.dp)) {
         Column(
