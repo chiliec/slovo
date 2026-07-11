@@ -4,13 +4,32 @@ import kotlin.random.Random
 
 class QuestionFactory(private val rng: Random = Random.Default) {
 
-    fun build(card: Card, pool: List<Card>, kind: LessonKind, isMastered: Boolean): Question {
-        val mode = when (kind) {
-            LessonKind.LISTENING -> QuestionMode.LISTEN
-            LessonKind.RECALL -> QuestionMode.PRODUCE
-            LessonKind.VOCAB ->
-                if (isMastered && rng.nextInt(5) == 0) QuestionMode.PRODUCE else QuestionMode.READ
+    fun build(
+        card: Card,
+        pool: List<Card>,
+        kind: LessonKind,
+        isMastered: Boolean,
+        preferTyping: Boolean = false,
+    ): Question {
+        val mode = when {
+            kind == LessonKind.RECALL -> QuestionMode.TYPE
+            preferTyping && isMastered -> QuestionMode.TYPE
+            kind == LessonKind.LISTENING -> QuestionMode.LISTEN
+            kind == LessonKind.VOCAB && isMastered && rng.nextInt(5) == 0 -> QuestionMode.PRODUCE
+            else -> QuestionMode.READ
         }
+
+        if (mode == QuestionMode.TYPE) {
+            return Question(
+                mode = mode,
+                card = card,
+                promptText = "Type the English meaning",
+                audio = card.audio,
+                options = emptyList(),
+                correctIndex = 0,
+            )
+        }
+
         val answerOf: (Card) -> String =
             if (mode == QuestionMode.PRODUCE) { c -> c.russian } else { c -> c.english }
 
@@ -33,6 +52,7 @@ class QuestionFactory(private val rng: Random = Random.Default) {
             QuestionMode.LISTEN -> "What does this mean?"
             QuestionMode.READ -> "What does \"${card.russian}\" mean?"
             QuestionMode.PRODUCE -> "How do you say \"${card.english}\"?"
+            QuestionMode.TYPE -> ""   // unreachable; handled above
         }
         return Question(
             mode = mode,

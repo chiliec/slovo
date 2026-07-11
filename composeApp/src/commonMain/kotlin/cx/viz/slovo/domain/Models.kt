@@ -1,6 +1,6 @@
 package cx.viz.slovo.domain
 
-enum class QuestionMode { LISTEN, READ, PRODUCE }
+enum class QuestionMode { LISTEN, READ, PRODUCE, TYPE }
 enum class LessonKind { VOCAB, LISTENING, RECALL }
 
 data class Card(

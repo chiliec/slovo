@@ -22,11 +22,26 @@ class QuestionFactoryTest {
         assertTrue(q.options.size in 2..4)
     }
 
-    @Test fun recall_shows_english_prompt_and_russian_options() {
+    @Test fun recall_is_typed_with_no_options() {
         val q = QuestionFactory(Random(1)).build(cards[0], cards, LessonKind.RECALL, isMastered = false)
-        assertEquals(QuestionMode.PRODUCE, q.mode)
-        assertEquals(null, q.audio)
-        assertEquals("привет", q.options[q.correctIndex])
+        assertEquals(QuestionMode.TYPE, q.mode)
+        assertTrue(q.options.isEmpty())
+        assertEquals("Type the English meaning", q.promptText)
+        assertEquals("hello", q.card.english)
+    }
+
+    @Test fun drill_prefers_typing_for_mastered_cards() {
+        val q = QuestionFactory(Random(1))
+            .build(cards[0], cards, LessonKind.VOCAB, isMastered = true, preferTyping = true)
+        assertEquals(QuestionMode.TYPE, q.mode)
+        assertTrue(q.options.isEmpty())
+    }
+
+    @Test fun drill_keeps_choices_for_unmastered_cards() {
+        val q = QuestionFactory(Random(1))
+            .build(cards[0], cards, LessonKind.VOCAB, isMastered = false, preferTyping = true)
+        assertTrue(q.mode != QuestionMode.TYPE)
+        assertTrue(q.options.isNotEmpty())
     }
 
     @Test fun vocab_defaults_to_read() {
