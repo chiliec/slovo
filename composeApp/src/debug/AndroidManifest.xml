@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug-only manifest. Registers the bare ComponentActivity that Compose's
+  createComposeRule() launches, so Robolectric UI tests (testDebugUnitTest)
+  can resolve it. Kept out of release builds by living in the debug source set.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:exported="false" />
+    </application>
+</manifest>

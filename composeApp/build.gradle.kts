@@ -46,6 +46,15 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.sqldelight.jvm)
         }
+        androidUnitTest.dependencies {
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+            implementation(libs.junit)
+            implementation(libs.robolectric)
+            implementation(libs.androidx.compose.ui.test.junit4)
+            implementation(libs.androidx.compose.ui.test.manifest)
+            implementation(libs.androidx.activity.compose)
+        }
     }
 }
 
@@ -69,6 +78,7 @@ android {
         versionName = "1.0"
     }
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+    testOptions { unitTests.isIncludeAndroidResources = true }
     buildFeatures { buildConfig = true }
     buildTypes { getByName("release") { isMinifyEnabled = false } }
     compileOptions {
