@@ -46,7 +46,17 @@ internal fun parseManifest(json: Json, text: String): List<UnitMeta> =
 internal fun parseUnitFile(json: Json, text: String): UnitFile =
     json.decodeFromString(UnitFile.serializer(), text)
 
-class ContentRepository {
+/**
+ * Read access to the bundled learning content. An interface so screens can be
+ * driven by fake content in tests; production uses [BundledContentRepository].
+ */
+interface ContentRepository {
+    suspend fun units(): List<UnitMeta>
+    suspend fun unit(unitId: String): LearnUnit
+    suspend fun allCards(): List<Card>
+}
+
+class BundledContentRepository : ContentRepository {
     // useAlternativeNames = false skips the @JsonNames annotation lookup that
     // null-derefs in kotlinx.serialization on Kotlin/Native (iOS).
     private val json = Json { ignoreUnknownKeys = true; useAlternativeNames = false }
@@ -54,13 +64,13 @@ class ContentRepository {
     private var metaCache: List<UnitMeta>? = null
     private val unitCache = mutableMapOf<String, LearnUnit>()
 
-    suspend fun units(): List<UnitMeta> {
+    override suspend fun units(): List<UnitMeta> {
         cacheMutex.withLock { metaCache }?.let { return it }
         val text = Res.readBytes("files/content/manifest.json").decodeToString()
         return parseManifest(json, text).also { cacheMutex.withLock { metaCache = it } }
     }
 
-    suspend fun unit(unitId: String): LearnUnit {
+    override suspend fun unit(unitId: String): LearnUnit {
         cacheMutex.withLock { unitCache[unitId] }?.let { return it }
         val meta = units().first { it.id == unitId }
         val text = Res.readBytes("files/content/$unitId.json").decodeToString()
@@ -69,6 +79,6 @@ class ContentRepository {
         return unit.also { cacheMutex.withLock { unitCache[unitId] = it } }
     }
 
-    suspend fun allCards(): List<Card> =
+    override suspend fun allCards(): List<Card> =
         units().flatMap { unit(it.id).cards }.distinctBy { it.id }
 }
