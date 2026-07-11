@@ -92,4 +92,18 @@ class ProgressRepositoryTest {
         assertEquals(1, repo.srsSnapshot(listOf("a"), today = 20000).dueForecast[2]) // offset 2
         assertEquals(1, repo.srsSnapshot(listOf("a"), today = 20002).dueForecast[0]) // now due
     }
+
+    @Test fun profileSummary_aggregates_answers_seen_and_mastered() {
+        repo.recordAnswer("c1", correct = true, todayEpochDay = 20000)
+        repo.recordAnswer("c1", correct = true, todayEpochDay = 20001)
+        repo.recordAnswer("c2", correct = false, todayEpochDay = 20000)
+        val s = repo.profileSummary(listOf("c1", "c2", "c3"), lessonsCompleted = 1, lessonsTotal = 4)
+        assertEquals(3, s.totalAnswers)      // c1: 2 correct, c2: 1 wrong
+        assertEquals(67, s.accuracyPercent)  // 2/3 = 66.67 -> 67
+        assertEquals(2, s.cardsSeen)         // c1, c2 (c3 never answered)
+        assertEquals(3, s.cardsTotal)
+        assertEquals(1, s.cardsMastered)     // c1 (correct > 0)
+        assertEquals(1, s.lessonsCompleted)
+        assertEquals(4, s.lessonsTotal)
+    }
 }

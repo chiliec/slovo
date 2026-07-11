@@ -3,6 +3,8 @@ package cx.viz.slovo.data
 import cx.viz.slovo.db.SlovoDatabase
 import cx.viz.slovo.domain.CardProgress
 import cx.viz.slovo.domain.MasteryCalculator
+import cx.viz.slovo.domain.ProfileStatsCalculator
+import cx.viz.slovo.domain.ProfileSummary
 import cx.viz.slovo.domain.SrsScheduler
 import cx.viz.slovo.domain.SrsSnapshot
 import cx.viz.slovo.domain.StreakCalculator
@@ -66,6 +68,10 @@ class ProgressRepository(private val db: SlovoDatabase) {
             seenCount = seen.size,
         )
     }
+
+    /** Lifetime rollup for the YOU-screen OVERVIEW section. Lesson totals come from content. */
+    fun profileSummary(allCardIds: List<String>, lessonsCompleted: Int, lessonsTotal: Int): ProfileSummary =
+        ProfileStatsCalculator.summarize(allCardIds, forCards(allCardIds), lessonsCompleted, lessonsTotal)
 
     fun completedLessonIds(): Set<String> =
         lessons.selectAll().executeAsList().filter { it.completed == 1L }.map { it.lesson_id }.toSet()
