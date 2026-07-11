@@ -33,7 +33,26 @@ class YouScreenTest {
         rule.onNodeWithText("TOTAL XP").assertIsDisplayed()
         rule.onNodeWithText("Basics").assertIsDisplayed()
         rule.onNodeWithText("0%").assertIsDisplayed()
+        rule.onNodeWithText("OVERVIEW").assertIsDisplayed()
+        rule.onNodeWithText("—").assertIsDisplayed()      // accuracy, no answers yet
+        rule.onNodeWithText("0/4").assertIsDisplayed()    // cards seen of 4
+        rule.onNodeWithText("0/2").assertIsDisplayed()    // lessons done of 2
         rule.onNodeWithText("Study a lesson to start building your review deck.").assertIsDisplayed()
+    }
+
+    @Test
+    fun overviewReflectsSeededProgress() {
+        val module = testModule {
+            recordAnswer("c1", correct = true, todayEpochDay = currentEpochDay())
+            recordAnswer("c2", correct = false, todayEpochDay = currentEpochDay())
+        }
+        rule.setContent { SlovoTheme { YouScreen(module) } }
+        waitForText("YOU")
+
+        rule.onNodeWithText("OVERVIEW").assertIsDisplayed()
+        rule.onNodeWithText("50%").assertIsDisplayed()    // 1 correct / 2 answers
+        rule.onNodeWithText("2/4").assertIsDisplayed()    // c1, c2 seen of 4
+        rule.onNodeWithText("0/2").assertIsDisplayed()    // no lessons completed
     }
 
     @Test

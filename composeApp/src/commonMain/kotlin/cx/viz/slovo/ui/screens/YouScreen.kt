@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cx.viz.slovo.domain.ProfileSummary
 import cx.viz.slovo.domain.SrsSnapshot
 import cx.viz.slovo.domain.UnitMeta
 import cx.viz.slovo.domain.UserStats
@@ -33,16 +34,17 @@ private class ProfileViewModel(private val module: AppModule) {
     var stats by mutableStateOf(UserStats()); private set
     var unitPercents by mutableStateOf<List<Pair<UnitMeta, Int>>>(emptyList()); private set
     var srs by mutableStateOf<SrsSnapshot?>(null); private set
+    var summary by mutableStateOf<ProfileSummary?>(null); private set
     init { scope.launch {
         stats = module.progress.stats()
-        unitPercents = module.content.units().map { meta ->
-            val cardIds = module.content.unit(meta.id).cards.map { it.id }
-            meta to module.progress.percent(cardIds)
-        }
-        val allIds = module.content.units()
-            .flatMap { module.content.unit(it.id).cards }
-            .map { it.id }.distinct()
+        val metas = module.content.units()
+        val learnUnits = metas.map { module.content.unit(it.id) }
+        unitPercents = learnUnits.map { it.meta to module.progress.percent(it.cards.map { c -> c.id }) }
+        val allIds = learnUnits.flatMap { it.cards }.map { it.id }.distinct()
+        val lessonIds = learnUnits.flatMap { it.lessons }.map { it.id }.toSet()
+        val lessonsCompleted = (module.progress.completedLessonIds() intersect lessonIds).size
         srs = module.progress.srsSnapshot(allIds, currentEpochDay())
+        summary = module.progress.profileSummary(allIds, lessonsCompleted, lessonIds.size)
     } }
 
     fun dispose() = scope.cancel()
@@ -57,6 +59,18 @@ private class ProfileViewModel(private val module: AppModule) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             MishaStatChip("${vm.stats.xp}", "TOTAL XP", Slovo.Red, Slovo.Card, Modifier.weight(1f))
             MishaStatChip("${vm.stats.streakDays}", "DAY STREAK", Slovo.Card, Slovo.Ink, Modifier.weight(1f))
+        }
+        vm.summary?.let { s ->
+            Text("OVERVIEW", style = MaterialTheme.typography.labelSmall, color = Slovo.Ink)
+            MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp) {
+                Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    StatRow("Accuracy", s.accuracyPercent?.let { "$it%" } ?: "—")
+                    StatRow("Cards seen", "${s.cardsSeen}/${s.cardsTotal}")
+                    StatRow("Cards mastered", "${s.cardsMastered}")
+                    StatRow("Lessons done", "${s.lessonsCompleted}/${s.lessonsTotal}")
+                    StatRow("Answers", "${s.totalAnswers}")
+                }
+            }
         }
         Text("MASTERY", style = MaterialTheme.typography.labelSmall, color = Slovo.Ink)
         vm.unitPercents.forEach { (meta, pct) ->
@@ -109,5 +123,12 @@ private class ProfileViewModel(private val module: AppModule) {
                 dayOffset = DebugClock.dayOffset
             }
         }
+    }
+}
+
+@Composable private fun StatRow(label: String, value: String) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(label, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+        Text(value, color = Slovo.Red, style = MaterialTheme.typography.titleMedium)
     }
 }
