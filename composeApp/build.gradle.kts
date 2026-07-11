@@ -78,7 +78,13 @@ android {
         versionName = "1.0"
     }
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
-    testOptions { unitTests.isIncludeAndroidResources = true }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        // Robolectric's classloader disrupts DriverManager's lazy ServiceLoader
+        // discovery of the SQLite JDBC driver; loading it via the jdbc.drivers
+        // system property registers it deterministically at DriverManager init.
+        unitTests.all { it.systemProperty("jdbc.drivers", "org.sqlite.JDBC") }
+    }
     buildFeatures { buildConfig = true }
     buildTypes { getByName("release") { isMinifyEnabled = false } }
     compileOptions {
