@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <rect width="1024" height="500" fill="#F3EEE2"/>
+  <rect x="14" y="14" width="996" height="472" fill="none" stroke="#141414" stroke-width="14"/>
+  <g transform="translate(95 102.75) scale(3.1)">
+  <circle cx="26" cy="24" r="11" fill="#C98A4B" stroke="#141414" stroke-width="4"/>
+  <circle cx="74" cy="24" r="11" fill="#C98A4B" stroke="#141414" stroke-width="4"/>
+  <rect x="18" y="18" width="64" height="64" rx="18" ry="18" fill="#C98A4B" stroke="#141414" stroke-width="4"/>
+  <rect x="36" y="52" width="28" height="20" rx="10" ry="10" fill="#E8C79B" stroke="#141414" stroke-width="3.5"/>
+  <rect x="33" y="38" width="8" height="8" fill="#141414"/>
+  <rect x="59" y="38" width="8" height="8" fill="#141414"/>
+  <rect x="45" y="54" width="10" height="8" rx="2" ry="2" fill="#141414"/>
+</g>
+  <text x="468" y="250" font-family="Arial Black, Helvetica, Arial, sans-serif" font-weight="900" font-size="120" fill="#141414">SLOVO</text>
+  <text x="472" y="316" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="40" fill="#E8402A">Russian phrases</text>
+</svg>

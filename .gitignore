@@ -10,3 +10,7 @@ content-prep/node_modules/
 content-prep/.audio-cache/
 .design-handoff/
 *design-handoff*.zip
+# Release signing — never commit the keystore or its passwords
+keystore.properties
+*.jks
+*.keystore

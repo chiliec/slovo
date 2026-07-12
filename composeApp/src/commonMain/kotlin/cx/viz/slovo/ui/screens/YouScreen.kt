@@ -8,6 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import slovo.composeapp.generated.resources.Res
 import cx.viz.slovo.domain.ProfileSummary
 import cx.viz.slovo.domain.SrsSnapshot
 import cx.viz.slovo.domain.UnitMeta
@@ -53,6 +56,8 @@ private class ProfileViewModel(private val module: AppModule) {
 @Composable fun YouScreen(module: AppModule) {
     val vm = remember { ProfileViewModel(module) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
+    var showCredits by remember { mutableStateOf(false) }
+    if (showCredits) CreditsDialog(onDismiss = { showCredits = false })
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
            verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("YOU", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
@@ -116,11 +121,43 @@ private class ProfileViewModel(private val module: AppModule) {
                 }
             }
         }
+        Text("ABOUT", style = MaterialTheme.typography.labelSmall, color = Slovo.Ink,
+             modifier = Modifier.padding(top = 6.dp))
+        MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp) {
+            Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("SLOVO", color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+                Text("A gamified Russian words & phrases trainer.",
+                     color = Slovo.Ink.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyMedium)
+                Text("Audio: human recordings from Tatoeba (tatoeba.org), licensed CC-BY 4.0, " +
+                     "© their respective contributors.",
+                     color = Slovo.Ink.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyMedium)
+                MishaButton("VIEW FULL CREDITS", background = Slovo.Ink) { showCredits = true }
+            }
+        }
         if (isDebugBuild) {
             var dayOffset by remember { mutableStateOf(DebugClock.dayOffset) }
             MishaButton("+1 DAY (debug) · now +$dayOffset", background = Slovo.Blue) {
                 DebugClock.dayOffset += 1
                 dayOffset = DebugClock.dayOffset
+            }
+        }
+    }
+}
+
+@Composable private fun CreditsDialog(onDismiss: () -> Unit) {
+    var text by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(Unit) {
+        text = runCatching { Res.readBytes("files/ATTRIBUTION.md").decodeToString() }
+            .getOrDefault("Attribution data unavailable.")
+    }
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        MishaCard(Modifier.fillMaxWidth(0.92f).fillMaxHeight(0.85f), shadow = 4.dp) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("CREDITS", color = Slovo.Ink, style = MaterialTheme.typography.headlineMedium)
+                Text(text ?: "Loading…", color = Slovo.Ink,
+                     style = MaterialTheme.typography.bodyMedium,
+                     modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()))
+                MishaButton("CLOSE", background = Slovo.Red, modifier = Modifier.fillMaxWidth()) { onDismiss() }
             }
         }
     }
