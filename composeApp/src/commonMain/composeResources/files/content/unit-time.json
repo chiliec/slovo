@@ -1,0 +1,147 @@
+{
+  "lessons": [
+    {
+      "id": "time-days",
+      "title": "Today & tomorrow",
+      "kind": "VOCAB",
+      "cardIds": [
+        "time-days-0",
+        "time-days-1",
+        "time-days-2",
+        "time-days-3",
+        "time-days-4"
+      ]
+    },
+    {
+      "id": "time-clock",
+      "title": "What time?",
+      "kind": "VOCAB",
+      "cardIds": [
+        "time-clock-0",
+        "time-clock-1",
+        "time-clock-2",
+        "time-clock-3",
+        "time-clock-4"
+      ]
+    },
+    {
+      "id": "time-listen",
+      "title": "Catch the time",
+      "kind": "LISTENING",
+      "cardIds": [
+        "time-listen-0",
+        "time-listen-1",
+        "time-listen-2",
+        "time-listen-3",
+        "time-listen-4"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "time-days-0",
+      "russian": "Завтра я еду домой.",
+      "transliteration": "Zavtra ya edu domoy.",
+      "english": "Tomorrow I'm going home.",
+      "audio": "time-days-0.m4a"
+    },
+    {
+      "id": "time-days-1",
+      "russian": "Завтра воскресенье.",
+      "transliteration": "Zavtra voskresen'e.",
+      "english": "Tomorrow is Sunday.",
+      "audio": "time-days-1.m4a"
+    },
+    {
+      "id": "time-days-2",
+      "russian": "Завтра суббота?",
+      "transliteration": "Zavtra subbota?",
+      "english": "Is tomorrow Saturday?",
+      "audio": "time-days-2.m4a"
+    },
+    {
+      "id": "time-days-3",
+      "russian": "Вчера был четверг.",
+      "transliteration": "Vchera byl chetverg.",
+      "english": "Yesterday was Thursday.",
+      "audio": "time-days-3.m4a"
+    },
+    {
+      "id": "time-days-4",
+      "russian": "Уже октябрь.",
+      "transliteration": "Uzhe oktyabr'.",
+      "english": "It's already October.",
+      "audio": "time-days-4.m4a"
+    },
+    {
+      "id": "time-clock-0",
+      "russian": "Уже 11 часов.",
+      "transliteration": "Uzhe 11 chasov.",
+      "english": "It's already 11 o'clock.",
+      "audio": "time-clock-0.m4a"
+    },
+    {
+      "id": "time-clock-1",
+      "russian": "Уже семь.",
+      "transliteration": "Uzhe sem'.",
+      "english": "It's already seven.",
+      "audio": "time-clock-1.m4a"
+    },
+    {
+      "id": "time-clock-2",
+      "russian": "Ещё рано.",
+      "transliteration": "Eshchyo rano.",
+      "english": "It's still early.",
+      "audio": "time-clock-2.m4a"
+    },
+    {
+      "id": "time-clock-3",
+      "russian": "Слишком поздно.",
+      "transliteration": "Slishkom pozdno.",
+      "english": "Too late.",
+      "audio": "time-clock-3.m4a"
+    },
+    {
+      "id": "time-clock-4",
+      "russian": "Подожди минутку.",
+      "transliteration": "Podozhdi minutku.",
+      "english": "Wait a minute.",
+      "audio": "time-clock-4.m4a"
+    },
+    {
+      "id": "time-listen-0",
+      "russian": "Сейчас утро.",
+      "transliteration": "Seychas utro.",
+      "english": "It's morning now.",
+      "audio": "time-listen-0.m4a"
+    },
+    {
+      "id": "time-listen-1",
+      "russian": "Уже одиннадцать.",
+      "transliteration": "Uzhe odinnadtsat'.",
+      "english": "It's already eleven.",
+      "audio": "time-listen-1.m4a"
+    },
+    {
+      "id": "time-listen-2",
+      "russian": "Вы пришли поздно.",
+      "transliteration": "Vy prishli pozdno.",
+      "english": "You came late.",
+      "audio": "time-listen-2.m4a"
+    },
+    {
+      "id": "time-listen-3",
+      "russian": "Ты рано.",
+      "transliteration": "Ty rano.",
+      "english": "You're early.",
+      "audio": "time-listen-3.m4a"
+    },
+    {
+      "id": "time-listen-4",
+      "russian": "Почини часы.",
+      "transliteration": "Pochini chasy.",
+      "english": "Fix the clock.",
+      "audio": "time-listen-4.m4a"
+    }
+  ]
+}

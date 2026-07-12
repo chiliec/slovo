@@ -174,3 +174,34 @@ units:
           - { russian: "Кто заплатил?", english: "Who paid?", tatoebaSentenceId: 6760334, tatoebaAudioId: 745006, speaker: "yatomoya" }
           - { russian: "Ты вернул свои деньги?", english: "Did you get your money back?", tatoebaSentenceId: 6310178, tatoebaAudioId: 740912, speaker: "yatomoya" }
           - { russian: "Том считает деньги.", english: "Tom is counting money.", tatoebaSentenceId: 7941109, tatoebaAudioId: 651200, speaker: "fjay69" }
+
+  - id: unit-time
+    title: "Time & Days"
+    lessons:
+      - id: time-days
+        title: "Today & tomorrow"
+        kind: VOCAB
+        phrases:
+          - { russian: "Завтра я еду домой.", english: "Tomorrow I'm going home.", tatoebaSentenceId: 10197641, tatoebaAudioId: 1270253, speaker: "EugeneGS" }
+          - { russian: "Завтра воскресенье.", english: "Tomorrow is Sunday.", tatoebaSentenceId: 409413, tatoebaAudioId: 726722, speaker: "fjay69" }
+          - { russian: "Завтра суббота?", english: "Is tomorrow Saturday?", tatoebaSentenceId: 4102540, tatoebaAudioId: 1264560, speaker: "EugeneGS" }
+          - { russian: "Вчера был четверг.", english: "Yesterday was Thursday.", tatoebaSentenceId: 376033, tatoebaAudioId: 29687, speaker: "Inego" }
+          - { russian: "Уже октябрь.", english: "It's already October.", tatoebaSentenceId: 7412128, tatoebaAudioId: 1236512, speaker: "Alex_M" }
+      - id: time-clock
+        title: "What time?"
+        kind: VOCAB
+        phrases:
+          - { russian: "Уже 11 часов.", english: "It's already 11 o'clock.", tatoebaSentenceId: 4107352, tatoebaAudioId: 726782, speaker: "fjay69" }
+          - { russian: "Уже семь.", english: "It's already seven.", tatoebaSentenceId: 2138730, tatoebaAudioId: 103726, speaker: "Inego" }
+          - { russian: "Ещё рано.", english: "It's still early.", tatoebaSentenceId: 2656316, tatoebaAudioId: 161621, speaker: "Inego" }
+          - { russian: "Слишком поздно.", english: "Too late.", tatoebaSentenceId: 938733, tatoebaAudioId: 744919, speaker: "yatomoya" }
+          - { russian: "Подожди минутку.", english: "Wait a minute.", tatoebaSentenceId: 2496029, tatoebaAudioId: 928107, speaker: "Inego" }
+      - id: time-listen
+        title: "Catch the time"
+        kind: LISTENING
+        phrases:
+          - { russian: "Сейчас утро.", english: "It's morning now.", tatoebaSentenceId: 2484233, tatoebaAudioId: 928081, speaker: "Inego" }
+          - { russian: "Уже одиннадцать.", english: "It's already eleven.", tatoebaSentenceId: 4521376, tatoebaAudioId: 679306, speaker: "fjay69" }
+          - { russian: "Вы пришли поздно.", english: "You came late.", tatoebaSentenceId: 13249339, tatoebaAudioId: 1264505, speaker: "EugeneGS" }
+          - { russian: "Ты рано.", english: "You're early.", tatoebaSentenceId: 2010844, tatoebaAudioId: 92681, speaker: "Inego" }
+          - { russian: "Почини часы.", english: "Fix the clock.", tatoebaSentenceId: 380964, tatoebaAudioId: 31035, speaker: "Inego" }

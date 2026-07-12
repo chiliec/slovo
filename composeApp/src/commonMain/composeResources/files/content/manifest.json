@@ -29,6 +29,11 @@
       "id": "unit-shopping",
       "title": "Shopping & Money",
       "lessonCount": 3
+    },
+    {
+      "id": "unit-time",
+      "title": "Time & Days",
+      "lessonCount": 3
     }
   ]
 }
