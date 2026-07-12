@@ -12,10 +12,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.ui.theme.Slovo
+
+/**
+ * The MISHA hard-offset shadow: a solid ink rectangle sized to *exactly* match the
+ * surface and placed [dx]/[dy] behind it. Uses a custom layout (rather than a Box +
+ * matchParentSize) so the shadow tracks the surface's measured size, not the parent.
+ * That keeps a full-width card/button (surface stretched by a fillMaxWidth/weight
+ * modifier) from showing the ink shadow poking out beside a content-width surface.
+ */
+@Composable
+private fun HardShadow(modifier: Modifier, dx: Dp, dy: Dp, surface: @Composable () -> Unit) {
+    Layout(
+        modifier = modifier,
+        contents = listOf({ Box(Modifier.background(Slovo.Ink)) }, surface),
+    ) { measurables, constraints ->
+        val s = measurables[1].first().measure(constraints)
+        val sh = measurables[0].first().measure(Constraints.fixed(s.width, s.height))
+        val ox = dx.roundToPx(); val oy = dy.roundToPx()
+        layout(s.width, s.height) {
+            sh.place(ox, oy)
+            s.place(0, 0)
+        }
+    }
+}
 
 @Composable
 fun MishaCard(
@@ -24,15 +49,8 @@ fun MishaCard(
     background: Color = Slovo.Card,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    Box(modifier) {
-        // hard ink shadow: a solid offset rectangle behind the surface
-        Box(
-            Modifier.matchParentSize().offset(shadow, shadow).background(Slovo.Ink)
-        )
-        Box(
-            Modifier.background(background).border(3.dp, Slovo.Ink).padding(1.dp),
-            content = content,
-        )
+    HardShadow(modifier, shadow, shadow) {
+        Box(Modifier.background(background).border(3.dp, Slovo.Ink).padding(1.dp), content = content)
     }
 }
 
@@ -45,8 +63,7 @@ fun MishaButton(
 ) {
     var pressed by remember { mutableStateOf(false) }
     val offset by animateDpAsState(if (pressed) 2.dp else 0.dp)
-    Box(modifier) {
-        Box(Modifier.matchParentSize().offset(4.dp, 4.dp).background(Slovo.Ink))
+    HardShadow(modifier, 4.dp, 4.dp) {
         Box(
             Modifier
                 .offset(offset, offset)

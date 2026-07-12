@@ -133,7 +133,7 @@ private class DrillViewModel(private val module: AppModule) {
             Text("DRILL · ${vm.index + 1}/${vm.questions.size}  ·  ${vm.dueTotal} DUE",
                  color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
-                Column(Modifier.padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
                     if (q.mode == QuestionMode.LISTEN) MishaButton("🔊 PLAY", background = Slovo.Blue) { vm.play(q.card.audio!!) }
                     else if (q.mode == QuestionMode.READ) Text(q.card.russian, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
@@ -142,7 +142,7 @@ private class DrillViewModel(private val module: AppModule) {
             q.options.forEachIndexed { i, opt ->
                 val bg = when { chosen == null -> Slovo.Card; i == q.correctIndex -> Slovo.Blue; i == chosen -> Slovo.Red; else -> Slovo.Card }
                 MishaCard(Modifier.fillMaxWidth().let { if (chosen == null) it.clickable { chosen = i } else it }, shadow = 3.dp, background = bg) {
-                    Text(opt, Modifier.padding(14.dp),
+                    Text(opt, Modifier.fillMaxWidth().padding(14.dp),
                          color = if (chosen != null && (i == q.correctIndex || i == chosen)) Slovo.Card else Slovo.Ink,
                          style = MaterialTheme.typography.titleMedium)
                 }

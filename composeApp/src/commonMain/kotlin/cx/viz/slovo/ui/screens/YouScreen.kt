@@ -80,7 +80,7 @@ private class ProfileViewModel(private val module: AppModule) {
         Text("MASTERY", style = MaterialTheme.typography.labelSmall, color = Slovo.Ink)
         vm.unitPercents.forEach { (meta, pct) ->
             MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp) {
-                Row(Modifier.padding(14.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(meta.title, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
                     Text("$pct%", color = Slovo.Red, style = MaterialTheme.typography.titleMedium)
                 }
@@ -124,7 +124,7 @@ private class ProfileViewModel(private val module: AppModule) {
         Text("ABOUT", style = MaterialTheme.typography.labelSmall, color = Slovo.Ink,
              modifier = Modifier.padding(top = 6.dp))
         MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp) {
-            Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("SLOVO", color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
                 Text("A gamified Russian words & phrases trainer.",
                      color = Slovo.Ink.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyMedium)

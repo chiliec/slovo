@@ -33,7 +33,7 @@ fun TypedQuestionContent(
             Text(header, color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
                 Column(
-                    Modifier.padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally,
+                    Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(question.promptText, color = Slovo.Ink,
@@ -65,7 +65,7 @@ fun TypedQuestionContent(
                     AnswerChecker.Verdict.WRONG -> "Answer: ${r.canonical}"
                 }
                 MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp, background = bg) {
-                    Text(msg, Modifier.padding(14.dp),
+                    Text(msg, Modifier.fillMaxWidth().padding(14.dp),
                          color = if (r.verdict == AnswerChecker.Verdict.ALMOST) Slovo.Ink else Slovo.Card,
                          style = MaterialTheme.typography.titleMedium)
                 }

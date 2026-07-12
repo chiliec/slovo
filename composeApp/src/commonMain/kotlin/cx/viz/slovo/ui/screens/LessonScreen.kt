@@ -103,7 +103,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
         ) {
             Text("${page + 1} / ${vm.cards.size}", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
-                Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally,
+                Column(Modifier.fillMaxWidth().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally,
                        verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(card.russian, style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink, textAlign = TextAlign.Center)
                     if (showTranslit) Text(card.transliteration, color = Slovo.Red, style = MaterialTheme.typography.titleMedium)
@@ -143,7 +143,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
         ) {
             Text("${vm.index + 1} / ${vm.questions.size}", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
-                Column(Modifier.padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
                     if (q.mode == QuestionMode.LISTEN) MishaButton("🔊 PLAY", background = Slovo.Blue) { vm.playAudio(q.card.audio!!) }
                     else if (q.mode == QuestionMode.READ) Text(q.card.russian, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
@@ -159,7 +159,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
                 MishaCard(Modifier.fillMaxWidth().let {
                     if (chosen == null) it.clickable { chosen = i } else it
                 }, shadow = 3.dp, background = bg) {
-                    Text(opt, Modifier.padding(14.dp),
+                    Text(opt, Modifier.fillMaxWidth().padding(14.dp),
                          color = if (chosen != null && (i == q.correctIndex || i == chosen)) Slovo.Card else Slovo.Ink,
                          style = MaterialTheme.typography.titleMedium)
                 }
