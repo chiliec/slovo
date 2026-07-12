@@ -14,3 +14,7 @@ content-prep/.audio-cache/
 keystore.properties
 *.jks
 *.keystore
+
+# Built distributable APKs
+dist/
+*.apk
