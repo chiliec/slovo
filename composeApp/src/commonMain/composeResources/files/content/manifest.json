@@ -19,6 +19,11 @@
       "id": "unit-numbers",
       "title": "Numbers 1–10",
       "lessonCount": 3
+    },
+    {
+      "id": "unit-around",
+      "title": "Getting Around",
+      "lessonCount": 3
     }
   ]
 }

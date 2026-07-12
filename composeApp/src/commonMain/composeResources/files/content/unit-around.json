@@ -1,0 +1,147 @@
+{
+  "lessons": [
+    {
+      "id": "around-where",
+      "title": "Where is it?",
+      "kind": "VOCAB",
+      "cardIds": [
+        "around-where-0",
+        "around-where-1",
+        "around-where-2",
+        "around-where-3",
+        "around-where-4"
+      ]
+    },
+    {
+      "id": "around-transport",
+      "title": "Taxi, metro, train",
+      "kind": "VOCAB",
+      "cardIds": [
+        "around-transport-0",
+        "around-transport-1",
+        "around-transport-2",
+        "around-transport-3",
+        "around-transport-4"
+      ]
+    },
+    {
+      "id": "around-listen",
+      "title": "Here & there",
+      "kind": "LISTENING",
+      "cardIds": [
+        "around-listen-0",
+        "around-listen-1",
+        "around-listen-2",
+        "around-listen-3",
+        "around-listen-4"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "around-where-0",
+      "russian": "Где вход?",
+      "transliteration": "Gde vkhod?",
+      "english": "Where is the entrance?",
+      "audio": "around-where-0.m4a"
+    },
+    {
+      "id": "around-where-1",
+      "russian": "Где лифт?",
+      "transliteration": "Gde lift?",
+      "english": "Where is the elevator?",
+      "audio": "around-where-1.m4a"
+    },
+    {
+      "id": "around-where-2",
+      "russian": "Где дверь?",
+      "transliteration": "Gde dver'?",
+      "english": "Where is the door?",
+      "audio": "around-where-2.m4a"
+    },
+    {
+      "id": "around-where-3",
+      "russian": "Где музей?",
+      "transliteration": "Gde muzey?",
+      "english": "Where is the museum?",
+      "audio": "around-where-3.m4a"
+    },
+    {
+      "id": "around-where-4",
+      "russian": "Это вокзал?",
+      "transliteration": "Eto vokzal?",
+      "english": "Is this the train station?",
+      "audio": "around-where-4.m4a"
+    },
+    {
+      "id": "around-transport-0",
+      "russian": "Возьмём такси?",
+      "transliteration": "Voz'myom taksi?",
+      "english": "Shall we take a taxi?",
+      "audio": "around-transport-0.m4a"
+    },
+    {
+      "id": "around-transport-1",
+      "russian": "Где остановка?",
+      "transliteration": "Gde ostanovka?",
+      "english": "Where is the stop?",
+      "audio": "around-transport-1.m4a"
+    },
+    {
+      "id": "around-transport-2",
+      "russian": "Почём билет?",
+      "transliteration": "Pochyom bilet?",
+      "english": "How much is the ticket?",
+      "audio": "around-transport-2.m4a"
+    },
+    {
+      "id": "around-transport-3",
+      "russian": "Я жду автобуса.",
+      "transliteration": "Ya zhdu avtobusa.",
+      "english": "I'm waiting for the bus.",
+      "audio": "around-transport-3.m4a"
+    },
+    {
+      "id": "around-transport-4",
+      "russian": "Это не наш поезд.",
+      "transliteration": "Eto ne nash poezd.",
+      "english": "This isn't our train.",
+      "audio": "around-transport-4.m4a"
+    },
+    {
+      "id": "around-listen-0",
+      "russian": "Иди сюда.",
+      "transliteration": "Idi syuda.",
+      "english": "Come here.",
+      "audio": "around-listen-0.m4a"
+    },
+    {
+      "id": "around-listen-1",
+      "russian": "Иди туда.",
+      "transliteration": "Idi tuda.",
+      "english": "Go there.",
+      "audio": "around-listen-1.m4a"
+    },
+    {
+      "id": "around-listen-2",
+      "russian": "Это здесь?",
+      "transliteration": "Eto zdes'?",
+      "english": "Is it here?",
+      "audio": "around-listen-2.m4a"
+    },
+    {
+      "id": "around-listen-3",
+      "russian": "Станция близко.",
+      "transliteration": "Stantsiya blizko.",
+      "english": "The station is near.",
+      "audio": "around-listen-3.m4a"
+    },
+    {
+      "id": "around-listen-4",
+      "russian": "Это далеко от тебя?",
+      "transliteration": "Eto daleko ot tebya?",
+      "english": "Is it far from you?",
+      "audio": "around-listen-4.m4a"
+    }
+  ]
+}

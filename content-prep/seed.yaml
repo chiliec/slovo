@@ -112,3 +112,34 @@ units:
           - { russian: "Шесть плюс два — восемь.", english: "Six plus two is eight.", tatoebaSentenceId: 11270462, tatoebaAudioId: 1264804, speaker: "EugeneGS" }
           - { russian: "Пять и пять — это сколько?", english: "What is five and five?", tatoebaSentenceId: 13190708, tatoebaAudioId: 1264978, speaker: "EugeneGS" }
           - { russian: "Два в квадрате — четыре.", english: "Two squared is four.", tatoebaSentenceId: 11206977, tatoebaAudioId: 1264767, speaker: "EugeneGS" }
+
+  - id: unit-around
+    title: "Getting Around"
+    lessons:
+      - id: around-where
+        title: "Where is it?"
+        kind: VOCAB
+        phrases:
+          - { russian: "Где вход?", english: "Where is the entrance?", tatoebaSentenceId: 1460858, tatoebaAudioId: 72673, speaker: "Inego" }
+          - { russian: "Где лифт?", english: "Where is the elevator?", tatoebaSentenceId: 1036458, tatoebaAudioId: 57511, speaker: "Inego" }
+          - { russian: "Где дверь?", english: "Where is the door?", tatoebaSentenceId: 3253800, tatoebaAudioId: 195419, speaker: "Inego" }
+          - { russian: "Где музей?", english: "Where is the museum?", tatoebaSentenceId: 3614009, tatoebaAudioId: 1264521, speaker: "EugeneGS" }
+          - { russian: "Это вокзал?", english: "Is this the train station?", tatoebaSentenceId: 2551977, tatoebaAudioId: 928174, speaker: "Inego" }
+      - id: around-transport
+        title: "Taxi, metro, train"
+        kind: VOCAB
+        phrases:
+          - { russian: "Возьмём такси?", english: "Shall we take a taxi?", tatoebaSentenceId: 2242516, tatoebaAudioId: 724819, speaker: "fjay69" }
+          - { russian: "Где остановка?", english: "Where is the stop?", tatoebaSentenceId: 3718481, tatoebaAudioId: 1264556, speaker: "EugeneGS" }
+          - { russian: "Почём билет?", english: "How much is the ticket?", tatoebaSentenceId: 3697907, tatoebaAudioId: 1264545, speaker: "EugeneGS" }
+          - { russian: "Я жду автобуса.", english: "I'm waiting for the bus.", tatoebaSentenceId: 11378105, tatoebaAudioId: 1264829, speaker: "EugeneGS" }
+          - { russian: "Это не наш поезд.", english: "This isn't our train.", tatoebaSentenceId: 7768263, tatoebaAudioId: 1236513, speaker: "Alex_M" }
+      - id: around-listen
+        title: "Here & there"
+        kind: LISTENING
+        phrases:
+          - { russian: "Иди сюда.", english: "Come here.", tatoebaSentenceId: 2410870, tatoebaAudioId: 137620, speaker: "Inego" }
+          - { russian: "Иди туда.", english: "Go there.", tatoebaSentenceId: 3374347, tatoebaAudioId: 204037, speaker: "Inego" }
+          - { russian: "Это здесь?", english: "Is it here?", tatoebaSentenceId: 2079265, tatoebaAudioId: 101062, speaker: "Inego" }
+          - { russian: "Станция близко.", english: "The station is near.", tatoebaSentenceId: 4357143, tatoebaAudioId: 1264577, speaker: "EugeneGS" }
+          - { russian: "Это далеко от тебя?", english: "Is it far from you?", tatoebaSentenceId: 10813169, tatoebaAudioId: 1274755, speaker: "EugeneGS" }
