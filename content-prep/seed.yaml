@@ -205,3 +205,34 @@ units:
           - { russian: "Вы пришли поздно.", english: "You came late.", tatoebaSentenceId: 13249339, tatoebaAudioId: 1264505, speaker: "EugeneGS" }
           - { russian: "Ты рано.", english: "You're early.", tatoebaSentenceId: 2010844, tatoebaAudioId: 92681, speaker: "Inego" }
           - { russian: "Почини часы.", english: "Fix the clock.", tatoebaSentenceId: 380964, tatoebaAudioId: 31035, speaker: "Inego" }
+
+  - id: unit-smalltalk
+    title: "Small Talk & Feelings"
+    lessons:
+      - id: talk-mood
+        title: "How are you?"
+        kind: VOCAB
+        phrases:
+          - { russian: "Как ты?", english: "How are you?", tatoebaSentenceId: 2900081, tatoebaAudioId: 171798, speaker: "Inego" }
+          - { russian: "Я рад.", english: "I'm glad.", tatoebaSentenceId: 2501393, tatoebaAudioId: 140170, speaker: "Inego" }
+          - { russian: "Я устал!", english: "I'm tired!", tatoebaSentenceId: 2651902, tatoebaAudioId: 161568, speaker: "Inego" }
+          - { russian: "Мне скучно.", english: "I'm bored.", tatoebaSentenceId: 378056, tatoebaAudioId: 30245, speaker: "Inego" }
+          - { russian: "Ты ещё счастлив?", english: "Are you still happy?", tatoebaSentenceId: 3255958, tatoebaAudioId: 926487, speaker: "Inego" }
+      - id: talk-likes
+        title: "Likes & weather"
+        kind: VOCAB
+        phrases:
+          - { russian: "Мне нравится бейсбол.", english: "I like baseball.", tatoebaSentenceId: 380943, tatoebaAudioId: 31018, speaker: "Inego" }
+          - { russian: "Я люблю ходить в кино.", english: "I love going to the movies.", tatoebaSentenceId: 374368, tatoebaAudioId: 29547, speaker: "Inego" }
+          - { russian: "Какая там погода?", english: "What's the weather like there?", tatoebaSentenceId: 380005, tatoebaAudioId: 30814, speaker: "Inego" }
+          - { russian: "Довольно холодно.", english: "It's quite cold.", tatoebaSentenceId: 3274855, tatoebaAudioId: 926617, speaker: "Inego" }
+          - { russian: "Плохая погода, да?", english: "Bad weather, isn't it?", tatoebaSentenceId: 12231670, tatoebaAudioId: 1264905, speaker: "EugeneGS" }
+      - id: talk-recall
+        title: "Say how you feel"
+        kind: RECALL
+        phrases:
+          - { russian: "Вы устали?", english: "Are you tired?", tatoebaSentenceId: 1862793, tatoebaAudioId: 82321, speaker: "Inego" }
+          - { russian: "Вам не холодно?", english: "Aren't you cold?", tatoebaSentenceId: 2503997, tatoebaAudioId: 679217, speaker: "fjay69" }
+          - { russian: "Идёт ли дождь?", english: "Is it raining?", tatoebaSentenceId: 1298844, tatoebaAudioId: 727722, speaker: "fjay69" }
+          - { russian: "Ему нравится шоколад.", english: "He likes chocolate.", tatoebaSentenceId: 13298544, tatoebaAudioId: 1271882, speaker: "EugeneGS" }
+          - { russian: "Там жарко?", english: "Is it hot there?", tatoebaSentenceId: 2055884, tatoebaAudioId: 99969, speaker: "Inego" }

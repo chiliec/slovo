@@ -34,6 +34,11 @@
       "id": "unit-time",
       "title": "Time & Days",
       "lessonCount": 3
+    },
+    {
+      "id": "unit-smalltalk",
+      "title": "Small Talk & Feelings",
+      "lessonCount": 3
     }
   ]
 }

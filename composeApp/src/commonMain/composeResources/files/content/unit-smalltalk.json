@@ -1,0 +1,147 @@
+{
+  "lessons": [
+    {
+      "id": "talk-mood",
+      "title": "How are you?",
+      "kind": "VOCAB",
+      "cardIds": [
+        "talk-mood-0",
+        "talk-mood-1",
+        "talk-mood-2",
+        "talk-mood-3",
+        "talk-mood-4"
+      ]
+    },
+    {
+      "id": "talk-likes",
+      "title": "Likes & weather",
+      "kind": "VOCAB",
+      "cardIds": [
+        "talk-likes-0",
+        "talk-likes-1",
+        "talk-likes-2",
+        "talk-likes-3",
+        "talk-likes-4"
+      ]
+    },
+    {
+      "id": "talk-recall",
+      "title": "Say how you feel",
+      "kind": "RECALL",
+      "cardIds": [
+        "talk-recall-0",
+        "talk-recall-1",
+        "talk-recall-2",
+        "talk-recall-3",
+        "talk-recall-4"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "talk-mood-0",
+      "russian": "Как ты?",
+      "transliteration": "Kak ty?",
+      "english": "How are you?",
+      "audio": "talk-mood-0.m4a"
+    },
+    {
+      "id": "talk-mood-1",
+      "russian": "Я рад.",
+      "transliteration": "Ya rad.",
+      "english": "I'm glad.",
+      "audio": "talk-mood-1.m4a"
+    },
+    {
+      "id": "talk-mood-2",
+      "russian": "Я устал!",
+      "transliteration": "Ya ustal!",
+      "english": "I'm tired!",
+      "audio": "talk-mood-2.m4a"
+    },
+    {
+      "id": "talk-mood-3",
+      "russian": "Мне скучно.",
+      "transliteration": "Mne skuchno.",
+      "english": "I'm bored.",
+      "audio": "talk-mood-3.m4a"
+    },
+    {
+      "id": "talk-mood-4",
+      "russian": "Ты ещё счастлив?",
+      "transliteration": "Ty eshchyo schastliv?",
+      "english": "Are you still happy?",
+      "audio": "talk-mood-4.m4a"
+    },
+    {
+      "id": "talk-likes-0",
+      "russian": "Мне нравится бейсбол.",
+      "transliteration": "Mne nravitsya beysbol.",
+      "english": "I like baseball.",
+      "audio": "talk-likes-0.m4a"
+    },
+    {
+      "id": "talk-likes-1",
+      "russian": "Я люблю ходить в кино.",
+      "transliteration": "Ya lyublyu khodit' v kino.",
+      "english": "I love going to the movies.",
+      "audio": "talk-likes-1.m4a"
+    },
+    {
+      "id": "talk-likes-2",
+      "russian": "Какая там погода?",
+      "transliteration": "Kakaya tam pogoda?",
+      "english": "What's the weather like there?",
+      "audio": "talk-likes-2.m4a"
+    },
+    {
+      "id": "talk-likes-3",
+      "russian": "Довольно холодно.",
+      "transliteration": "Dovol'no kholodno.",
+      "english": "It's quite cold.",
+      "audio": "talk-likes-3.m4a"
+    },
+    {
+      "id": "talk-likes-4",
+      "russian": "Плохая погода, да?",
+      "transliteration": "Plokhaya pogoda, da?",
+      "english": "Bad weather, isn't it?",
+      "audio": "talk-likes-4.m4a"
+    },
+    {
+      "id": "talk-recall-0",
+      "russian": "Вы устали?",
+      "transliteration": "Vy ustali?",
+      "english": "Are you tired?",
+      "audio": "talk-recall-0.m4a"
+    },
+    {
+      "id": "talk-recall-1",
+      "russian": "Вам не холодно?",
+      "transliteration": "Vam ne kholodno?",
+      "english": "Aren't you cold?",
+      "audio": "talk-recall-1.m4a"
+    },
+    {
+      "id": "talk-recall-2",
+      "russian": "Идёт ли дождь?",
+      "transliteration": "Idyot li dozhd'?",
+      "english": "Is it raining?",
+      "audio": "talk-recall-2.m4a"
+    },
+    {
+      "id": "talk-recall-3",
+      "russian": "Ему нравится шоколад.",
+      "transliteration": "Emu nravitsya shokolad.",
+      "english": "He likes chocolate.",
+      "audio": "talk-recall-3.m4a"
+    },
+    {
+      "id": "talk-recall-4",
+      "russian": "Там жарко?",
+      "transliteration": "Tam zharko?",
+      "english": "Is it hot there?",
+      "audio": "talk-recall-4.m4a"
+    }
+  ]
+}
