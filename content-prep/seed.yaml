@@ -143,3 +143,34 @@ units:
           - { russian: "Это здесь?", english: "Is it here?", tatoebaSentenceId: 2079265, tatoebaAudioId: 101062, speaker: "Inego" }
           - { russian: "Станция близко.", english: "The station is near.", tatoebaSentenceId: 4357143, tatoebaAudioId: 1264577, speaker: "EugeneGS" }
           - { russian: "Это далеко от тебя?", english: "Is it far from you?", tatoebaSentenceId: 10813169, tatoebaAudioId: 1274755, speaker: "EugeneGS" }
+
+  - id: unit-shopping
+    title: "Shopping & Money"
+    lessons:
+      - id: shop-prices
+        title: "How much?"
+        kind: VOCAB
+        phrases:
+          - { russian: "Сколько?", english: "How much?", tatoebaSentenceId: 3697897, tatoebaAudioId: 1264543, speaker: "EugeneGS" }
+          - { russian: "Сколько всего?", english: "How much in total?", tatoebaSentenceId: 3697903, tatoebaAudioId: 1264544, speaker: "EugeneGS" }
+          - { russian: "Почём эта шапка?", english: "How much is this hat?", tatoebaSentenceId: 4818127, tatoebaAudioId: 681352, speaker: "fjay69" }
+          - { russian: "Это слишком дорого!", english: "It's too expensive!", tatoebaSentenceId: 5641, tatoebaAudioId: 1907, speaker: "Inego" }
+          - { russian: "Сколько ты заплатил?", english: "How much did you pay?", tatoebaSentenceId: 3177761, tatoebaAudioId: 926467, speaker: "Inego" }
+      - id: shop-pay
+        title: "Buying & paying"
+        kind: VOCAB
+        phrases:
+          - { russian: "Я покупаю.", english: "I'm buying it.", tatoebaSentenceId: 2773435, tatoebaAudioId: 166242, speaker: "Inego" }
+          - { russian: "Я её куплю.", english: "I'll buy it.", tatoebaSentenceId: 3073095, tatoebaAudioId: 180875, speaker: "Inego" }
+          - { russian: "Я уже заплатил.", english: "I already paid.", tatoebaSentenceId: 8082915, tatoebaAudioId: 670038, speaker: "fjay69" }
+          - { russian: "Дайте мне ту книгу.", english: "Give me that book.", tatoebaSentenceId: 11201044, tatoebaAudioId: 1274849, speaker: "EugeneGS" }
+          - { russian: "Не покупай его.", english: "Don't buy it.", tatoebaSentenceId: 3265823, tatoebaAudioId: 926565, speaker: "Inego" }
+      - id: shop-recall
+        title: "Say it in Russian"
+        kind: RECALL
+        phrases:
+          - { russian: "Сколько за ящик?", english: "How much for a crate?", tatoebaSentenceId: 2418921, tatoebaAudioId: 679195, speaker: "fjay69" }
+          - { russian: "Почём этот фотоаппарат?", english: "How much is this camera?", tatoebaSentenceId: 4818125, tatoebaAudioId: 681351, speaker: "fjay69" }
+          - { russian: "Кто заплатил?", english: "Who paid?", tatoebaSentenceId: 6760334, tatoebaAudioId: 745006, speaker: "yatomoya" }
+          - { russian: "Ты вернул свои деньги?", english: "Did you get your money back?", tatoebaSentenceId: 6310178, tatoebaAudioId: 740912, speaker: "yatomoya" }
+          - { russian: "Том считает деньги.", english: "Tom is counting money.", tatoebaSentenceId: 7941109, tatoebaAudioId: 651200, speaker: "fjay69" }

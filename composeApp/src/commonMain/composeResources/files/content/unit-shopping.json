@@ -1,0 +1,147 @@
+{
+  "lessons": [
+    {
+      "id": "shop-prices",
+      "title": "How much?",
+      "kind": "VOCAB",
+      "cardIds": [
+        "shop-prices-0",
+        "shop-prices-1",
+        "shop-prices-2",
+        "shop-prices-3",
+        "shop-prices-4"
+      ]
+    },
+    {
+      "id": "shop-pay",
+      "title": "Buying & paying",
+      "kind": "VOCAB",
+      "cardIds": [
+        "shop-pay-0",
+        "shop-pay-1",
+        "shop-pay-2",
+        "shop-pay-3",
+        "shop-pay-4"
+      ]
+    },
+    {
+      "id": "shop-recall",
+      "title": "Say it in Russian",
+      "kind": "RECALL",
+      "cardIds": [
+        "shop-recall-0",
+        "shop-recall-1",
+        "shop-recall-2",
+        "shop-recall-3",
+        "shop-recall-4"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "shop-prices-0",
+      "russian": "Сколько?",
+      "transliteration": "Skol'ko?",
+      "english": "How much?",
+      "audio": "shop-prices-0.m4a"
+    },
+    {
+      "id": "shop-prices-1",
+      "russian": "Сколько всего?",
+      "transliteration": "Skol'ko vsego?",
+      "english": "How much in total?",
+      "audio": "shop-prices-1.m4a"
+    },
+    {
+      "id": "shop-prices-2",
+      "russian": "Почём эта шапка?",
+      "transliteration": "Pochyom eta shapka?",
+      "english": "How much is this hat?",
+      "audio": "shop-prices-2.m4a"
+    },
+    {
+      "id": "shop-prices-3",
+      "russian": "Это слишком дорого!",
+      "transliteration": "Eto slishkom dorogo!",
+      "english": "It's too expensive!",
+      "audio": "shop-prices-3.m4a"
+    },
+    {
+      "id": "shop-prices-4",
+      "russian": "Сколько ты заплатил?",
+      "transliteration": "Skol'ko ty zaplatil?",
+      "english": "How much did you pay?",
+      "audio": "shop-prices-4.m4a"
+    },
+    {
+      "id": "shop-pay-0",
+      "russian": "Я покупаю.",
+      "transliteration": "Ya pokupayu.",
+      "english": "I'm buying it.",
+      "audio": "shop-pay-0.m4a"
+    },
+    {
+      "id": "shop-pay-1",
+      "russian": "Я её куплю.",
+      "transliteration": "Ya eyo kuplyu.",
+      "english": "I'll buy it.",
+      "audio": "shop-pay-1.m4a"
+    },
+    {
+      "id": "shop-pay-2",
+      "russian": "Я уже заплатил.",
+      "transliteration": "Ya uzhe zaplatil.",
+      "english": "I already paid.",
+      "audio": "shop-pay-2.m4a"
+    },
+    {
+      "id": "shop-pay-3",
+      "russian": "Дайте мне ту книгу.",
+      "transliteration": "Dayte mne tu knigu.",
+      "english": "Give me that book.",
+      "audio": "shop-pay-3.m4a"
+    },
+    {
+      "id": "shop-pay-4",
+      "russian": "Не покупай его.",
+      "transliteration": "Ne pokupay ego.",
+      "english": "Don't buy it.",
+      "audio": "shop-pay-4.m4a"
+    },
+    {
+      "id": "shop-recall-0",
+      "russian": "Сколько за ящик?",
+      "transliteration": "Skol'ko za yashchik?",
+      "english": "How much for a crate?",
+      "audio": "shop-recall-0.m4a"
+    },
+    {
+      "id": "shop-recall-1",
+      "russian": "Почём этот фотоаппарат?",
+      "transliteration": "Pochyom etot fotoapparat?",
+      "english": "How much is this camera?",
+      "audio": "shop-recall-1.m4a"
+    },
+    {
+      "id": "shop-recall-2",
+      "russian": "Кто заплатил?",
+      "transliteration": "Kto zaplatil?",
+      "english": "Who paid?",
+      "audio": "shop-recall-2.m4a"
+    },
+    {
+      "id": "shop-recall-3",
+      "russian": "Ты вернул свои деньги?",
+      "transliteration": "Ty vernul svoi den'gi?",
+      "english": "Did you get your money back?",
+      "audio": "shop-recall-3.m4a"
+    },
+    {
+      "id": "shop-recall-4",
+      "russian": "Том считает деньги.",
+      "transliteration": "Tom schitaet den'gi.",
+      "english": "Tom is counting money.",
+      "audio": "shop-recall-4.m4a"
+    }
+  ]
+}
