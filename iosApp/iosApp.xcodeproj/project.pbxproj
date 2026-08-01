@@ -12,6 +12,7 @@
 		A4B2C3D4E5F6A7B8C9D0E1F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2C3D4E5F6A7B8C9D0E1F2 /* AppDelegate.swift */; };
 		A4B2C3D4E5F6A7B8C9D0E1F3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2C3D4E5F6A7B8C9D0E1F4 /* SceneDelegate.swift */; };
 		A5B2C3D4E5F6A7B8C9D0E102 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5B2C3D4E5F6A7B8C9D0E101 /* Assets.xcassets */; };
+		A6B2C3D4E5F6A7B8C9D0E102 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A6B2C3D4E5F6A7B8C9D0E101 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		A4B2C3D4E5F6A7B8C9D0E1F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4B2C3D4E5F6A7B8C9D0E1F4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		A5B2C3D4E5F6A7B8C9D0E101 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A6B2C3D4E5F6A7B8C9D0E101 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5B2C3D4E5F6A7B8C9D0E102 /* Assets.xcassets in Resources */,
+				A6B2C3D4E5F6A7B8C9D0E102 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +57,7 @@
 				A4B2C3D4E5F6A7B8C9D0E1F2 /* AppDelegate.swift */,
 				A4B2C3D4E5F6A7B8C9D0E1F4 /* SceneDelegate.swift */,
 				A5B2C3D4E5F6A7B8C9D0E101 /* Assets.xcassets */,
+				A6B2C3D4E5F6A7B8C9D0E101 /* PrivacyInfo.xcprivacy */,
 				A3B2C3D4E5F6A7B8C9D0E1F3 /* Info.plist */,
 			);
 			path = iosApp;
