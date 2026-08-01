@@ -3,11 +3,19 @@
   Debug-only manifest. Registers the bare ComponentActivity that Compose's
   createComposeRule() launches, so Robolectric UI tests (testDebugUnitTest)
   can resolve it. Kept out of release builds by living in the debug source set.
+
+  androidx.compose.ui:ui-test-manifest declares the same activity with
+  android:exported="true". That AAR manifest is not merged into the unit-test
+  manifest, so this declaration is still required — but it is merged for the
+  debug APK, where the two values collide. tools:replace resolves the conflict
+  in favour of exported="false", which is correct for a test-only activity.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <application>
         <activity
             android:name="androidx.activity.ComponentActivity"
-            android:exported="false" />
+            android:exported="false"
+            tools:replace="android:exported" />
     </application>
 </manifest>

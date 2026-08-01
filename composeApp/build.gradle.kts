@@ -65,6 +65,15 @@ kotlin {
     }
 }
 
+// Robolectric's classloader disrupts DriverManager's lazy ServiceLoader discovery
+// of the SQLite JDBC driver; loading it via the jdbc.drivers system property
+// registers it deterministically at DriverManager init. Applied to the Test tasks
+// directly — the old testOptions.unitTests.all hook went through AGP's obsolete
+// variant API, which AGP 9 warns about.
+tasks.withType<Test>().configureEach {
+    systemProperty("jdbc.drivers", "org.sqlite.JDBC")
+}
+
 sqldelight {
     databases {
         register("SlovoDatabase") { packageName.set("cx.viz.slovo.db") }
@@ -115,10 +124,6 @@ android {
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
     testOptions {
         unitTests.isIncludeAndroidResources = true
-        // Robolectric's classloader disrupts DriverManager's lazy ServiceLoader
-        // discovery of the SQLite JDBC driver; loading it via the jdbc.drivers
-        // system property registers it deterministically at DriverManager init.
-        unitTests.all { it.systemProperty("jdbc.drivers", "org.sqlite.JDBC") }
     }
     buildFeatures { buildConfig = true }
     buildTypes {
