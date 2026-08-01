@@ -18,3 +18,22 @@ keystore.properties
 # Built distributable APKs
 dist/
 *.apk
+
+# iOS release tooling — resolved fresh by CI under Ruby 3.3 (a lock resolved
+# under local Ruby 2.6 pins gems/bundler that CI cannot install).
+Gemfile.lock
+vendor/
+fastlane/.env
+fastlane/report.xml
+fastlane/screenshots/
+fastlane/test_output/
+build/ios/
+
+# App Store Connect API key and signing material — never commit
+AuthKey_*.p8
+*.p12
+*.mobileprovision
+*.cer
+
+# Personal contact detail required by deliver but kept local
+**/phone_number.txt
