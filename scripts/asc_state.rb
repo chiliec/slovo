@@ -66,7 +66,10 @@ if infos.is_a?(Hash) && infos["data"]
   end
 end
 
-puts "\n== App Privacy: data usages publish state =="
-c, ps = get("/v1/apps/#{APP_ID}/appDataUsagesPublishState")
+# No relationship for data-usage publish state currently exists on the Apps
+# resource in the public ASC API (confirmed 404/"relationship does not exist"
+# under several path variants) -- verify App Privacy in the ASC web UI instead.
+puts "\n== App Privacy: data usages publish state (unreliable via API; check ASC web UI) =="
+c, ps = get("/v1/apps/#{APP_ID}/dataUsagePublishState")
 puts "HTTP #{c}"
 puts JSON.pretty_generate(ps["data"]["attributes"]) if ps.is_a?(Hash) && ps["data"]
