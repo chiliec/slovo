@@ -25,7 +25,13 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
 
-      # Android SDK (platform 35 + build-tools) is preinstalled on ubuntu-latest.
+      # compileSdk is 37, which is newer than the platform preinstalled on the
+      # ubuntu-latest runner image, so install it explicitly. Note the package is
+      # "android-37.0" — the platform carries a minor version.
+      - name: Install Android SDK platform 37
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0"
+
       # These run on the JVM via Robolectric — no emulator required.
       - name: Run unit tests
         run: ./gradlew :composeApp:testDebugUnitTest
