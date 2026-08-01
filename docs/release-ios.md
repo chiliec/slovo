@@ -164,3 +164,5 @@ after approval.
   `iosApp/iosApp.xcodeproj/xcshareddata/xcschemes/iosApp.xcscheme`.
 - The privacy-manifest required-reason list is a best guess until Apple's upload
   validator reports on it. Expect one adjust-and-re-upload cycle.
+- Build 1 of `1.0.0`, uploaded 2026-08-01, passed the privacy-manifest validator
+  clean on the first try — reached `VALID` with no compliance complaint.
