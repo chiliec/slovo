@@ -28,6 +28,9 @@
 #   DIST_CERT_P12       Apple Distribution cert+key as base64 .p12 — CI only
 #   DIST_CERT_PASSWORD  Password the .p12 was exported with (may be empty)
 #   APP_VERSION         Marketing version to operate on (default 1.0.0)
+#
+# Android/Play auth (see the android platform block at the bottom):
+#   PLAY_JSON_KEY       Play service account JSON contents (base64) — CI only
 
 require "base64"
 
@@ -242,6 +245,165 @@ platform :ios do
         add_id_info_uses_idfa: false
       },
       force: true
+    )
+  end
+end
+
+# ---------------------------------------------------------------------------
+# Android / Google Play
+# ---------------------------------------------------------------------------
+# Pipeline: gradle builds the signed AAB (upload key from the gitignored
+# keystore.properties at the repo root), supply pushes it plus the listing to
+# Google Play. Play App Signing means Google holds the real app signing key; we
+# only ever hold the upload key.
+#
+# Local usage:
+#   bundle exec fastlane android play_stage       # stage listing only, no auth needed
+#   bundle exec fastlane android play_internal    # build AAB + upload to internal track
+#   bundle exec fastlane android play_listing     # push listing text/images only
+#   bundle exec fastlane android play_promote     # internal -> production
+#
+# Prerequisites that need a human once (see docs/release-android.md):
+#   * Play Console account, app record for cx.viz.slovo, Play App Signing enrolled.
+#   * A service account JSON key with "Release manager" access, saved to the repo
+#     root as play-service-account.json (gitignored) or base64 in PLAY_JSON_KEY.
+
+PACKAGE_NAME  = "cx.viz.slovo"
+AAB_PATH      = File.expand_path("../composeApp/build/outputs/bundle/release/composeApp-release.aab", __dir__)
+# Staged supply metadata tree (gitignored, rebuilt each run). The single source of
+# truth stays in store-assets/ — same pattern as the iOS release lane.
+PLAY_STAGE    = File.expand_path("play-metadata", __dir__)
+
+# Resolves the Play service account JSON: base64 in PLAY_JSON_KEY (CI) or a
+# gitignored play-service-account.json in the repo root (local).
+def play_json_key
+  if ENV["PLAY_JSON_KEY"] && !ENV["PLAY_JSON_KEY"].empty?
+    path = File.expand_path("../build/play-service-account.json", __dir__)
+    FileUtils.mkdir_p(File.dirname(path))
+    File.binwrite(path, Base64.decode64(ENV["PLAY_JSON_KEY"]))
+    path
+  else
+    path = File.expand_path("../play-service-account.json", __dir__)
+    unless File.exist?(path)
+      UI.user_error!("No PLAY_JSON_KEY env and no play-service-account.json in the repo root. " \
+                     "See docs/release-android.md for how to create the service account key.")
+    end
+    path
+  end
+end
+
+# Copies store-assets/ into the <lang>/ layout supply expects and returns the
+# metadata_path to hand it. Rebuilt from scratch each run so deletions propagate.
+def stage_play_metadata
+  meta_src = File.expand_path("../store-assets/metadata/android", __dir__)
+  shots_src = File.expand_path("../store-assets/screenshots/android", __dir__)
+  icon_src = File.expand_path("../store-assets/icons/play-icon-512.png", __dir__)
+  feature_src = File.expand_path("../store-assets/feature-graphic/play-feature-1024x500.png", __dir__)
+
+  UI.user_error!("No Android metadata at #{meta_src}") unless Dir.exist?(meta_src)
+  shots = Dir[File.join(shots_src, "*.png")].sort
+  UI.user_error!("No screenshots in #{shots_src} — capture them first") if shots.empty?
+  [icon_src, feature_src].each do |p|
+    UI.user_error!("Missing required Play image: #{p}") unless File.exist?(p)
+  end
+
+  FileUtils.rm_rf(PLAY_STAGE)
+  FileUtils.mkdir_p(PLAY_STAGE)
+  # Copy every locale dir (title/short_description/full_description/changelogs).
+  Dir[File.join(meta_src, "*")].each { |d| FileUtils.cp_r(d, PLAY_STAGE) if File.directory?(d) }
+
+  Dir[File.join(PLAY_STAGE, "*")].select { |d| File.directory?(d) }.each do |lang_dir|
+    phone = File.join(lang_dir, "images", "phoneScreenshots")
+    FileUtils.mkdir_p(phone)
+    FileUtils.cp(shots, phone)
+    FileUtils.cp(icon_src, File.join(lang_dir, "images", "icon.png"))
+    FileUtils.cp(feature_src, File.join(lang_dir, "images", "featureGraphic.png"))
+  end
+
+  PLAY_STAGE
+end
+
+# Builds the signed release AAB. Signing comes from the gitignored
+# keystore.properties at the repo root; without it the build succeeds but is
+# UNSIGNED and Play will reject it, so check the output explicitly.
+def build_aab
+  gradle(
+    task: ":composeApp:bundle",
+    build_type: "Release",
+    project_dir: File.expand_path("..", __dir__)
+  )
+  UI.user_error!("Expected an AAB at #{AAB_PATH}") unless File.exist?(AAB_PATH)
+  unless File.exist?(File.expand_path("../keystore.properties", __dir__))
+    UI.user_error!("No keystore.properties at the repo root — the AAB is unsigned and Play " \
+                   "will reject it. See docs/release-android.md.")
+  end
+  AAB_PATH
+end
+
+platform :android do
+  desc "Stage the Play listing from store-assets/ without uploading (no credentials needed)"
+  # Verification lane: proves the store-assets -> supply layout mapping works
+  # before any Play account exists. Prints the tree it produced.
+  lane :play_stage do
+    path = stage_play_metadata
+    UI.success("Staged Play metadata at #{path}")
+    Dir.glob(File.join(path, "**", "*")).sort.each do |f|
+      UI.message("  #{f.sub("#{path}/", "")}#{File.directory?(f) ? "/" : ""}")
+    end
+  end
+
+  desc "Build the signed release AAB"
+  lane :bundle do
+    build_aab
+    UI.success("AAB: #{AAB_PATH}")
+  end
+
+  desc "Build and upload a new build to the Play internal testing track"
+  lane :play_internal do
+    build_aab
+
+    upload_to_play_store(
+      package_name: PACKAGE_NAME,
+      json_key: play_json_key,
+      aab: AAB_PATH,
+      track: "internal",
+      metadata_path: stage_play_metadata,
+      release_status: "draft",         # a human reviews in the console before rollout
+      skip_upload_apk: true,
+      validate_only: ENV["PLAY_VALIDATE_ONLY"] == "1"
+    )
+  end
+
+  desc "Push the Play listing (text, screenshots, graphics) without a binary"
+  lane :play_listing do
+    upload_to_play_store(
+      package_name: PACKAGE_NAME,
+      json_key: play_json_key,
+      metadata_path: stage_play_metadata,
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_changelogs: true,    # changelogs belong to a release, not the listing
+      validate_only: ENV["PLAY_VALIDATE_ONLY"] == "1"
+    )
+  end
+
+  desc "Promote the internal-track build to production (staged rollout)"
+  # PLAY_ROLLOUT is the fraction of users, e.g. 0.1 for 10%. Defaults to a full
+  # rollout; set release_status to draft first time so it can be reviewed.
+  lane :play_promote do
+    upload_to_play_store(
+      package_name: PACKAGE_NAME,
+      json_key: play_json_key,
+      track: "internal",
+      track_promote_to: "production",
+      rollout: ENV.fetch("PLAY_ROLLOUT", "1.0"),
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true,
+      validate_only: ENV["PLAY_VALIDATE_ONLY"] == "1"
     )
   end
 end

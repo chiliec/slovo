@@ -5,8 +5,14 @@ copy (shared with iOS) lives in [`../store-assets/`](../store-assets/) (see its
 `README.md` and `metadata/`).
 
 > Status: release **infra is wired and dry-run-validated** — signed APK + AAB build
-> and verify locally (`CN=SLOVO`); store assets generated. Not yet published: the
-> remaining steps need a Google Play Console account, which does not exist yet.
+> and verify locally (`CN=SLOVO`), store assets generated, and a `platform :android`
+> fastlane pipeline (`play_stage` / `bundle` / `play_internal` / `play_listing` /
+> `play_promote`) is in place. Not yet published: the remaining steps need a Google
+> Play Console account, which does not exist yet.
+>
+> The two lanes that need no credentials — `bundle` and `play_stage` — were both run
+> green on 2026-08-01. The upload lanes are **unexercised**: nothing can authenticate
+> against Play until the account exists, so treat their first real run as untested.
 
 ---
 
@@ -64,9 +70,17 @@ Set in `composeApp/build.gradle.kts` `defaultConfig`:
 
 - `versionCode` — integer, **must strictly increase** with every uploaded build.
   Currently `1`. Bump by 1 each upload (even for re-uploads to the same track).
-- `versionName` — human string shown to users. Currently `"1.0"`.
+  This is **not** auto-incremented — unlike the iOS build number, which the `beta`
+  lane derives from TestFlight, nothing queries Play for the last code. Edit it by
+  hand before each upload or Play will reject the AAB as a duplicate.
+- `versionName` — human string shown to users. Currently `"1.0.0"`.
 
-Keep `versionName` in sync with the iOS `MARKETING_VERSION` when releasing both.
+Keep `versionName` in sync with the iOS `MARKETING_VERSION` when releasing both;
+both are `1.0.0` today.
+
+Release notes live in `store-assets/metadata/android/en-US/changelogs/<versionCode>.txt`
+(with a `default.txt` fallback). Add a file named for the new `versionCode` each
+time you bump it, or supply will fall back to the generic default text.
 
 ---
 
@@ -134,12 +148,20 @@ Text fields (title, short/full description) — copy verbatim from
 
 SLOVO is fully offline and collects nothing — these forms are quick:
 
+These are **web-UI only** — there is no supply/API path for any of them, the same
+trap the iOS side hit with App Privacy and Pricing.
+
 - **Data safety:** No data collected, no data shared. (No network at runtime; progress
-  and settings stay on-device in SQLDelight.)
-- **App content / privacy policy:** Play requires a privacy-policy URL. Host
-  `store-assets/privacy-policy.md` (e.g. GitHub Pages) and use its URL. **← still to do.**
+  and settings stay on-device in SQLDelight.) Concretely: answer *no* to "Does your app
+  collect or share any of the required user data types?", and *no* to the encryption /
+  deletion follow-ups, which disappear once nothing is collected.
+- **App content / privacy policy:** `https://chiliec.github.io/slovo/privacy.html`
+  (live via GitHub Pages, verified 200 on 2026-08-01) — same URL the App Store record uses.
 - **Content rating (IARC questionnaire):** educational vocabulary app, no objectionable
-  content → expect "Everyone / PEGI 3".
+  content → expect "Everyone / PEGI 3". Note the app bundles CC-BY third-party audio;
+  IARC has no equivalent of Apple's content-rights declaration, so nothing to declare
+  there, but the in-app credits screen (YOU → About → View Full Credits) is the
+  attribution surface if a reviewer asks.
 - **Target audience:** not directed at children (choose 13+ to avoid Families policy
   overhead), unless you intend otherwise.
 - **Ads:** contains no ads.
@@ -149,39 +171,77 @@ SLOVO is fully offline and collects nothing — these forms are quick:
 
 ## 6. First release — Internal testing track
 
-Recommended path for the first upload (fastest review, up to 100 testers):
+The **first** upload has to be partly manual: the app record and Play App Signing
+enrolment don't exist yet, and supply cannot create them.
 
-1. Play Console → **Testing → Internal testing → Create new release**.
-2. **Play App Signing:** accept "Use Google-generated key". Your `slovo-upload.jks`
+1. Play Console → **Create app**: name `SLOVO`, English (US), App, Free. This is what
+   reserves `cx.viz.slovo`.
+2. Play Console → **Testing → Internal testing → Create new release**.
+3. **Play App Signing:** accept "Use Google-generated key". Your `slovo-upload.jks`
    becomes the upload key. This is the default and recommended.
-3. Upload `composeApp-release.aab`.
-4. Fill release name (e.g. `1.0 (1)`) and release notes.
+4. Upload `composeApp-release.aab` by hand this once.
 5. Add testers (email list), save, review, **roll out to Internal testing**.
-6. Share the opt-in URL with testers; they install via Play.
 
-Promote Internal → Closed → Open/Production from the console when ready. Production
-requires the full store listing + all content forms complete.
+### Then switch to fastlane
+
+Once the app record exists, create a service account so supply can authenticate:
+
+1. Play Console → **Setup → API access → Create new service account**, which sends you
+   to Google Cloud. Create the account, then create a **JSON key** for it.
+2. Back in Play Console, grant that account **Release manager** (or at minimum: view
+   app information, manage production/testing releases, manage store presence).
+3. Save the JSON to the repo root as `play-service-account.json` — **gitignored**.
+   For CI, base64 it into a `PLAY_JSON_KEY` secret instead.
+
+Permission propagation is not instant; a fresh service account can 401 for a few
+minutes before it starts working.
+
+Then, from the repo root (fastlane needs rbenv Ruby 3.2.2+, not system Ruby):
+
+```bash
+export PATH="$HOME/.rbenv/shims:$PATH"
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21
+export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
+
+bundle exec fastlane android play_stage      # no credentials needed — inspect the staged listing
+bundle exec fastlane android play_internal   # build AAB + upload to internal, as a DRAFT
+bundle exec fastlane android play_listing    # listing text/images only, no binary
+bundle exec fastlane android play_promote    # internal -> production
+```
+
+Set `PLAY_VALIDATE_ONLY=1` to make any upload lane a dry run — Play validates the
+payload and discards it. **Do this first**, before the first real upload.
+
+`play_internal` uploads with `release_status: "draft"`, so nothing reaches testers
+until someone clicks through in the console. `play_promote` takes `PLAY_ROLLOUT`
+(a fraction, e.g. `0.1` for a 10% staged rollout; defaults to `1.0`).
+
+Like the iOS `release` lane, the Android lanes keep `store-assets/` as the single
+source of truth and stage a copy into supply's `<lang>/images/…` layout at run time
+(`fastlane/play-metadata/`, gitignored, rebuilt each run). Never edit the staged tree.
 
 ---
 
 ## 7. Pre-upload checklist
 
-- [ ] `versionCode` bumped (strictly greater than last uploaded)
+- [ ] `versionCode` bumped (strictly greater than last uploaded) — **manual, not automated**
+- [ ] `store-assets/metadata/android/en-US/changelogs/<versionCode>.txt` written
 - [ ] Upload keystore in place, password set, **backed up**
-- [ ] `./gradlew :composeApp:bundleRelease` succeeds
+- [ ] `bundle exec fastlane android bundle` succeeds
 - [ ] `jarsigner -verify` reports "jar verified" with `CN=SLOVO`
-- [ ] Screenshots + feature graphic + 512 icon on hand
-- [ ] Store text copied from `store-assets/metadata/android/en-US/`
+- [ ] `bundle exec fastlane android play_stage` shows the expected listing tree
+- [ ] `PLAY_VALIDATE_ONLY=1` dry run passes
 - [ ] Privacy-policy URL live
-- [ ] Data-safety / content-rating / target-audience forms answered
+- [ ] Data-safety / content-rating / target-audience forms answered **in the web UI**
 
 ---
 
 ## Known follow-ups (not blockers for internal testing)
 
-- **Privacy-policy URL** — author + host before Production (and for the App content form).
+- **`versionCode` is not auto-incremented.** The iOS `beta` lane derives its build
+  number from TestFlight; there is no equivalent here, so a forgotten bump means a
+  rejected upload. Worth wiring to `google_play_track_version_codes` once the account
+  exists and the lane can actually be tested against Play.
 - **R8/minify** — release ships un-minified (`isMinifyEnabled = false`). Enabling R8
   shrinks the APK but needs keep-rules verified against the KMP/SQLDelight/serialization
   stack; defer until there's a reason.
-- **Contact email** — drop a support address into the privacy policy's Contact section
-  and both store listings.

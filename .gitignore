@@ -27,7 +27,11 @@ fastlane/.env
 fastlane/report.xml
 fastlane/screenshots/
 fastlane/test_output/
+fastlane/play-metadata/
 build/ios/
+
+# Google Play service account key — never commit
+play-service-account.json
 
 # App Store Connect API key and signing material — never commit
 AuthKey_*.p8

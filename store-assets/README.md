@@ -13,7 +13,7 @@ store-assets/
 │   ├── play-feature.svg
 │   └── play-feature-1024x500.png Play Store feature graphic (required)
 ├── metadata/
-│   ├── android/en-US/            title, short/full description (fastlane supply layout)
+│   ├── android/en-US/            title, short/full description, changelogs/ (supply layout)
 │   └── ios/en-US/                name, subtitle, keywords, description, … (fastlane deliver layout)
 ├── screenshots/README.md         sizes + capture commands (must be shot on device)
 └── privacy-policy.md             host this and use its URL in both stores
@@ -44,8 +44,9 @@ Still needing a human, once:
    With Play App Signing this is the resettable *upload* key, but don't rely on that.
 2. **Apple**: create the App Store Connect record for `cx.viz.slovo` and put its
    numeric App ID in `fastlane/.env` as `ASC_APP_ID`.
-3. **Google**: create the Play Console app, enrol in Play App Signing, build an AAB
-   (`./gradlew :composeApp:bundleRelease`) and upload it.
+3. **Google**: create the Play Console app, enrol in Play App Signing, and upload the
+   first AAB by hand. After that, create a service account JSON key and the
+   `fastlane android play_*` lanes take over — see `../docs/release-android.md`.
 4. **Web-only store forms**: Apple App Privacy ("No data collected" — answer *and*
    Publish) and Pricing → Free; Play **Data safety** ("no data collected").
 5. **Enable GitHub Pages** (`main` → `/docs`) so the privacy and support URLs resolve.
