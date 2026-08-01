@@ -31,19 +31,24 @@ icon can never drift from the mascot. Re-run it if the bear ever changes.
 - CC-BY audio attribution surfaced in-app (YOU → About → View Full Credits).
 - Store listing copy (both platforms), privacy policy, feature graphic, store icons.
 
-## You need to do (account-gated) 🔒
+## Release process 📦
+
+The iOS pipeline is automated — see [`../docs/release-ios.md`](../docs/release-ios.md)
+for the full runbook (signing, `fastlane ios beta` / `release` / `submit`, screenshot
+capture, and the submission gates). Android is
+[`../docs/release-android.md`](../docs/release-android.md).
+
+Still needing a human, once:
+
 1. **Back up `slovo-upload.jks` + its passwords** somewhere safe (password manager).
    With Play App Signing this is the resettable *upload* key, but don't rely on that.
-2. **Apple**: enroll in the Apple Developer Program, create the App Store Connect
-   record for `cx.viz.slovo`, set `DEVELOPMENT_TEAM` in the Xcode project, archive
-   and upload (Xcode or `fastlane deliver`).
-3. **Google**: create the Play Console app, enroll in Play App Signing, build an
-   AAB (`./gradlew :composeApp:bundleRelease`) and upload (or `fastlane supply`).
-4. **Capture screenshots** on a device/simulator — see `screenshots/README.md`.
-5. **Host `privacy-policy.md`** (e.g. GitHub Pages) and drop the URL + your support
-   email into both listings and the policy's Contact section.
-6. Fill Play **Data safety** ("no data collected") and Apple **Privacy Nutrition
-   labels** ("Data Not Collected") — both true for this offline app.
+2. **Apple**: create the App Store Connect record for `cx.viz.slovo` and put its
+   numeric App ID in `fastlane/.env` as `ASC_APP_ID`.
+3. **Google**: create the Play Console app, enrol in Play App Signing, build an AAB
+   (`./gradlew :composeApp:bundleRelease`) and upload it.
+4. **Web-only store forms**: Apple App Privacy ("No data collected" — answer *and*
+   Publish) and Pricing → Free; Play **Data safety** ("no data collected").
+5. **Enable GitHub Pages** (`main` → `/docs`) so the privacy and support URLs resolve.
 
 ## Build commands
 ```
