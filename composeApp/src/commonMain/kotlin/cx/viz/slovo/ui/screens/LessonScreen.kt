@@ -145,7 +145,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
                 Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
-                    if (q.mode == QuestionMode.LISTEN) MishaButton("🔊 PLAY", background = Slovo.Blue) { vm.playAudio(q.card.audio!!) }
+                    if (q.mode == QuestionMode.LISTEN) MishaButton("🔊 PLAY", background = Slovo.Blue) { vm.playAudio(q.card.audio) }
                     else if (q.mode == QuestionMode.READ) Text(q.card.russian, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
                 }
             }

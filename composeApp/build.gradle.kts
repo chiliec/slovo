@@ -13,6 +13,10 @@ plugins {
 }
 
 kotlin {
+    // DriverFactory is an `expect class`, which the compiler still flags as Beta.
+    // The construct is stable in practice and central to the platform seams.
+    compilerOptions { freeCompilerArgs.add("-Xexpect-actual-classes") }
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions { jvmTarget.set(JvmTarget.JVM_11) }
@@ -27,17 +31,17 @@ kotlin {
     }
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.sqldelight.android)
         }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.components.ui.tooling.preview)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
@@ -51,8 +55,7 @@ kotlin {
             implementation(libs.sqldelight.jvm)
         }
         androidUnitTest.dependencies {
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            implementation(libs.compose.ui.test)
             implementation(libs.junit)
             implementation(libs.robolectric)
             implementation(libs.androidx.compose.ui.test.junit4)
@@ -130,5 +133,5 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    dependencies { debugImplementation(compose.uiTooling) }
+    dependencies { debugImplementation(libs.compose.ui.tooling) }
 }
