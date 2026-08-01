@@ -8,9 +8,11 @@ How to cut a TestFlight or App Store release of SLOVO. The Android counterpart i
 > directly, there is no way to hand an iPhone user a file. Reaching real users
 > requires TestFlight or the App Store, both of which need the paid membership.
 
-> **Status (2026-08-01):** Build 1 of `1.0.0` is installable via TestFlight
-> internal testing. On-device smoke test passed, including audio playback
-> confirmed audible with the ringer switch silenced (the Task 1 fix).
+> **Status (2026-08-01):** `1.0.0` build 2 (App ID `6796900036`) is
+> `WAITING_FOR_REVIEW` in App Store Connect — metadata, screenshots, age
+> rating, content rights, pricing, and App Privacy are all set, and the
+> version has been submitted. `automatic_release: false`, so **someone must
+> click Release manually** in App Store Connect once Apple approves it.
 
 ## 0. Identifiers
 
