@@ -1,0 +1,4 @@
+app_identifier("cx.viz.slovo")
+team_id("7JF6XQC536") # Vladimir Babin — Apple Developer Program team
+
+# No apple_id / itc login: all App Store Connect auth is via the API key.

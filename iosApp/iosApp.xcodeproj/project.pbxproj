@@ -12,6 +12,7 @@
 		A4B2C3D4E5F6A7B8C9D0E1F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2C3D4E5F6A7B8C9D0E1F2 /* AppDelegate.swift */; };
 		A4B2C3D4E5F6A7B8C9D0E1F3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2C3D4E5F6A7B8C9D0E1F4 /* SceneDelegate.swift */; };
 		A5B2C3D4E5F6A7B8C9D0E102 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5B2C3D4E5F6A7B8C9D0E101 /* Assets.xcassets */; };
+		A6B2C3D4E5F6A7B8C9D0E102 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A6B2C3D4E5F6A7B8C9D0E101 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		A4B2C3D4E5F6A7B8C9D0E1F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4B2C3D4E5F6A7B8C9D0E1F4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		A5B2C3D4E5F6A7B8C9D0E101 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A6B2C3D4E5F6A7B8C9D0E101 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +37,6 @@
 		};
 /* End PBXFrameworksBuildPhase section */
 
-/* Begin PBXResourcesBuildPhase section */
-		A5B2C3D4E5F6A7B8C9D0E103 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A5B2C3D4E5F6A7B8C9D0E102 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXGroup section */
 		A1B2C3D4E5F6A7B8C9D0E1F8 /* iosApp */ = {
 			isa = PBXGroup;
@@ -54,6 +45,7 @@
 				A4B2C3D4E5F6A7B8C9D0E1F2 /* AppDelegate.swift */,
 				A4B2C3D4E5F6A7B8C9D0E1F4 /* SceneDelegate.swift */,
 				A5B2C3D4E5F6A7B8C9D0E101 /* Assets.xcassets */,
+				A6B2C3D4E5F6A7B8C9D0E101 /* PrivacyInfo.xcprivacy */,
 				A3B2C3D4E5F6A7B8C9D0E1F3 /* Info.plist */,
 			);
 			path = iosApp;
@@ -82,7 +74,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1B2C3D4E5F6A7B8C9D0E1FC /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
-				A1B2C3D4E5F6A7B8C9D0E1FD /* ShellScript */,
+				A1B2C3D4E5F6A7B8C9D0E1FD /* Compile Kotlin Framework */,
 				A1B2C3D4E5F6A7B8C9D0E1FE /* Sources */,
 				A1B2C3D4E5F6A7B8C9D0E1F7 /* Frameworks */,
 				A5B2C3D4E5F6A7B8C9D0E103 /* Resources */,
@@ -128,8 +120,20 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		A5B2C3D4E5F6A7B8C9D0E103 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5B2C3D4E5F6A7B8C9D0E102 /* Assets.xcassets in Resources */,
+				A6B2C3D4E5F6A7B8C9D0E102 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
-		A1B2C3D4E5F6A7B8C9D0E1FD /* ShellScript */ = {
+		A1B2C3D4E5F6A7B8C9D0E1FD /* Compile Kotlin Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -216,9 +220,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7JF6XQC536;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = iosApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -226,13 +231,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "cx.viz.slovo";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cx.viz.slovo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "cx.viz.slovo AppStore";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -241,9 +247,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7JF6XQC536;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = iosApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -251,13 +258,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "cx.viz.slovo";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cx.viz.slovo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "cx.viz.slovo AppStore";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -283,7 +291,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = A1B2C3D4E5F6A7B8C9D0E1FF /* Project object */;
 }

@@ -1,6 +1,6 @@
 # SLOVO — Privacy Policy
 
-_Last updated: 2026-07-12_
+_Last updated: 2026-08-01_
 
 SLOVO ("the app") is a Russian words-and-phrases learning app. Your privacy is
 simple to explain because the app is built to need nothing from you.
@@ -37,4 +37,4 @@ If this policy ever changes, the updated version will be posted at this page.
 
 ## Contact
 
-Questions about this policy: **[TODO: your support email]**
+Questions about this policy: **vovababin@gmail.com**
