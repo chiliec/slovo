@@ -170,3 +170,10 @@ after approval.
   validator reports on it. Expect one adjust-and-re-upload cycle.
 - Build 1 of `1.0.0`, uploaded 2026-08-01, passed the privacy-manifest validator
   clean on the first try — reached `VALID` with no compliance complaint.
+- The first tag-triggered CI run failed at `get_provisioning_profile` with
+  "Authentication credentials are missing or invalid," even though the same
+  three ASC credentials worked in every local invocation. Root cause: the
+  `ASC_ISSUER_ID`/`ASC_KEY_ID` secrets had been set via a shell pipe that left
+  a trailing newline, corrupting the JWT's `iss`/`kid` claims. Fix: pipe
+  `printf '%s'` (never `echo` or a bare `cut`/`grep` line) into
+  `gh secret set` for every ASC secret. Build 2 uploaded clean afterward.
