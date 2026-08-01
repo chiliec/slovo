@@ -63,14 +63,8 @@ info2 = app.fetch_edit_app_info
 puts "App Store age rating now: #{info2.app_store_age_rating.inspect}"
 
 # Content rights: SLOVO ships licensed third-party audio (Tatoeba, CC-BY).
-Spaceship::ConnectAPI.patch(
-  url_or_path: "apps/#{APP}",
-  body: {
-    data: {
-      type: "apps",
-      id: APP,
-      attributes: { contentRightsDeclaration: "USES_THIRD_PARTY_CONTENT" }
-    }
-  }
+Spaceship::ConnectAPI.patch_app(
+  app_id: APP,
+  attributes: { contentRightsDeclaration: "USES_THIRD_PARTY_CONTENT" }
 )
 puts "Content rights set to USES_THIRD_PARTY_CONTENT."

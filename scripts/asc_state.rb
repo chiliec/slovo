@@ -47,14 +47,22 @@ if versions.is_a?(Hash) && versions["data"]
   vid = ver && ver["id"]
 
   if vid
-    puts "\n== Age rating declaration (version #{ver['attributes']['versionString']}) =="
-    c, ar = get("/v1/appStoreVersions/#{vid}/ageRatingDeclaration")
-    puts "HTTP #{c}"
-    puts JSON.pretty_generate(ar["data"]["attributes"]) if ar.is_a?(Hash) && ar["data"]
-
     puts "\n== Build attached to version =="
     c, b = get("/v1/appStoreVersions/#{vid}/build")
     puts "HTTP #{c}  #{b.is_a?(Hash) && b['data'] ? b['data']['id'] : b.inspect[0, 200]}"
+  end
+end
+
+# Age rating declaration lives under AppInfo (ASC API 1.3+), not AppStoreVersion.
+puts "\n== Age rating declaration =="
+code, infos = get("/v1/apps/#{APP_ID}/appInfos")
+puts "HTTP #{code}"
+if infos.is_a?(Hash) && infos["data"]
+  info = infos["data"].first
+  if info
+    c, ar = get("/v1/appInfos/#{info['id']}/ageRatingDeclaration")
+    puts "HTTP #{c}"
+    puts JSON.pretty_generate(ar["data"]["attributes"]) if ar.is_a?(Hash) && ar["data"]
   end
 end
 
