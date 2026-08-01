@@ -1,17 +1,18 @@
 [versions]
 agp = "8.9.0"
-kotlin = "2.2.20"
-compose-plugin = "1.8.0"
+kotlin = "2.4.10"
+compose-plugin = "1.11.1"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
-kotlinx-serialization = "1.7.3"
-androidx-navigation = "2.9.0-beta03"
+kotlinx-serialization = "1.11.0"
+androidx-navigation = "2.9.2"
+# 2.11.0 requires compileSdk 37 + AGP 9.1; hold until the AGP 9 migration.
 androidx-lifecycle-viewmodel = "2.10.0"
 sqldelight = "2.3.2"
 robolectric = "4.16.1"
 junit = "4.13.2"
-androidx-compose-ui-test = "1.8.0"
+androidx-compose-ui-test = "1.11.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

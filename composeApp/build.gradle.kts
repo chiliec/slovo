@@ -17,7 +17,9 @@ kotlin {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions { jvmTarget.set(JvmTarget.JVM_11) }
     }
-    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
+    // No iosX64: Compose Multiplatform stopped publishing Intel-simulator
+    // artifacts as of 1.11, and every supported build host is Apple Silicon.
+    listOf(iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
