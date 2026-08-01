@@ -74,6 +74,16 @@ val keystoreProps = Properties().apply {
     if (keystorePropsFile.exists()) FileInputStream(keystorePropsFile).use { load(it) }
 }
 
+// Play requires a strictly increasing versionCode per upload. The release lanes
+// derive the next one from the highest code already on Play and pass it in via
+// -PversionCode (or ANDROID_VERSION_CODE); everything else — local debug builds,
+// CI unit tests, clean checkouts — falls back to 1.
+val resolvedVersionCode = (
+    findProperty("versionCode") as String? ?: System.getenv("ANDROID_VERSION_CODE")
+)?.trim()?.takeIf { it.isNotEmpty() }?.let {
+    it.toIntOrNull() ?: throw GradleException("versionCode must be an integer, got \"$it\"")
+} ?: 1
+
 android {
     namespace = "cx.viz.slovo"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -94,7 +104,7 @@ android {
         applicationId = "cx.viz.slovo"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
+        versionCode = resolvedVersionCode
         versionName = "1.0.0"
     }
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }

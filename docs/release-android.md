@@ -66,21 +66,40 @@ on the reset flow — losing it before enrolling would mean you can never update
 
 ## 2. Versioning
 
-Set in `composeApp/build.gradle.kts` `defaultConfig`:
-
 - `versionCode` — integer, **must strictly increase** with every uploaded build.
-  Currently `1`. Bump by 1 each upload (even for re-uploads to the same track).
-  This is **not** auto-incremented — unlike the iOS build number, which the `beta`
-  lane derives from TestFlight, nothing queries Play for the last code. Edit it by
-  hand before each upload or Play will reject the AAB as a duplicate.
-- `versionName` — human string shown to users. Currently `"1.0.0"`.
+  **Auto-incremented.** `play_internal` calls `next_play_version_code`, which reads
+  the version codes already on the internal/alpha/beta/production tracks via
+  `google_play_track_version_codes` and uses `max + 1` — the same store-is-authoritative
+  idiom the iOS `beta` lane uses with `latest_testflight_build_number`. A virgin app
+  record (no builds on any track) yields `1`. Tracks that 404 because they have no
+  releases are skipped with a warning, not treated as fatal.
+- `versionName` — human string shown to users, set in `composeApp/build.gradle.kts`
+  `defaultConfig`. Currently `"1.0.0"`; still edited by hand per release.
 
 Keep `versionName` in sync with the iOS `MARKETING_VERSION` when releasing both;
 both are `1.0.0` today.
 
+### Overriding the version code
+
+`versionCode` resolves in this order (`composeApp/build.gradle.kts`):
+
+1. Gradle property `-PversionCode=N`  — what the lanes pass.
+2. Env var `ANDROID_VERSION_CODE=N`   — pins a code for either lane; on
+   `play_internal` it takes precedence over the value read from Play.
+3. `1` — the build-file default, for local debug builds, CI unit tests, and clean
+   checkouts. A non-integer value fails the build loudly rather than silently
+   falling back.
+
+The credential-free `bundle` lane never queries Play, so it builds with `1` unless
+you set `ANDROID_VERSION_CODE`. That's fine for local verification and wrong for an
+upload — use `play_internal` for anything that actually reaches Play.
+
 Release notes live in `store-assets/metadata/android/en-US/changelogs/<versionCode>.txt`
-(with a `default.txt` fallback). Add a file named for the new `versionCode` each
-time you bump it, or supply will fall back to the generic default text.
+(with a `default.txt` fallback). The first upload gets code `1` and so picks up the
+existing `1.txt`. Every later upload falls back to `default.txt` ("Bug fixes and
+improvements") unless you add a file named for the code that lane will compute —
+check the `Auto-incremented versionCode: N` line the lane logs, or run a
+`PLAY_VALIDATE_ONLY=1` pass first to learn `N`.
 
 ---
 
@@ -224,8 +243,10 @@ source of truth and stage a copy into supply's `<lang>/images/…` layout at run
 
 ## 7. Pre-upload checklist
 
-- [ ] `versionCode` bumped (strictly greater than last uploaded) — **manual, not automated**
-- [ ] `store-assets/metadata/android/en-US/changelogs/<versionCode>.txt` written
+- [ ] `versionCode` — automatic via `play_internal`; only needs a thought if you're
+      pinning one with `ANDROID_VERSION_CODE`
+- [ ] `store-assets/metadata/android/en-US/changelogs/<versionCode>.txt` written for
+      the code the lane will compute (else supply uses `default.txt`)
 - [ ] Upload keystore in place, password set, **backed up**
 - [ ] `bundle exec fastlane android bundle` succeeds
 - [ ] `jarsigner -verify` reports "jar verified" with `CN=SLOVO`
@@ -238,10 +259,12 @@ source of truth and stage a copy into supply's `<lang>/images/…` layout at run
 
 ## Known follow-ups (not blockers for internal testing)
 
-- **`versionCode` is not auto-incremented.** The iOS `beta` lane derives its build
-  number from TestFlight; there is no equivalent here, so a forgotten bump means a
-  rejected upload. Worth wiring to `google_play_track_version_codes` once the account
-  exists and the lane can actually be tested against Play.
+- **`versionCode` auto-increment is untested against a live Play account.** The
+  Gradle plumbing is verified (`-PversionCode`, `ANDROID_VERSION_CODE`, and the
+  default all produce the expected code in the AAB manifest), but
+  `next_play_version_code` has never run against real credentials — the
+  `google_play_track_version_codes` call and the 404-on-empty-track rescue are
+  unproven. Confirm on the first `PLAY_VALIDATE_ONLY=1` dry run.
 - **R8/minify** — release ships un-minified (`isMinifyEnabled = false`). Enabling R8
   shrinks the APK but needs keep-rules verified against the KMP/SQLDelight/serialization
   stack; defer until there's a reason.

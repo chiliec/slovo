@@ -323,14 +323,43 @@ def stage_play_metadata
   PLAY_STAGE
 end
 
+# Play rejects any upload whose versionCode is not strictly greater than every
+# code already on the account, so derive the next one from Play itself rather
+# than tracking it in git — the same store-is-authoritative idiom the iOS beta
+# lane uses with latest_testflight_build_number. Returns 1 for a virgin app
+# record (no tracks have any builds yet).
+def next_play_version_code
+  key = play_json_key
+  codes = %w[internal alpha beta production].flat_map do |track|
+    google_play_track_version_codes(
+      package_name: PACKAGE_NAME,
+      json_key: key,
+      track: track
+    ) || []
+  rescue StandardError => e
+    # A track with no releases 404s; that is normal, not fatal.
+    UI.important("Skipping the #{track} track while resolving versionCode: #{e.message}")
+    []
+  end
+
+  next_code = (codes.map(&:to_i).max || 0) + 1
+  UI.message("Auto-incremented versionCode: #{next_code} (highest on Play: #{codes.max || 'none'})")
+  next_code
+end
+
 # Builds the signed release AAB. Signing comes from the gitignored
 # keystore.properties at the repo root; without it the build succeeds but is
 # UNSIGNED and Play will reject it, so check the output explicitly.
-def build_aab
+#
+# version_code is passed through to Gradle as -PversionCode; nil leaves the
+# build file's default of 1 (fine for local verification, never for an upload).
+def build_aab(version_code: nil)
+  UI.message("Building AAB with versionCode=#{version_code || '1 (build file default)'}")
   gradle(
     task: ":composeApp:bundle",
     build_type: "Release",
-    project_dir: File.expand_path("..", __dir__)
+    project_dir: File.expand_path("..", __dir__),
+    properties: version_code ? { "versionCode" => version_code } : {}
   )
   UI.user_error!("Expected an AAB at #{AAB_PATH}") unless File.exist?(AAB_PATH)
   unless File.exist?(File.expand_path("../keystore.properties", __dir__))
@@ -353,14 +382,17 @@ platform :android do
   end
 
   desc "Build the signed release AAB"
+  # Stays credential-free so it can be verified without a Play account: set
+  # ANDROID_VERSION_CODE to pin a code, otherwise the build file default (1) is
+  # used. play_internal is what resolves the real code from Play.
   lane :bundle do
-    build_aab
+    build_aab(version_code: ENV["ANDROID_VERSION_CODE"])
     UI.success("AAB: #{AAB_PATH}")
   end
 
   desc "Build and upload a new build to the Play internal testing track"
   lane :play_internal do
-    build_aab
+    build_aab(version_code: ENV["ANDROID_VERSION_CODE"] || next_play_version_code)
 
     upload_to_play_store(
       package_name: PACKAGE_NAME,
