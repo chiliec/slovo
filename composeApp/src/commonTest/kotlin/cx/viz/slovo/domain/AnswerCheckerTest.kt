@@ -55,4 +55,21 @@ class AnswerCheckerTest {
     @Test fun canonical_is_expected_verbatim() {
         assertEquals("Good morning!", AnswerChecker.check("good morning", "Good morning!").canonical)
     }
+
+    @Test fun canonical_is_verbatim_even_when_wrong_or_almost() {
+        // Display always shows the authored string, whatever the verdict.
+        assertEquals("You're welcome. / Please.", AnswerChecker.check("nope", "You're welcome. / Please.").canonical)
+        assertEquals("please", AnswerChecker.check("pleese", "please").canonical) // ALMOST
+    }
+
+    @Test fun blank_or_degenerate_expected_grades_wrong_without_crashing() {
+        assertEquals(AnswerChecker.Verdict.WRONG, verdict("anything", ""))
+        assertEquals(AnswerChecker.Verdict.WRONG, verdict("anything", "   "))
+        assertEquals(AnswerChecker.Verdict.WRONG, verdict("anything", "/"))
+    }
+
+    @Test fun slash_alternatives_tolerate_surrounding_spaces() {
+        assertEquals(AnswerChecker.Verdict.CORRECT, verdict("hi", "hello / hi"))
+        assertEquals(AnswerChecker.Verdict.CORRECT, verdict("hello", "hello / hi"))
+    }
 }

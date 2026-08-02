@@ -54,4 +54,53 @@ class QuestionFactoryTest {
         val q = QuestionFactory(Random(3)).build(cards[0], cards, LessonKind.VOCAB, isMastered = false)
         assertEquals(1, q.options.count { it == "hello" })
     }
+
+    /**
+     * Invariants that must hold for every option-based question regardless of RNG:
+     * correctIndex points at the correct answer, it appears exactly once, all
+     * options are distinct, and the count stays within the 1..4 UI budget.
+     */
+    @Test fun option_invariants_hold_across_many_seeds() {
+        for (seed in 0 until 300) {
+            val factory = QuestionFactory(Random(seed))
+            val card = cards[seed % cards.size]
+            for (kind in listOf(LessonKind.LISTENING, LessonKind.VOCAB)) {
+                val q = factory.build(card, cards, kind, isMastered = false)
+                if (q.mode == QuestionMode.TYPE) continue
+                val correct = q.options[q.correctIndex]
+                assertEquals(card.english, correct, "seed=$seed kind=$kind correctIndex mismatch")
+                assertEquals(1, q.options.count { it == correct }, "seed=$seed duplicate correct answer")
+                assertEquals(q.options.size, q.options.toSet().size, "seed=$seed duplicate option")
+                assertTrue(q.options.size in 1..4, "seed=$seed option count ${q.options.size} out of range")
+            }
+        }
+    }
+
+    @Test fun single_card_pool_yields_lone_correct_option() {
+        val q = QuestionFactory(Random(1)).build(cards[0], listOf(cards[0]), LessonKind.LISTENING, isMastered = false)
+        assertEquals(listOf("hello"), q.options)
+        assertEquals(0, q.correctIndex)
+    }
+
+    @Test fun small_pool_caps_options_at_available_distractors() {
+        val pool = cards.take(3) // 1 correct + 2 possible distractors
+        val q = QuestionFactory(Random(1)).build(cards[0], pool, LessonKind.LISTENING, isMastered = false)
+        assertEquals(3, q.options.size)
+        assertEquals("hello", q.options[q.correctIndex])
+    }
+
+    @Test fun produce_mode_uses_russian_options() {
+        // PRODUCE requires VOCAB + mastered + rng.nextInt(5) == 0; find a seed that lands there.
+        var checked = false
+        for (seed in 0 until 100) {
+            val q = QuestionFactory(Random(seed)).build(cards[0], cards, LessonKind.VOCAB, isMastered = true)
+            if (q.mode != QuestionMode.PRODUCE) continue
+            checked = true
+            assertEquals("привет", q.options[q.correctIndex])
+            assertTrue(q.options.all { opt -> cards.any { it.russian == opt } }, "seed=$seed non-russian option")
+            assertEquals("How do you say \"hello\"?", q.promptText)
+            break
+        }
+        assertTrue(checked, "no seed in 0..99 produced a PRODUCE question")
+    }
 }
