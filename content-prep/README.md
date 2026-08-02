@@ -119,3 +119,20 @@ After regeneration, rebuild the app and commit the new content:
 ```bash
 git add -A && git commit -m "feat: regenerate content from seed"
 ```
+
+## Reviewing the audio by ear
+
+The pipeline guarantees the clips *exist* and are wired to the right card ids, but
+not that a clip actually says the phrase on its card — a wrong Tatoeba id yields a
+perfectly valid file of the wrong sentence. `scripts/audio-review.mjs` plays each
+clip next to its Russian text so the set can be checked without opening the app:
+
+```bash
+node scripts/audio-review.mjs          # everything not yet judged
+node scripts/audio-review.mjs greet    # only card ids starting with "greet"
+node scripts/audio-review.mjs --all    # re-review, including judged cards
+```
+
+Keys: `enter`/`y` correct, `n` wrong, `r` replay, `s` skip, `q` quit. Verdicts are
+written to `scripts/audio-review.json` after every keypress, so the pass can be
+stopped and resumed. Re-run after any `npm run prep` that changes audio ids.

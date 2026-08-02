@@ -41,3 +41,4 @@ AuthKey_*.p8
 
 # Personal contact detail required by deliver but kept local
 **/phone_number.txt
+scripts/audio-review.json
