@@ -120,12 +120,48 @@ After regeneration, rebuild the app and commit the new content:
 git add -A && git commit -m "feat: regenerate content from seed"
 ```
 
-## Reviewing the audio by ear
+## Verifying that each clip says the right phrase
 
 The pipeline guarantees the clips *exist* and are wired to the right card ids, but
 not that a clip actually says the phrase on its card — a wrong Tatoeba id yields a
-perfectly valid file of the wrong sentence. `scripts/audio-review.mjs` plays each
-clip next to its Russian text so the set can be checked without opening the app:
+perfectly valid file of the wrong sentence, and no signal analysis can see it.
+
+Two scripts settle this at the source, which is both stronger and cheaper than
+listening to 110 clips. Run them in order after any `npm run prep` that changes
+audio ids; both need network access.
+
+```bash
+node scripts/audio-provenance-check.mjs   # sentence id -> text -> attached audio id
+node scripts/audio-source-match.mjs       # that recording -> the shipped .m4a
+```
+
+`audio-provenance-check.mjs` resolves every sentence id in `ATTRIBUTION.md` against
+the Tatoeba API and checks the sentence is Russian, its text equals the card's
+`russian` field, and the recorded audio id is attached to it. `audio-source-match.mjs`
+then downloads each source recording and cross-correlates it against the bundled
+`.m4a`. A lossy transcode of the same recording correlates at 0.99+; anything under
+0.9 is a different waveform. Chained, they establish
+
+```
+card text == sentence text == recording of that sentence == shipped file
+```
+
+which is exactly what the by-ear pass was trying to confirm. Results land in
+`scripts/audio-provenance.json` and `scripts/audio-source-match.json`; both are
+committed as the durable record. Source downloads cache under `/tmp/slovo-asr/src`,
+so re-runs are cheap.
+
+### Optional cross-checks
+
+`scripts/audio-asr-check.mjs` transcribes every clip with whisper.cpp and scores the
+transcript against the card text. It needs `brew install whisper-cpp` plus a ggml
+model, and it is *advisory only* — it misreads short clips, drops particles, and
+writes numerals as digits, so a low score means "worth a look", never "wrong". The
+source-match check supersedes it; it is kept because it validates the audio content
+itself rather than the provenance metadata.
+
+`scripts/audio-review.mjs` is the original human pass — it plays each clip next to
+its Russian text:
 
 ```bash
 node scripts/audio-review.mjs          # everything not yet judged
@@ -135,4 +171,6 @@ node scripts/audio-review.mjs --all    # re-review, including judged cards
 
 Keys: `enter`/`y` correct, `n` wrong, `r` replay, `s` skip, `q` quit. Verdicts are
 written to `scripts/audio-review.json` after every keypress, so the pass can be
-stopped and resumed. Re-run after any `npm run prep` that changes audio ids.
+stopped and resumed. No longer required for release, but useful for judging clip
+*quality* — clarity, pace, recording noise — which none of the automated checks
+assess.

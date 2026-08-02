@@ -1,0 +1,882 @@
+{
+  "greet-hello-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-hello-0",
+    "sentenceId": "466968",
+    "audioId": "35632",
+    "card": "Привет!"
+  },
+  "greet-hello-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-hello-1",
+    "sentenceId": "329715",
+    "audioId": "25296",
+    "card": "Доброе утро!"
+  },
+  "greet-hello-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-hello-2",
+    "sentenceId": "348097",
+    "audioId": "28601",
+    "card": "Добро пожаловать!"
+  },
+  "greet-hello-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-hello-3",
+    "sentenceId": "1103035",
+    "audioId": "63550",
+    "card": "Увидимся."
+  },
+  "greet-hello-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-hello-4",
+    "sentenceId": "6764750",
+    "audioId": "748284",
+    "card": "Пока, Том."
+  },
+  "greet-intro-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-intro-0",
+    "sentenceId": "370373",
+    "audioId": "29088",
+    "card": "Как Вас зовут?"
+  },
+  "greet-intro-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-intro-1",
+    "sentenceId": "370796",
+    "audioId": "29165",
+    "card": "Меня зовут Кирилл, рад познакомиться."
+  },
+  "greet-intro-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-intro-2",
+    "sentenceId": "473035",
+    "audioId": "35722",
+    "card": "Как дела?"
+  },
+  "greet-intro-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-intro-3",
+    "sentenceId": "2630084",
+    "audioId": "152969",
+    "card": "Всё хорошо."
+  },
+  "greet-listen-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-listen-0",
+    "sentenceId": "351795",
+    "audioId": "28776",
+    "card": "Спокойной ночи, мама."
+  },
+  "greet-listen-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-listen-1",
+    "sentenceId": "13231301",
+    "audioId": "1265102",
+    "card": "Привет! Меня зовут Башир."
+  },
+  "greet-listen-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "greet-listen-2",
+    "sentenceId": "2521977",
+    "audioId": "928136",
+    "card": "Завтра увидимся."
+  },
+  "cafe-order-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-order-0",
+    "sentenceId": "2443439",
+    "audioId": "679202",
+    "card": "Кофе, пожалуйста."
+  },
+  "cafe-order-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-order-1",
+    "sentenceId": "375922",
+    "audioId": "29658",
+    "card": "Мне, пожалуйста, чашку кофе."
+  },
+  "cafe-order-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-order-2",
+    "sentenceId": "374656",
+    "audioId": "29575",
+    "card": "Мне чай с лимоном, пожалуйста."
+  },
+  "cafe-order-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-order-3",
+    "sentenceId": "2430284",
+    "audioId": "679198",
+    "card": "Воды, пожалуйста."
+  },
+  "cafe-order-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-order-4",
+    "sentenceId": "2447613",
+    "audioId": "679205",
+    "card": "Ещё кофе, пожалуйста."
+  },
+  "cafe-food-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-food-0",
+    "sentenceId": "375925",
+    "audioId": "29660",
+    "card": "Мне рыбу, пожалуйста."
+  },
+  "cafe-food-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-food-1",
+    "sentenceId": "337493",
+    "audioId": "28065",
+    "card": "Дайте, пожалуйста, стакан воды."
+  },
+  "cafe-food-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-food-2",
+    "sentenceId": "374876",
+    "audioId": "29620",
+    "card": "Я Вам счёт сейчас принесу."
+  },
+  "cafe-food-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-food-3",
+    "sentenceId": "374870",
+    "audioId": "29616",
+    "card": "Он заказал пиво."
+  },
+  "cafe-recall-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-recall-0",
+    "sentenceId": "337539",
+    "audioId": "28075",
+    "card": "Я заказал два гамбургера."
+  },
+  "cafe-recall-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-recall-1",
+    "sentenceId": "2264255",
+    "audioId": "679182",
+    "card": "Сколько за вход?"
+  },
+  "cafe-recall-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "cafe-recall-2",
+    "sentenceId": "381258",
+    "audioId": "31173",
+    "card": "Садитесь, пожалуйста."
+  },
+  "basics-polite-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-polite-0",
+    "sentenceId": "374869",
+    "audioId": "29615",
+    "card": "Спасибо!"
+  },
+  "basics-polite-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-polite-1",
+    "sentenceId": "379409",
+    "audioId": "30632",
+    "card": "Пожалуйста."
+  },
+  "basics-polite-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-polite-2",
+    "sentenceId": "586592",
+    "audioId": "40346",
+    "card": "Извините."
+  },
+  "basics-polite-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-polite-3",
+    "sentenceId": "351535",
+    "audioId": "28717",
+    "card": "Прости меня, пожалуйста."
+  },
+  "basics-polite-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-polite-4",
+    "sentenceId": "585788",
+    "audioId": "40340",
+    "card": "Конечно."
+  },
+  "basics-understand-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-understand-0",
+    "sentenceId": "338488",
+    "audioId": "28233",
+    "card": "Я не понимаю."
+  },
+  "basics-understand-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-understand-1",
+    "sentenceId": "5412",
+    "audioId": "1694",
+    "card": "Что это?"
+  },
+  "basics-understand-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-understand-2",
+    "sentenceId": "5411",
+    "audioId": "1693",
+    "card": "Что ты делаешь?"
+  },
+  "basics-understand-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-understand-3",
+    "sentenceId": "5460",
+    "audioId": "1728",
+    "card": "Ты уверен?"
+  },
+  "basics-understand-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-understand-4",
+    "sentenceId": "2484095",
+    "audioId": "1267462",
+    "card": "Ладно."
+  },
+  "basics-listen-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-listen-0",
+    "sentenceId": "670460",
+    "audioId": "42475",
+    "card": "Да, я знаю."
+  },
+  "basics-listen-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-listen-1",
+    "sentenceId": "5441",
+    "audioId": "1709",
+    "card": "Не беспокойся."
+  },
+  "basics-listen-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "basics-listen-2",
+    "sentenceId": "379335",
+    "audioId": "30598",
+    "card": "Иди медленнее."
+  },
+  "numbers-clock-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-clock-0",
+    "sentenceId": "374866",
+    "audioId": "29612",
+    "card": "Я встаю в шесть часов почти каждый день."
+  },
+  "numbers-clock-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-clock-1",
+    "sentenceId": "380025",
+    "audioId": "30834",
+    "card": "Тогда я обычно вставала в пять утра."
+  },
+  "numbers-clock-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-clock-2",
+    "sentenceId": "379987",
+    "audioId": "30797",
+    "card": "В Лондоне сейчас семь."
+  },
+  "numbers-clock-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-clock-3",
+    "sentenceId": "447037",
+    "audioId": "724796",
+    "card": "Самолёт вылетает в восемь часов утра."
+  },
+  "numbers-clock-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-clock-4",
+    "sentenceId": "6892405",
+    "audioId": "661107",
+    "card": "Мы начнём завтра в девять часов."
+  },
+  "numbers-count-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-count-0",
+    "sentenceId": "379963",
+    "audioId": "30774",
+    "card": "В моей семье четыре человека."
+  },
+  "numbers-count-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-count-1",
+    "sentenceId": "338469",
+    "audioId": "28225",
+    "card": "Билл старше меня на два года."
+  },
+  "numbers-count-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-count-2",
+    "sentenceId": "351587",
+    "audioId": "28722",
+    "card": "Он старше меня на три года."
+  },
+  "numbers-count-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-count-3",
+    "sentenceId": "381233",
+    "audioId": "31149",
+    "card": "Её часы отстают на десять минут."
+  },
+  "numbers-math-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-math-0",
+    "sentenceId": "13198272",
+    "audioId": "1264385",
+    "card": "Два плюс два — это сколько?"
+  },
+  "numbers-math-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-math-1",
+    "sentenceId": "11270462",
+    "audioId": "1264804",
+    "card": "Шесть плюс два — восемь."
+  },
+  "numbers-math-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-math-2",
+    "sentenceId": "13190708",
+    "audioId": "1264978",
+    "card": "Пять и пять — это сколько?"
+  },
+  "numbers-math-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "numbers-math-3",
+    "sentenceId": "11206977",
+    "audioId": "1264767",
+    "card": "Два в квадрате — четыре."
+  },
+  "around-where-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-where-0",
+    "sentenceId": "1460858",
+    "audioId": "72673",
+    "card": "Где вход?"
+  },
+  "around-where-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-where-1",
+    "sentenceId": "1036458",
+    "audioId": "57511",
+    "card": "Где лифт?"
+  },
+  "around-where-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-where-2",
+    "sentenceId": "3253800",
+    "audioId": "195419",
+    "card": "Где дверь?"
+  },
+  "around-where-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-where-3",
+    "sentenceId": "3614009",
+    "audioId": "1264521",
+    "card": "Где музей?"
+  },
+  "around-where-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-where-4",
+    "sentenceId": "2551977",
+    "audioId": "928174",
+    "card": "Это вокзал?"
+  },
+  "around-transport-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-transport-0",
+    "sentenceId": "2242516",
+    "audioId": "724819",
+    "card": "Возьмём такси?"
+  },
+  "around-transport-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-transport-1",
+    "sentenceId": "3718481",
+    "audioId": "1264556",
+    "card": "Где остановка?"
+  },
+  "around-transport-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-transport-2",
+    "sentenceId": "3697907",
+    "audioId": "1264545",
+    "card": "Почём билет?"
+  },
+  "around-transport-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-transport-3",
+    "sentenceId": "11378105",
+    "audioId": "1264829",
+    "card": "Я жду автобуса."
+  },
+  "around-transport-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-transport-4",
+    "sentenceId": "7768263",
+    "audioId": "1236513",
+    "card": "Это не наш поезд."
+  },
+  "around-listen-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-listen-0",
+    "sentenceId": "2410870",
+    "audioId": "137620",
+    "card": "Иди сюда."
+  },
+  "around-listen-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-listen-1",
+    "sentenceId": "3374347",
+    "audioId": "204037",
+    "card": "Иди туда."
+  },
+  "around-listen-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-listen-2",
+    "sentenceId": "2079265",
+    "audioId": "101062",
+    "card": "Это здесь?"
+  },
+  "around-listen-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-listen-3",
+    "sentenceId": "4357143",
+    "audioId": "1264577",
+    "card": "Станция близко."
+  },
+  "around-listen-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "around-listen-4",
+    "sentenceId": "10813169",
+    "audioId": "1274755",
+    "card": "Это далеко от тебя?"
+  },
+  "shop-prices-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-prices-0",
+    "sentenceId": "3697897",
+    "audioId": "1264543",
+    "card": "Сколько?"
+  },
+  "shop-prices-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-prices-1",
+    "sentenceId": "3697903",
+    "audioId": "1264544",
+    "card": "Сколько всего?"
+  },
+  "shop-prices-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-prices-2",
+    "sentenceId": "4818127",
+    "audioId": "681352",
+    "card": "Почём эта шапка?"
+  },
+  "shop-prices-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-prices-3",
+    "sentenceId": "5641",
+    "audioId": "1907",
+    "card": "Это слишком дорого!"
+  },
+  "shop-prices-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-prices-4",
+    "sentenceId": "3177761",
+    "audioId": "926467",
+    "card": "Сколько ты заплатил?"
+  },
+  "shop-pay-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-pay-0",
+    "sentenceId": "2773435",
+    "audioId": "166242",
+    "card": "Я покупаю."
+  },
+  "shop-pay-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-pay-1",
+    "sentenceId": "3073095",
+    "audioId": "180875",
+    "card": "Я её куплю."
+  },
+  "shop-pay-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-pay-2",
+    "sentenceId": "8082915",
+    "audioId": "670038",
+    "card": "Я уже заплатил."
+  },
+  "shop-pay-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-pay-3",
+    "sentenceId": "11201044",
+    "audioId": "1274849",
+    "card": "Дайте мне ту книгу."
+  },
+  "shop-pay-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-pay-4",
+    "sentenceId": "3265823",
+    "audioId": "926565",
+    "card": "Не покупай его."
+  },
+  "shop-recall-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-recall-0",
+    "sentenceId": "2418921",
+    "audioId": "679195",
+    "card": "Сколько за ящик?"
+  },
+  "shop-recall-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-recall-1",
+    "sentenceId": "4818125",
+    "audioId": "681351",
+    "card": "Почём этот фотоаппарат?"
+  },
+  "shop-recall-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-recall-2",
+    "sentenceId": "6760334",
+    "audioId": "745006",
+    "card": "Кто заплатил?"
+  },
+  "shop-recall-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-recall-3",
+    "sentenceId": "6310178",
+    "audioId": "740912",
+    "card": "Ты вернул свои деньги?"
+  },
+  "shop-recall-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "shop-recall-4",
+    "sentenceId": "7941109",
+    "audioId": "651200",
+    "card": "Том считает деньги."
+  },
+  "time-days-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-days-0",
+    "sentenceId": "10197641",
+    "audioId": "1270253",
+    "card": "Завтра я еду домой."
+  },
+  "time-days-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-days-1",
+    "sentenceId": "409413",
+    "audioId": "726722",
+    "card": "Завтра воскресенье."
+  },
+  "time-days-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-days-2",
+    "sentenceId": "4102540",
+    "audioId": "1264560",
+    "card": "Завтра суббота?"
+  },
+  "time-days-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-days-3",
+    "sentenceId": "376033",
+    "audioId": "29687",
+    "card": "Вчера был четверг."
+  },
+  "time-days-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-days-4",
+    "sentenceId": "7412128",
+    "audioId": "1236512",
+    "card": "Уже октябрь."
+  },
+  "time-clock-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-clock-0",
+    "sentenceId": "4107352",
+    "audioId": "726782",
+    "card": "Уже 11 часов."
+  },
+  "time-clock-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-clock-1",
+    "sentenceId": "2138730",
+    "audioId": "103726",
+    "card": "Уже семь."
+  },
+  "time-clock-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-clock-2",
+    "sentenceId": "2656316",
+    "audioId": "161621",
+    "card": "Ещё рано."
+  },
+  "time-clock-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-clock-3",
+    "sentenceId": "938733",
+    "audioId": "744919",
+    "card": "Слишком поздно."
+  },
+  "time-clock-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-clock-4",
+    "sentenceId": "2496029",
+    "audioId": "928107",
+    "card": "Подожди минутку."
+  },
+  "time-listen-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-listen-0",
+    "sentenceId": "2484233",
+    "audioId": "928081",
+    "card": "Сейчас утро."
+  },
+  "time-listen-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-listen-1",
+    "sentenceId": "4521376",
+    "audioId": "679306",
+    "card": "Уже одиннадцать."
+  },
+  "time-listen-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-listen-2",
+    "sentenceId": "13249339",
+    "audioId": "1264505",
+    "card": "Вы пришли поздно."
+  },
+  "time-listen-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-listen-3",
+    "sentenceId": "2010844",
+    "audioId": "92681",
+    "card": "Ты рано."
+  },
+  "time-listen-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "time-listen-4",
+    "sentenceId": "380964",
+    "audioId": "31035",
+    "card": "Почини часы."
+  },
+  "talk-mood-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-mood-0",
+    "sentenceId": "2900081",
+    "audioId": "171798",
+    "card": "Как ты?"
+  },
+  "talk-mood-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-mood-1",
+    "sentenceId": "2501393",
+    "audioId": "140170",
+    "card": "Я рад."
+  },
+  "talk-mood-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-mood-2",
+    "sentenceId": "2651902",
+    "audioId": "161568",
+    "card": "Я устал!"
+  },
+  "talk-mood-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-mood-3",
+    "sentenceId": "378056",
+    "audioId": "30245",
+    "card": "Мне скучно."
+  },
+  "talk-mood-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-mood-4",
+    "sentenceId": "3255958",
+    "audioId": "926487",
+    "card": "Ты ещё счастлив?"
+  },
+  "talk-likes-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-likes-0",
+    "sentenceId": "380943",
+    "audioId": "31018",
+    "card": "Мне нравится бейсбол."
+  },
+  "talk-likes-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-likes-1",
+    "sentenceId": "374368",
+    "audioId": "29547",
+    "card": "Я люблю ходить в кино."
+  },
+  "talk-likes-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-likes-2",
+    "sentenceId": "380005",
+    "audioId": "30814",
+    "card": "Какая там погода?"
+  },
+  "talk-likes-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-likes-3",
+    "sentenceId": "3274855",
+    "audioId": "926617",
+    "card": "Довольно холодно."
+  },
+  "talk-likes-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-likes-4",
+    "sentenceId": "12231670",
+    "audioId": "1264905",
+    "card": "Плохая погода, да?"
+  },
+  "talk-recall-0": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-recall-0",
+    "sentenceId": "1862793",
+    "audioId": "82321",
+    "card": "Вы устали?"
+  },
+  "talk-recall-1": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-recall-1",
+    "sentenceId": "2503997",
+    "audioId": "679217",
+    "card": "Вам не холодно?"
+  },
+  "talk-recall-2": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-recall-2",
+    "sentenceId": "1298844",
+    "audioId": "727722",
+    "card": "Идёт ли дождь?"
+  },
+  "talk-recall-3": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-recall-3",
+    "sentenceId": "13298544",
+    "audioId": "1271882",
+    "card": "Ему нравится шоколад."
+  },
+  "talk-recall-4": {
+    "status": "ok",
+    "detail": null,
+    "id": "talk-recall-4",
+    "sentenceId": "2055884",
+    "audioId": "99969",
+    "card": "Там жарко?"
+  }
+}

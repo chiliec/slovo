@@ -1,0 +1,662 @@
+{
+  "around-listen-0": {
+    "text": "Иди сюда.",
+    "expected": "Иди сюда.",
+    "lesson": "Here & there",
+    "score": 1
+  },
+  "around-listen-1": {
+    "text": "Иди туда.",
+    "expected": "Иди туда.",
+    "lesson": "Here & there",
+    "score": 1
+  },
+  "around-listen-2": {
+    "text": "Это здесь?",
+    "expected": "Это здесь?",
+    "lesson": "Here & there",
+    "score": 1
+  },
+  "around-listen-3": {
+    "text": "Станция близко.",
+    "expected": "Станция близко.",
+    "lesson": "Here & there",
+    "score": 1
+  },
+  "around-listen-4": {
+    "text": "Это далеко от тебя?",
+    "expected": "Это далеко от тебя?",
+    "lesson": "Here & there",
+    "score": 1
+  },
+  "around-transport-0": {
+    "text": "Возьмем такси.",
+    "expected": "Возьмём такси?",
+    "lesson": "Taxi, metro, train",
+    "score": 1
+  },
+  "around-transport-1": {
+    "text": "Где остановка?",
+    "expected": "Где остановка?",
+    "lesson": "Taxi, metro, train",
+    "score": 1
+  },
+  "around-transport-2": {
+    "text": "Почем билет?",
+    "expected": "Почём билет?",
+    "lesson": "Taxi, metro, train",
+    "score": 1
+  },
+  "around-transport-3": {
+    "text": "Я жду автобуса.",
+    "expected": "Я жду автобуса.",
+    "lesson": "Taxi, metro, train",
+    "score": 1
+  },
+  "around-transport-4": {
+    "text": "Это не наш поезд.",
+    "expected": "Это не наш поезд.",
+    "lesson": "Taxi, metro, train",
+    "score": 1
+  },
+  "around-where-0": {
+    "text": "Где вход?",
+    "expected": "Где вход?",
+    "lesson": "Where is it?",
+    "score": 1
+  },
+  "around-where-1": {
+    "text": "Где лифт?",
+    "expected": "Где лифт?",
+    "lesson": "Where is it?",
+    "score": 1
+  },
+  "around-where-2": {
+    "text": "Где дверь?",
+    "expected": "Где дверь?",
+    "lesson": "Where is it?",
+    "score": 1
+  },
+  "around-where-3": {
+    "text": "Где музей?",
+    "expected": "Где музей?",
+    "lesson": "Where is it?",
+    "score": 1
+  },
+  "around-where-4": {
+    "text": "Это вокзал?",
+    "expected": "Это вокзал?",
+    "lesson": "Where is it?",
+    "score": 1
+  },
+  "basics-listen-0": {
+    "text": "Да, я знаю.",
+    "expected": "Да, я знаю.",
+    "lesson": "Listen & respond",
+    "score": 1
+  },
+  "basics-listen-1": {
+    "text": "не беспокойся",
+    "expected": "Не беспокойся.",
+    "lesson": "Listen & respond",
+    "score": 1
+  },
+  "basics-listen-2": {
+    "text": "Иди медленнее.",
+    "expected": "Иди медленнее.",
+    "lesson": "Listen & respond",
+    "score": 1
+  },
+  "basics-polite-0": {
+    "text": "Спасибо!",
+    "expected": "Спасибо!",
+    "lesson": "Please & thank you",
+    "score": 1
+  },
+  "basics-polite-1": {
+    "text": "Пожалуйста.",
+    "expected": "Пожалуйста.",
+    "lesson": "Please & thank you",
+    "score": 1
+  },
+  "basics-polite-2": {
+    "text": "извините",
+    "expected": "Извините.",
+    "lesson": "Please & thank you",
+    "score": 1
+  },
+  "basics-polite-3": {
+    "text": "Прости меня, пожалуйста.",
+    "expected": "Прости меня, пожалуйста.",
+    "lesson": "Please & thank you",
+    "score": 1
+  },
+  "basics-polite-4": {
+    "text": "Конечно.",
+    "expected": "Конечно.",
+    "lesson": "Please & thank you",
+    "score": 1
+  },
+  "basics-understand-0": {
+    "text": "Я не понимаю.",
+    "expected": "Я не понимаю.",
+    "lesson": "Do you understand?",
+    "score": 1
+  },
+  "basics-understand-1": {
+    "text": "Что это?",
+    "expected": "Что это?",
+    "lesson": "Do you understand?",
+    "score": 1
+  },
+  "basics-understand-2": {
+    "text": "Что ты делаешь?",
+    "expected": "Что ты делаешь?",
+    "lesson": "Do you understand?",
+    "score": 1
+  },
+  "basics-understand-3": {
+    "text": "Ты уверен?",
+    "expected": "Ты уверен?",
+    "lesson": "Do you understand?",
+    "score": 1
+  },
+  "basics-understand-4": {
+    "text": "Ладно.",
+    "expected": "Ладно.",
+    "lesson": "Do you understand?",
+    "score": 1
+  },
+  "cafe-food-0": {
+    "text": "Мне рыба, пожалуйста.",
+    "expected": "Мне рыбу, пожалуйста.",
+    "lesson": "Ordering food",
+    "score": 0.947
+  },
+  "cafe-food-1": {
+    "text": "Дайте, пожалуйста, стакан воды.",
+    "expected": "Дайте, пожалуйста, стакан воды.",
+    "lesson": "Ordering food",
+    "score": 1
+  },
+  "cafe-food-2": {
+    "text": "Я вам счет сейчас принесу.",
+    "expected": "Я Вам счёт сейчас принесу.",
+    "lesson": "Ordering food",
+    "score": 1
+  },
+  "cafe-food-3": {
+    "text": "Он заказал пиво.",
+    "expected": "Он заказал пиво.",
+    "lesson": "Ordering food",
+    "score": 1
+  },
+  "cafe-order-0": {
+    "text": "Кофе, пожалуйста.",
+    "expected": "Кофе, пожалуйста.",
+    "lesson": "Ordering drinks",
+    "score": 1
+  },
+  "cafe-order-1": {
+    "text": "Мне, пожалуйста, чашку кофе.",
+    "expected": "Мне, пожалуйста, чашку кофе.",
+    "lesson": "Ordering drinks",
+    "score": 1
+  },
+  "cafe-order-2": {
+    "text": "мне часть лимона пожалуйста",
+    "expected": "Мне чай с лимоном, пожалуйста.",
+    "lesson": "Ordering drinks",
+    "score": 0.821
+  },
+  "cafe-order-3": {
+    "text": "Воды, пожалуйста.",
+    "expected": "Воды, пожалуйста.",
+    "lesson": "Ordering drinks",
+    "score": 1
+  },
+  "cafe-order-4": {
+    "text": "Еще кофе, пожалуйста.",
+    "expected": "Ещё кофе, пожалуйста.",
+    "lesson": "Ordering drinks",
+    "score": 1
+  },
+  "cafe-recall-0": {
+    "text": "Я заказал два гамбургера.",
+    "expected": "Я заказал два гамбургера.",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "cafe-recall-1": {
+    "text": "Сколько за вход?",
+    "expected": "Сколько за вход?",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "cafe-recall-2": {
+    "text": "садитесь пожалуйста",
+    "expected": "Садитесь, пожалуйста.",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "greet-hello-0": {
+    "text": "Привет!",
+    "expected": "Привет!",
+    "lesson": "Hello & goodbye",
+    "score": 1
+  },
+  "greet-hello-1": {
+    "text": "Доброе утро!",
+    "expected": "Доброе утро!",
+    "lesson": "Hello & goodbye",
+    "score": 1
+  },
+  "greet-hello-2": {
+    "text": "Добро пожаловать!",
+    "expected": "Добро пожаловать!",
+    "lesson": "Hello & goodbye",
+    "score": 1
+  },
+  "greet-hello-3": {
+    "text": "Увидимся!",
+    "expected": "Увидимся.",
+    "lesson": "Hello & goodbye",
+    "score": 1
+  },
+  "greet-hello-4": {
+    "text": "Пока, Том.",
+    "expected": "Пока, Том.",
+    "lesson": "Hello & goodbye",
+    "score": 1
+  },
+  "greet-intro-0": {
+    "text": "Как вас зовут?",
+    "expected": "Как Вас зовут?",
+    "lesson": "Introducing yourself",
+    "score": 1
+  },
+  "greet-intro-1": {
+    "text": "Меня зовут Кирилл. Рад познакомиться.",
+    "expected": "Меня зовут Кирилл, рад познакомиться.",
+    "lesson": "Introducing yourself",
+    "score": 1
+  },
+  "greet-intro-2": {
+    "text": "Как дела?",
+    "expected": "Как дела?",
+    "lesson": "Introducing yourself",
+    "score": 1
+  },
+  "greet-intro-3": {
+    "text": "Все хорошо.",
+    "expected": "Всё хорошо.",
+    "lesson": "Introducing yourself",
+    "score": 1
+  },
+  "greet-listen-0": {
+    "text": "Спокойной ночи, мама.",
+    "expected": "Спокойной ночи, мама.",
+    "lesson": "Catch the greeting",
+    "score": 1
+  },
+  "greet-listen-1": {
+    "text": "Привет! Меня зовут Башир.",
+    "expected": "Привет! Меня зовут Башир.",
+    "lesson": "Catch the greeting",
+    "score": 1
+  },
+  "greet-listen-2": {
+    "text": "Завтра увидимся.",
+    "expected": "Завтра увидимся.",
+    "lesson": "Catch the greeting",
+    "score": 1
+  },
+  "numbers-clock-0": {
+    "text": "я встаю в 6 часов почти каждый день",
+    "expected": "Я встаю в шесть часов почти каждый день.",
+    "lesson": "Numbers in context: time",
+    "score": 1
+  },
+  "numbers-clock-1": {
+    "text": "Тогда я обычно вставал в 5 утра.",
+    "expected": "Тогда я обычно вставала в пять утра.",
+    "lesson": "Numbers in context: time",
+    "score": 0.969
+  },
+  "numbers-clock-2": {
+    "text": "В Лондоне сейчас 7.",
+    "expected": "В Лондоне сейчас семь.",
+    "lesson": "Numbers in context: time",
+    "score": 1
+  },
+  "numbers-clock-3": {
+    "text": "Самолет вылетает в 8 часов утра.",
+    "expected": "Самолёт вылетает в восемь часов утра.",
+    "lesson": "Numbers in context: time",
+    "score": 1
+  },
+  "numbers-clock-4": {
+    "text": "Мы начнем завтра в 9 часов.",
+    "expected": "Мы начнём завтра в девять часов.",
+    "lesson": "Numbers in context: time",
+    "score": 1
+  },
+  "numbers-count-0": {
+    "text": "в моей семье четыре человека",
+    "expected": "В моей семье четыре человека.",
+    "lesson": "Numbers in context: counting",
+    "score": 1
+  },
+  "numbers-count-1": {
+    "text": "Билл старше меня на два года.",
+    "expected": "Билл старше меня на два года.",
+    "lesson": "Numbers in context: counting",
+    "score": 1
+  },
+  "numbers-count-2": {
+    "text": "Он старше меня на три года.",
+    "expected": "Он старше меня на три года.",
+    "lesson": "Numbers in context: counting",
+    "score": 1
+  },
+  "numbers-count-3": {
+    "text": "Ее часы отстают на 10 минут.",
+    "expected": "Её часы отстают на десять минут.",
+    "lesson": "Numbers in context: counting",
+    "score": 1
+  },
+  "numbers-math-0": {
+    "text": "2+2 это сколько?",
+    "expected": "Два плюс два — это сколько?",
+    "lesson": "Simple arithmetic",
+    "score": 1
+  },
+  "numbers-math-1": {
+    "text": "6 + 2 = 8",
+    "expected": "Шесть плюс два — восемь.",
+    "lesson": "Simple arithmetic",
+    "score": 1
+  },
+  "numbers-math-2": {
+    "text": "5 и 5 это сколько?",
+    "expected": "Пять и пять — это сколько?",
+    "lesson": "Simple arithmetic",
+    "score": 1
+  },
+  "numbers-math-3": {
+    "text": "2 в квадрате 4",
+    "expected": "Два в квадрате — четыре.",
+    "lesson": "Simple arithmetic",
+    "score": 1
+  },
+  "shop-pay-0": {
+    "text": "Я покупаю.",
+    "expected": "Я покупаю.",
+    "lesson": "Buying & paying",
+    "score": 1
+  },
+  "shop-pay-1": {
+    "text": "И, ай, я куплю.",
+    "expected": "Я её куплю.",
+    "lesson": "Buying & paying",
+    "score": 0.583
+  },
+  "shop-pay-2": {
+    "text": "Я уже заплатил.",
+    "expected": "Я уже заплатил.",
+    "lesson": "Buying & paying",
+    "score": 1
+  },
+  "shop-pay-3": {
+    "text": "Дайте мне эту книгу.",
+    "expected": "Дайте мне ту книгу.",
+    "lesson": "Buying & paying",
+    "score": 0.947
+  },
+  "shop-pay-4": {
+    "text": "Не покупай его.",
+    "expected": "Не покупай его.",
+    "lesson": "Buying & paying",
+    "score": 1
+  },
+  "shop-prices-0": {
+    "text": "Сколько?",
+    "expected": "Сколько?",
+    "lesson": "How much?",
+    "score": 1
+  },
+  "shop-prices-1": {
+    "text": "Сколько всего?",
+    "expected": "Сколько всего?",
+    "lesson": "How much?",
+    "score": 1
+  },
+  "shop-prices-2": {
+    "text": "Почем эта шапка?",
+    "expected": "Почём эта шапка?",
+    "lesson": "How much?",
+    "score": 1
+  },
+  "shop-prices-3": {
+    "text": "Это слишком дорого.",
+    "expected": "Это слишком дорого!",
+    "lesson": "How much?",
+    "score": 1
+  },
+  "shop-prices-4": {
+    "text": "Сколько ты заплатил?",
+    "expected": "Сколько ты заплатил?",
+    "lesson": "How much?",
+    "score": 1
+  },
+  "shop-recall-0": {
+    "text": "Сколько за ящик?",
+    "expected": "Сколько за ящик?",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "shop-recall-1": {
+    "text": "Почем этот фотоаппарат?",
+    "expected": "Почём этот фотоаппарат?",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "shop-recall-2": {
+    "text": "Кто заплатил?",
+    "expected": "Кто заплатил?",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "shop-recall-3": {
+    "text": "«Ты вернул свои деньги?»",
+    "expected": "Ты вернул свои деньги?",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "shop-recall-4": {
+    "text": "Том считает деньги.",
+    "expected": "Том считает деньги.",
+    "lesson": "Say it in Russian",
+    "score": 1
+  },
+  "talk-likes-0": {
+    "text": "Мне нравится бейсбол.",
+    "expected": "Мне нравится бейсбол.",
+    "lesson": "Likes & weather",
+    "score": 1
+  },
+  "talk-likes-1": {
+    "text": "Я люблю ходить в кино.",
+    "expected": "Я люблю ходить в кино.",
+    "lesson": "Likes & weather",
+    "score": 1
+  },
+  "talk-likes-2": {
+    "text": "Какая там погода?",
+    "expected": "Какая там погода?",
+    "lesson": "Likes & weather",
+    "score": 1
+  },
+  "talk-likes-3": {
+    "text": "Довольно холодно.",
+    "expected": "Довольно холодно.",
+    "lesson": "Likes & weather",
+    "score": 1
+  },
+  "talk-likes-4": {
+    "text": "Плохая погода, да?",
+    "expected": "Плохая погода, да?",
+    "lesson": "Likes & weather",
+    "score": 1
+  },
+  "talk-mood-0": {
+    "text": "Как ты?",
+    "expected": "Как ты?",
+    "lesson": "How are you?",
+    "score": 1
+  },
+  "talk-mood-1": {
+    "text": "Я рад.",
+    "expected": "Я рад.",
+    "lesson": "How are you?",
+    "score": 1
+  },
+  "talk-mood-2": {
+    "text": "Я устал.",
+    "expected": "Я устал!",
+    "lesson": "How are you?",
+    "score": 1
+  },
+  "talk-mood-3": {
+    "text": "Мне скучно.",
+    "expected": "Мне скучно.",
+    "lesson": "How are you?",
+    "score": 1
+  },
+  "talk-mood-4": {
+    "text": "Ты еще счастлив?",
+    "expected": "Ты ещё счастлив?",
+    "lesson": "How are you?",
+    "score": 1
+  },
+  "talk-recall-0": {
+    "text": "Вы устали?",
+    "expected": "Вы устали?",
+    "lesson": "Say how you feel",
+    "score": 1
+  },
+  "talk-recall-1": {
+    "text": "Вам не холодно?",
+    "expected": "Вам не холодно?",
+    "lesson": "Say how you feel",
+    "score": 1
+  },
+  "talk-recall-2": {
+    "text": "Идет ли дождь?",
+    "expected": "Идёт ли дождь?",
+    "lesson": "Say how you feel",
+    "score": 1
+  },
+  "talk-recall-3": {
+    "text": "Ему нравится шоколад.",
+    "expected": "Ему нравится шоколад.",
+    "lesson": "Say how you feel",
+    "score": 1
+  },
+  "talk-recall-4": {
+    "text": "Там жарко.",
+    "expected": "Там жарко?",
+    "lesson": "Say how you feel",
+    "score": 1
+  },
+  "time-clock-0": {
+    "text": "Уже 11 часов.",
+    "expected": "Уже 11 часов.",
+    "lesson": "What time?",
+    "score": 1
+  },
+  "time-clock-1": {
+    "text": "Уже 7.",
+    "expected": "Уже семь.",
+    "lesson": "What time?",
+    "score": 1
+  },
+  "time-clock-2": {
+    "text": "Еще рано.",
+    "expected": "Ещё рано.",
+    "lesson": "What time?",
+    "score": 1
+  },
+  "time-clock-3": {
+    "text": "Слишком поздно.",
+    "expected": "Слишком поздно.",
+    "lesson": "What time?",
+    "score": 1
+  },
+  "time-clock-4": {
+    "text": "Подожди минутку.",
+    "expected": "Подожди минутку.",
+    "lesson": "What time?",
+    "score": 1
+  },
+  "time-days-0": {
+    "text": "Завтра я еду домой.",
+    "expected": "Завтра я еду домой.",
+    "lesson": "Today & tomorrow",
+    "score": 1
+  },
+  "time-days-1": {
+    "text": "Завтра воскресенье.",
+    "expected": "Завтра воскресенье.",
+    "lesson": "Today & tomorrow",
+    "score": 1
+  },
+  "time-days-2": {
+    "text": "Завтра суббота?",
+    "expected": "Завтра суббота?",
+    "lesson": "Today & tomorrow",
+    "score": 1
+  },
+  "time-days-3": {
+    "text": "Вчера был четверг.",
+    "expected": "Вчера был четверг.",
+    "lesson": "Today & tomorrow",
+    "score": 1
+  },
+  "time-days-4": {
+    "text": "Уже октябрь.",
+    "expected": "Уже октябрь.",
+    "lesson": "Today & tomorrow",
+    "score": 1
+  },
+  "time-listen-0": {
+    "text": "Сейчас утро.",
+    "expected": "Сейчас утро.",
+    "lesson": "Catch the time",
+    "score": 1
+  },
+  "time-listen-1": {
+    "text": "Уже 11.",
+    "expected": "Уже одиннадцать.",
+    "lesson": "Catch the time",
+    "score": 1
+  },
+  "time-listen-2": {
+    "text": "Вы пришли поздно.",
+    "expected": "Вы пришли поздно.",
+    "lesson": "Catch the time",
+    "score": 1
+  },
+  "time-listen-3": {
+    "text": "Ты рана.",
+    "expected": "Ты рано.",
+    "lesson": "Catch the time",
+    "score": 0.857
+  },
+  "time-listen-4": {
+    "text": "Почини часы.",
+    "expected": "Почини часы.",
+    "lesson": "Catch the time",
+    "score": 1
+  }
+}
