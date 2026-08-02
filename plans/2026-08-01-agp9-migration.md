@@ -57,10 +57,42 @@ Moved to `tasks.withType<Test>().configureEach { }`.
 
 ## Remaining debt
 
-- **The single-module layout is on borrowed time.** `android.newDsl=false`
-  re-enables the legacy variant API, which AGP says will be **removed in AGP
-  10.0**. Both flags already emit deprecation warnings. The module split is the
-  real fix and should happen on its own branch, not under release pressure.
+- **The single-module layout stays. The split is DEFERRED — do not start it.**
+  (Reassessed 2026-08-02.) The original reasoning was that `android.newDsl=false`
+  re-enables the legacy variant API, which AGP says is **removed in AGP 10.0**.
+  But see the next bullet: the calls into that API come from the **Kotlin Gradle
+  Plugin**, not from this build script. AGP cannot remove it in 10.0 without
+  breaking KGP, so either JetBrains ships a KGP targeting the new AGP DSL — which
+  may make this single-module layout work again with no split at all — or the
+  removal slips. Restructuring the Gradle build, the Xcode build phase, the
+  fastlane lanes and CI against a deadline that may dissolve is not worth it.
+  **Revisit when AGP 10 hits preview and KGP's status is visible.** The flags
+  emit deprecation warnings on every build, so this will not be forgotten.
+
+  Facts confirmed against the AGP 9.3.1 jar, for whenever it is picked up:
+  - `com.android.kotlin.multiplatform.library` ships, but the only KMP DSL types
+    are `KotlinMultiplatformAndroidLibraryExtension` / `...LibraryTarget`. There
+    is **no** `...multiplatform.application`, so a KMP module structurally cannot
+    produce an APK — a thin `com.android.application` module is mandatory, not a
+    stylistic choice.
+  - Source sets become `androidMain` / `androidHostTest` / `androidDeviceTest`.
+  - `withHostTest { isIncludeAndroidResources = true }` exists, so Robolectric
+    host tests can stay in the KMP module.
+  - **Blocker 1:** the extension has no `buildConfig`, no `defaultConfig` and no
+    build types, so `BuildInfo.android.kt`'s `actual val isDebugBuild =
+    BuildConfig.DEBUG` will not compile. Cleanest fix: drop the `expect/actual`
+    and make `isDebugBuild` an `AppModule` constructor property — `BuildConfig.DEBUG`
+    from the app module's `MainActivity`, `Platform.isDebugBinary` from
+    `MainViewController`. Only consumer is `YouScreen.kt:137`.
+  - **Blocker 2:** no build types means no `debug` source set, so the
+    `src/debug/AndroidManifest.xml` `ComponentActivity` declaration that the 21
+    Compose UI tests need has no home. Either an `androidHostTest` manifest is
+    honoured, or those tests move to the app module's `src/test/`.
+  - Keeping the `composeApp/` directory as the KMP library avoids path churn for
+    the 110 `.m4a` files, composeResources, `content-prep/*.mjs`, the docs and the
+    Xcode phase `:composeApp:embedAndSignAppleFrameworkForXcode`; only the
+    fastlane AAB path and the CI task would move. Renaming to `shared/` is
+    cleaner but a much larger diff. Undecided.
 - **The residual obsolete-API warnings are not ours.** `applicationVariants`,
   `testVariants` and `unitTestVariants` are called by the Kotlin Gradle Plugin's
   own Android integration (`KotlinAndroidPlugin` → `AndroidProjectHandler` →
