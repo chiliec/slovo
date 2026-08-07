@@ -19,6 +19,7 @@ import cx.viz.slovo.ui.theme.Slovo
 fun TypedQuestionContent(
     question: Question,
     header: String,
+    hearts: Int? = null,
     onPlay: (String) -> Unit,
     onContinue: (correct: Boolean) -> Unit,
 ) {
@@ -30,7 +31,10 @@ fun TypedQuestionContent(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text(header, color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text(header, color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
+                hearts?.let { HeartsRow(it) }
+            }
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
                 Column(
                     Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally,

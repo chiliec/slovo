@@ -1,8 +1,10 @@
 package cx.viz.slovo.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,6 +13,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +34,12 @@ import cx.viz.slovo.ui.theme.SlovoTheme
 
 @Composable
 fun App(module: AppModule) = SlovoTheme {
+    var showSplash by remember { mutableStateOf(true) }
+    var onboarded by remember { mutableStateOf(module.progress.userProfile().onboarded) }
+    Box(Modifier.fillMaxSize()) {
+    if (!onboarded) {
+        OnboardingScreen(module, onComplete = { onboarded = true })
+    } else {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val current = entry?.destination?.route
@@ -36,7 +47,7 @@ fun App(module: AppModule) = SlovoTheme {
         containerColor = Slovo.Sand,
         bottomBar = {
             if (current in bottomTabs.map { it.first.route }) {
-                Row(Modifier.fillMaxWidth().background(Slovo.Card).border(3.dp, Slovo.Ink)) {
+                Row(Modifier.fillMaxWidth().background(Slovo.Card).border(2.5.dp, Slovo.Ink)) {
                     bottomTabs.forEach { (dest, label) ->
                         val active = current == dest.route
                         Box(
@@ -76,7 +87,8 @@ fun App(module: AppModule) = SlovoTheme {
             }
             composable(Dest.Drill.route) { DrillScreen(module, onOpenLearn = { switchTab(nav, Dest.Learn.route) }) }
             composable(Dest.League.route) { LeagueScreen() }
-            composable(Dest.You.route) { YouScreen(module) }
+            composable(Dest.You.route) { YouScreen(module, onOpenSettings = { nav.navigate(Dest.Settings.route) }) }
+            composable(Dest.Settings.route) { SettingsScreen(module, onBack = { nav.popBackStack() }) }
             composable(Dest.Lesson.route) { back ->
                 LessonScreen(
                     module = module,
@@ -85,6 +97,15 @@ fun App(module: AppModule) = SlovoTheme {
                     onDone = { nav.popBackStack() },
                 )
             }
+        }
+    }
+    }
+
+        AnimatedVisibility(
+            visible = showSplash,
+            exit = slideOutVertically(tween(450)) { fullHeight -> -(fullHeight * 103 / 100) },
+        ) {
+            SplashScreen(onFinished = { showSplash = false })
         }
     }
 }

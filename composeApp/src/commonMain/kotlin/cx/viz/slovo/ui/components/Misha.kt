@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import cx.viz.slovo.domain.Hearts
 import cx.viz.slovo.ui.theme.Slovo
 
 /**
@@ -45,12 +46,12 @@ private fun HardShadow(modifier: Modifier, dx: Dp, dy: Dp, surface: @Composable 
 @Composable
 fun MishaCard(
     modifier: Modifier = Modifier,
-    shadow: Dp = 4.dp,
+    shadow: Dp = 3.dp,
     background: Color = Slovo.Card,
     content: @Composable BoxScope.() -> Unit,
 ) {
     HardShadow(modifier, shadow, shadow) {
-        Box(Modifier.background(background).border(3.dp, Slovo.Ink).padding(1.dp), content = content)
+        Box(Modifier.background(background).border(2.5.dp, Slovo.Ink).padding(1.dp), content = content)
     }
 }
 
@@ -59,6 +60,7 @@ fun MishaButton(
     text: String,
     modifier: Modifier = Modifier,
     background: Color = Slovo.Red,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     var pressed by remember { mutableStateOf(false) }
@@ -67,12 +69,10 @@ fun MishaButton(
         Box(
             Modifier
                 .offset(offset, offset)
-                .background(background)
-                .border(3.dp, Slovo.Ink)
-                .clickable {
-                    pressed = true
-                    onClick()
-                    pressed = false
+                .background(if (enabled) background else background.copy(alpha = 0.4f))
+                .border(2.5.dp, Slovo.Ink)
+                .let {
+                    if (enabled) it.clickable { pressed = true; onClick(); pressed = false } else it
                 }
                 .padding(horizontal = 20.dp, vertical = 12.dp),
             contentAlignment = Alignment.Center,
@@ -99,6 +99,32 @@ fun MishaStatChip(
 }
 
 @Composable
+fun HeartsRow(hearts: Int, modifier: Modifier = Modifier, max: Int = Hearts.MAX) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        repeat(max) { i ->
+            Text("♥", color = Slovo.Red.copy(alpha = if (i < hearts) 1f else 0.18f),
+                 style = MaterialTheme.typography.titleMedium)
+        }
+    }
+}
+
+/** Shared quiz-step header: position + hearts on top, an animated progress bar below. */
+@Composable
+fun QuizHeader(index: Int, total: Int, hearts: Int, modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Text("${index + 1} / $total", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
+            HeartsRow(hearts)
+        }
+        Spacer(Modifier.height(6.dp))
+        val fraction by animateFloatAsState(if (total == 0) 0f else (index + 1f) / total, animationSpec = tween(400))
+        Box(Modifier.fillMaxWidth().height(6.dp).background(Slovo.Card).border(1.dp, Slovo.Ink)) {
+            Box(Modifier.fillMaxHeight().fillMaxWidth(fraction).background(Slovo.Blue))
+        }
+    }
+}
+
+@Composable
 fun MishaTicker(text: String, modifier: Modifier = Modifier) {
     val transition = rememberInfiniteTransition()
     val shift by transition.animateFloat(
@@ -108,7 +134,7 @@ fun MishaTicker(text: String, modifier: Modifier = Modifier) {
         modifier
             .fillMaxWidth()
             .background(Slovo.Yellow)
-            .border(width = 3.dp, color = Slovo.Ink)
+            .border(width = 2.5.dp, color = Slovo.Ink)
             .clipToBounds()
             .padding(vertical = 6.dp),
     ) {
@@ -138,7 +164,7 @@ fun LessonRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Box(Modifier.background(Slovo.Yellow)
-                .border(3.dp, Slovo.Ink).padding(horizontal = 10.dp, vertical = 6.dp)) {
+                .border(2.dp, Slovo.Ink).padding(horizontal = 10.dp, vertical = 6.dp)) {
                 Text(index.toString().padStart(2, '0'), color = Slovo.Ink,
                      style = MaterialTheme.typography.labelSmall)
             }

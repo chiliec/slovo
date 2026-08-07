@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFF6EA}
+a{color:#4353FF}a:hover{color:#2B2356}
+@keyframes kf-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes kf-pulse{0%,100%{box-shadow:0 4px 0 #2B2356,0 0 0 0 rgba(255,201,49,.55)}50%{box-shadow:0 4px 0 #2B2356,0 0 0 12px rgba(255,201,49,0)}}
+@keyframes kf-shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes kf-sheet{from{transform:translateY(105%)}to{transform:translateY(0)}}
+@keyframes kf-pop{0%{transform:scale(.4)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes kf-bar{0%,100%{height:9px}50%{height:26px}}
+@keyframes kf-twinkle{0%,100%{opacity:.2;transform:rotate(45deg) scale(.8)}50%{opacity:1;transform:rotate(45deg) scale(1.15)}}
+</style>
+</helmet>
+<div style="height:100%;display:flex;flex-direction:column;background:#FFF6EA;font-family:'Baloo 2',system-ui;color:#2B2356;overflow:hidden;box-sizing:border-box;position:relative">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Home" style="flex:1;overflow:hidden;padding:{{ padHome }};display:flex;flex-direction:column;gap:13px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div style="display:flex;align-items:center;gap:8px;background:#fff;border:2.5px solid #2B2356;border-radius:999px;padding:5px 14px 5px 10px;box-shadow:0 3px 0 #2B2356">
+      <div style="width:15px;height:15px;background:#FF6B5E;border-radius:50% 0 50% 50%;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center"><div style="width:6px;height:6px;background:#FFC531;border-radius:50% 0 50% 50%"></div></div>
+      <span style="font-weight:800;font-size:15px;color:#2B2356">12</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:#fff;border:2.5px solid #2B2356;border-radius:999px;padding:5px 14px 5px 10px;box-shadow:0 3px 0 #2B2356">
+      <div style="width:12px;height:12px;background:#FFC531;border:2px solid #2B2356;transform:rotate(45deg)"></div>
+      <span style="font-weight:800;font-size:15px;color:#2B2356">{{ xp }} XP</span>
+    </div>
+    <div style="width:38px;height:38px;border-radius:50%;background:#4353FF;border:2.5px solid #2B2356;box-shadow:0 3px 0 #2B2356;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px">S</div>
+  </div>
+  <div>
+    <div style="font-size:13px;font-weight:700;letter-spacing:1.5px;color:rgba(43,35,86,.5)">HEY SAM!</div>
+    <div style="font-size:25px;font-weight:800;color:#2B2356;line-height:1.1">{{ greeting }}</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:9px;background:#fff;border:2.5px solid #2B2356;border-radius:12px;box-shadow:0 3px 0 #2B2356;padding:7px 12px">
+    <span style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:rgba(43,35,86,.5)">DAILY ORBIT</span>
+    <div style="flex:1;height:10px;background:#F0E6D6;border:1.5px solid #2B2356;border-radius:99px;overflow:hidden"><div style="width:{{ goalPct }};height:100%;background:#FFC531;transition:width .5s"></div></div>
+    <span style="font-size:11px;font-weight:800">{{ goalText }}</span>
+  </div>
+  <div style="background:#4353FF;border:2.5px solid #2B2356;border-radius:24px;box-shadow:0 6px 0 #2B2356;padding:16px;position:relative;color:#fff">
+    <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:rgba(255,255,255,.7)">UNIT 2 · FOOD &amp; CAFÉS</div>
+    <div style="font-size:23px;font-weight:800;line-height:1.1;margin-top:2px">{{ nextTitle }}</div>
+    <div style="font-size:12.5px;font-weight:600;color:rgba(255,255,255,.75);margin-top:2px">{{ nextSub }}</div>
+    <div style="display:flex;gap:6px;margin:10px 0 12px">
+      <sc-for list="{{ pips }}" as="p" hint-placeholder-count="5">
+        <div style="width:24px;height:8px;border-radius:99px;background:{{ p.bg }}"></div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;top:10px;right:12px;width:92px;height:92px;animation:kf-float 3.2s ease-in-out infinite">
+      <svg viewBox="0 0 100 100" width="92" height="92">
+        <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+        <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+        <circle cx="50" cy="48" r="38" fill="rgba(255,255,255,.22)" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+        <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+        <path d="M44 62 Q50 66 56 62" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <sc-if value="{{ bubbles }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;top:-14px;left:-46px;background:#fff;border:2px solid #2B2356;border-radius:12px 12px 2px 12px;padding:3px 8px;font-size:11.5px;font-weight:800;color:#2B2356;white-space:nowrap">Привет!</div>
+      </sc-if>
+    </div>
+    <div onClick="{{ start }}" style="background:#FFC531;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:11px;text-align:center;font-size:15px;font-weight:800;color:#2B2356;letter-spacing:.5px;cursor:pointer" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">{{ ctaLabel }}</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-top:2px">
+    <div style="font-size:11.5px;font-weight:800;letter-spacing:2px;color:rgba(43,35,86,.45)">YOUR ORBIT</div>
+    <div style="flex:1;height:2px;background:rgba(43,35,86,.12);border-radius:2px"></div>
+  </div>
+  <div style="flex:1;position:relative;min-height:0">
+    <div style="position:absolute;left:50%;top:4px;bottom:4px;width:3px;background:rgba(43,35,86,.12);border-radius:3px;transform:translateX(-50%)"></div>
+    <div style="position:absolute;left:22%;top:18%;width:9px;height:9px;background:#FFC531;transform:rotate(45deg);border:2px solid #2B2356"></div>
+    <div style="position:absolute;right:16%;top:44%;width:7px;height:7px;background:#FF6B5E;transform:rotate(45deg);border:2px solid #2B2356"></div>
+    <div style="position:absolute;left:14%;bottom:12%;width:8px;height:8px;background:#4353FF;transform:rotate(45deg);border:2px solid #2B2356"></div>
+    <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:2px 0">
+      <div style="display:flex;justify-content:center;transform:translateX(-64px)">
+        <div style="width:48px;height:48px;border-radius:50%;background:#FF6B5E;border:2.5px solid #2B2356;box-shadow:0 4px 0 #2B2356;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px">✓</div>
+      </div>
+      <div style="display:flex;justify-content:center;transform:translateX(-8px)">
+        <div style="width:48px;height:48px;border-radius:50%;background:#FF6B5E;border:2.5px solid #2B2356;box-shadow:0 4px 0 #2B2356;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px">✓</div>
+      </div>
+      <div style="display:flex;justify-content:center;transform:translateX(52px)">
+        <sc-if value="{{ not3 }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ start }}" style="width:62px;height:62px;border-radius:50%;background:#FFC531;border:2.5px solid #2B2356;display:flex;align-items:center;justify-content:center;color:#2B2356;font-weight:800;font-size:22px;animation:kf-pulse 2s ease-out infinite;cursor:pointer">3</div>
+        </sc-if>
+        <sc-if value="{{ done3 }}" hint-placeholder-val="{{ false }}">
+          <div style="width:48px;height:48px;border-radius:50%;background:#FF6B5E;border:2.5px solid #2B2356;box-shadow:0 4px 0 #2B2356;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px">✓</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;justify-content:center;transform:translateX(10px)">
+        <sc-if value="{{ not3 }}" hint-placeholder-val="{{ true }}">
+          <div style="width:48px;height:48px;border-radius:50%;background:#F0E6D6;border:2.5px dashed rgba(43,35,86,.35);display:flex;align-items:center;justify-content:center;color:rgba(43,35,86,.35);font-weight:800;font-size:17px">4</div>
+        </sc-if>
+        <sc-if value="{{ done3 }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ start }}" style="width:62px;height:62px;border-radius:50%;background:#FFC531;border:2.5px solid #2B2356;display:flex;align-items:center;justify-content:center;color:#2B2356;font-weight:800;font-size:22px;animation:kf-pulse 2s ease-out infinite;cursor:pointer">4</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;justify-content:center;transform:translateX(-52px)">
+        <div style="width:48px;height:48px;border-radius:50%;background:#F0E6D6;border:2.5px dashed rgba(43,35,86,.35);display:flex;align-items:center;justify-content:center;color:rgba(43,35,86,.35);font-weight:800;font-size:17px">5</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="height:82px;background:#fff;border-top:2.5px solid #2B2356;display:flex;align-items:flex-start;padding:10px 14px 0;gap:6px">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+    <div style="background:#FF6B5E;border:2px solid #2B2356;border-radius:12px;padding:4px 14px;position:relative"><div style="width:16px;height:16px;border-radius:50%;background:#FFC531;border:2px solid #2B2356"></div><div style="position:absolute;left:2px;top:9px;width:24px;height:8px;border:2px solid #2B2356;border-radius:50%;transform:rotate(-18deg)"></div></div>
+    <span style="font-size:10.5px;font-weight:800;color:#2B2356">LEARN</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.4">
+    <div style="padding:6px 0;display:flex;align-items:center"><div style="width:5px;height:14px;background:#2B2356;border-radius:2px"></div><div style="width:14px;height:5px;background:#2B2356"></div><div style="width:5px;height:14px;background:#2B2356;border-radius:2px"></div></div>
+    <span style="font-size:10.5px;font-weight:800;color:#2B2356">DRILL</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.4">
+    <div style="padding:6px 0;display:flex;align-items:flex-end;gap:2px"><div style="width:6px;height:9px;background:#2B2356"></div><div style="width:6px;height:15px;background:#2B2356"></div><div style="width:6px;height:6px;background:#2B2356"></div></div>
+    <span style="font-size:10.5px;font-weight:800;color:#2B2356">LEAGUE</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.4">
+    <div style="padding:3px 0;display:flex;flex-direction:column;align-items:center"><div style="width:9px;height:9px;border-radius:50%;background:#2B2356"></div><div style="width:17px;height:8px;border-radius:8px 8px 0 0;background:#2B2356;margin-top:2px"></div></div>
+    <span style="font-size:10.5px;font-weight:800;color:#2B2356">YOU</span>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLesson }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Lesson" style="flex:1;display:flex;flex-direction:column;padding:{{ padLesson }};box-sizing:border-box;min-height:0">
+  <div style="display:flex;align-items:center;gap:12px;padding:6px 2px 16px">
+    <div onClick="{{ quit }}" style="width:30px;font-size:21px;font-weight:700;color:rgba(43,35,86,.4);cursor:pointer;line-height:1">{{ closeGlyph }}</div>
+    <div style="flex:1;height:16px;background:#fff;border:2.5px solid #2B2356;border-radius:99px;overflow:hidden">
+      <div style="height:100%;background:#FFC531;border-radius:99px;width:{{ progressPct }};transition:width .4s"></div>
+    </div>
+    <sc-if value="{{ isReviewing }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#FF6B5E;color:#fff;border:2px solid #2B2356;border-radius:999px;padding:2px 9px;font-size:10px;font-weight:800;letter-spacing:1px">REVIEW</div>
+    </sc-if>
+    <div style="display:flex;gap:4px">
+      <sc-for list="{{ hearts }}" as="h" hint-placeholder-count="3">
+        <svg viewBox="0 0 100 100" width="21" height="21"><path d="M50 86 C22 62 10 46 10 31 A21 21 0 0 1 50 20 A21 21 0 0 1 90 31 C90 46 78 62 50 86Z" fill="{{ h.fill }}" stroke="#2B2356" stroke-width="6"></path></svg>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ s0 }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;min-height:0">
+    <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">TRANSLATE THIS PHRASE</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <svg viewBox="0 0 100 100" width="58" height="58">
+        <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+        <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+        <circle cx="50" cy="48" r="38" fill="rgba(67,83,255,.08)" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+        <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+        <path d="M44 62 Q50 66 56 62" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <div style="background:#fff;border:2.5px solid #2B2356;border-radius:16px 16px 16px 4px;padding:10px 15px;font-size:19px;font-weight:800;box-shadow:0 3px 0 #2B2356">I want borscht</div>
+    </div>
+    <div style="background:#fff;border:2.5px dashed rgba(43,35,86,.35);border-radius:16px;min-height:66px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;align-content:center">
+      <sc-if value="{{ selEmpty }}" hint-placeholder-val="{{ true }}">
+        <span style="font-size:13px;font-weight:600;color:rgba(43,35,86,.35);padding-left:6px">Tap the words below…</span>
+      </sc-if>
+      <sc-for list="{{ ansChips }}" as="c" hint-placeholder-count="0">
+        <div onClick="{{ c.onTap }}" style="background:#4353FF;color:#fff;border:2.5px solid #2B2356;border-radius:12px;padding:6px 14px;font-size:16px;font-weight:700;box-shadow:0 3px 0 #2B2356;cursor:pointer">{{ c.w }}</div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:9px;justify-content:center;padding-top:6px">
+      <sc-for list="{{ bankChips }}" as="c" hint-placeholder-count="6">
+        <div onClick="{{ c.onTap }}" style="background:#fff;border:2.5px solid #2B2356;border-radius:12px;padding:7px 15px;font-size:16px;font-weight:700;cursor:pointer;opacity:{{ c.op }};box-shadow:{{ c.sh }}">{{ c.w }}</div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ s1 }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;min-height:0">
+    <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">PICK THE MEANING</div>
+    <div style="font-size:21px;font-weight:800;line-height:1.25">Which one means <span style="color:#4353FF">“I want tea”</span>?</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+      <sc-for list="{{ opts }}" as="o" hint-placeholder-count="3">
+        <div onClick="{{ o.onTap }}" style="background:{{ o.bg }};border:2.5px solid {{ o.border }};border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 0 #2B2356;cursor:pointer">
+          <div style="width:27px;height:27px;border-radius:8px;background:#FFF6EA;border:2px solid #2B2356;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0">{{ o.n }}</div>
+          <div style="font-size:18px;font-weight:700">{{ o.t }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;min-height:0">
+    <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">MATCH THE PAIRS</div>
+    <div style="font-size:13px;font-weight:600;color:rgba(43,35,86,.55);margin-top:-6px">Tap a Russian word, then its meaning. Mismatch costs a heart!</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;align-content:start;margin-top:4px">
+      <sc-for list="{{ pairChips }}" as="c" hint-placeholder-count="6">
+        <div onClick="{{ c.onTap }}" style="background:{{ c.bg }};border:2.5px solid {{ c.border }};color:{{ c.color }};border-radius:14px;padding:17px 8px;text-align:center;font-size:17px;font-weight:700;box-shadow:{{ c.sh }};cursor:pointer;animation:{{ c.anim }}">{{ c.w }}</div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;min-height:0;align-items:center">
+    <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF;align-self:flex-start">SAY IT OUT LOUD</div>
+    <div style="background:#fff;border:2.5px solid #2B2356;border-radius:18px;padding:15px 24px;box-shadow:0 4px 0 #2B2356;text-align:center;width:100%;box-sizing:border-box">
+      <div style="font-size:25px;font-weight:800">Я хочу борщ</div>
+      <div style="font-size:12.5px;font-weight:600;color:rgba(43,35,86,.5);margin-top:1px">ya khochu borshch</div>
+    </div>
+    <div style="position:relative;animation:kf-float 3.2s ease-in-out infinite;margin-top:4px">
+      <svg viewBox="0 0 100 100" width="106" height="106">
+        <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+        <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+        <circle cx="50" cy="48" r="38" fill="rgba(67,83,255,.08)" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+        <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+        <path d="M44 62 Q50 66 56 62" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <sc-if value="{{ bubbles }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;top:-8px;right:-52px;background:#fff;border:2px solid #2B2356;border-radius:12px 12px 12px 2px;padding:3px 9px;font-size:11.5px;font-weight:800;white-space:nowrap">Давай!</div>
+      </sc-if>
+    </div>
+    <div onClick="{{ mic }}" style="width:92px;height:92px;border-radius:50%;background:{{ micBg }};border:3px solid #2B2356;box-shadow:0 5px 0 #2B2356;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:2px" style-hover="transform:translateY(2px);box-shadow:0 3px 0 #2B2356">
+      <sc-if value="{{ notRec }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div style="width:16px;height:24px;background:#2B2356;border-radius:8px"></div>
+          <div style="width:28px;height:13px;border:3.5px solid #2B2356;border-top:none;border-radius:0 0 14px 14px;margin-top:-7px;box-sizing:border-box"></div>
+          <div style="width:3.5px;height:6px;background:#2B2356"></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ rec }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:4px;height:30px">
+          <div style="width:5px;background:#2B2356;border-radius:3px;animation:kf-bar .7s ease-in-out infinite"></div>
+          <div style="width:5px;background:#2B2356;border-radius:3px;animation:kf-bar .7s ease-in-out infinite;animation-delay:.12s"></div>
+          <div style="width:5px;background:#2B2356;border-radius:3px;animation:kf-bar .7s ease-in-out infinite;animation-delay:.24s"></div>
+          <div style="width:5px;background:#2B2356;border-radius:3px;animation:kf-bar .7s ease-in-out infinite;animation-delay:.36s"></div>
+          <div style="width:5px;background:#2B2356;border-radius:3px;animation:kf-bar .7s ease-in-out infinite;animation-delay:.48s"></div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:2px;color:rgba(43,35,86,.5)">{{ micLabel }}</div>
+    <div onClick="{{ skipSpeak }}" style="font-size:12px;font-weight:700;color:#4353FF;text-decoration:underline;cursor:pointer">CAN'T SPEAK RIGHT NOW</div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ showCheck }}" hint-placeholder-val="{{ true }}">
+    <div onClick="{{ check }}" style="background:{{ checkBg }};color:{{ checkColor }};box-shadow:{{ checkShadow }};border:2.5px solid #2B2356;border-radius:16px;padding:14px;text-align:center;font-weight:800;font-size:16px;letter-spacing:1px;cursor:pointer;margin:12px 0 18px">CHECK</div>
+  </sc-if>
+
+  <sc-if value="{{ fbShow }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;background:rgba(43,35,86,.25);display:flex;flex-direction:column;justify-content:flex-end;z-index:20">
+    <div style="background:{{ fbBg }};border-top:3px solid #2B2356;border-radius:24px 24px 0 0;padding:18px 18px 28px;animation:kf-sheet .3s cubic-bezier(.2,.9,.3,1.2)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;border-radius:50%;background:#fff;border:2.5px solid #2B2356;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:{{ fbIconColor }};animation:kf-pop .35s;flex-shrink:0">{{ fbIcon }}</div>
+        <div>
+          <div style="font-size:21px;font-weight:800;color:#fff">{{ fbTitle }}</div>
+          <div style="font-size:13.5px;font-weight:700;color:rgba(255,255,255,.9)">{{ fbSub }}</div>
+        </div>
+      </div>
+      <div onClick="{{ cont }}" style="margin-top:15px;background:#fff;border:2.5px solid #2B2356;border-radius:14px;box-shadow:0 4px 0 #2B2356;padding:12px;text-align:center;font-size:15px;font-weight:800;color:#2B2356;letter-spacing:.5px;cursor:pointer" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">{{ fbBtn }}</div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Mistake review" style="flex:1;display:flex;flex-direction:column;padding:{{ padLesson }};box-sizing:border-box;min-height:0">
+  <div style="display:flex;align-items:center;gap:12px;padding:6px 0 10px">
+    <div onClick="{{ quit }}" style="width:30px;font-size:21px;font-weight:700;color:rgba(43,35,86,.4);cursor:pointer;line-height:1">{{ closeGlyph }}</div>
+    <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#FF6B5E">MISTAKE REVIEW</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px;margin-top:4px">
+    <div style="flex:1">
+      <div style="font-size:25px;font-weight:800;line-height:1.1">{{ missedCount }} to patch up</div>
+      <div style="font-size:12.5px;font-weight:600;color:rgba(43,35,86,.55);margin-top:3px">Quick drill before your celebration</div>
+    </div>
+    <div style="position:relative;animation:kf-float 3.2s ease-in-out infinite">
+      <svg viewBox="0 0 100 100" width="72" height="72">
+        <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+        <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+        <circle cx="50" cy="48" r="38" fill="rgba(67,83,255,.08)" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+        <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+        <path d="M44 62 Q50 66 56 62" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <sc-if value="{{ bubbles }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;top:-12px;left:-58px;background:#fff;border:2px solid #2B2356;border-radius:12px 12px 2px 12px;padding:3px 8px;font-size:11px;font-weight:800;white-space:nowrap">Ничего!</div>
+      </sc-if>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:11px;margin-top:14px">
+    <sc-for list="{{ missedList }}" as="m" hint-placeholder-count="2">
+      <div style="background:#fff;border:2.5px solid #2B2356;border-radius:16px;box-shadow:0 4px 0 #2B2356;padding:13px 15px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:32px;height:32px;border-radius:50%;background:#4353FF;border:2px solid #2B2356;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
+            <div style="width:0;height:0;border-left:10px solid #fff;border-top:6px solid transparent;border-bottom:6px solid transparent;margin-left:3px"></div>
+          </div>
+          <div style="font-size:18px;font-weight:800">{{ m.ru }}</div>
+          <div style="margin-left:auto;font-size:12px;font-weight:700;color:rgba(43,35,86,.55)">{{ m.en }}</div>
+        </div>
+        <div style="display:flex;gap:16px;font-size:12.5px;font-weight:700;padding-left:42px;flex-wrap:wrap">
+          <span style="color:#FF6B5E;text-decoration:line-through">{{ m.wrong }}</span>
+          <span style="color:#3FBF7F">✓ {{ m.good }}</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="margin-top:auto;padding-bottom:18px;display:flex;flex-direction:column;gap:11px">
+    <div onClick="{{ drill }}" style="background:#FFC531;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:13px;text-align:center;font-size:15px;font-weight:800;letter-spacing:.5px;cursor:pointer" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">DRILL MISTAKES · +10 XP</div>
+    <div onClick="{{ skipReview }}" style="text-align:center;font-size:12.5px;font-weight:700;color:#4353FF;text-decoration:underline;cursor:pointer;padding:4px">Skip to celebration</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Celebration" style="flex:1;background:#4353FF;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;position:relative;overflow:hidden;padding:24px;box-sizing:border-box">
+  <div style="position:absolute;top:13%;left:12%;width:11px;height:11px;background:#FFC531;animation:kf-twinkle 1.8s ease-in-out infinite"></div>
+  <div style="position:absolute;top:9%;right:18%;width:8px;height:8px;background:#FFC531;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.5s"></div>
+  <div style="position:absolute;top:34%;right:8%;width:10px;height:10px;background:#FF6B5E;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.9s"></div>
+  <div style="position:absolute;bottom:26%;left:9%;width:9px;height:9px;background:#FF6B5E;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.3s"></div>
+  <div style="position:absolute;bottom:12%;right:14%;width:11px;height:11px;background:#FFC531;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.7s"></div>
+  <div style="position:absolute;top:52%;left:6%;width:7px;height:7px;background:#FFC531;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:1.1s"></div>
+  <div style="animation:kf-float 3s ease-in-out infinite">
+    <svg viewBox="0 0 100 100" width="132" height="132">
+      <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+      <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+      <circle cx="50" cy="48" r="38" fill="rgba(255,255,255,.22)" stroke="#2B2356" stroke-width="2.5"></circle>
+      <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+      <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+      <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+      <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+      <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+      <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+      <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+      <path d="M42 60 Q50 68 58 60" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </div>
+  <div style="text-align:center">
+    <div style="font-size:37px;font-weight:800;color:#FFC531;letter-spacing:1px;line-height:1">LIFTOFF!</div>
+    <div style="font-size:14.5px;font-weight:700;color:rgba(255,255,255,.85);margin-top:6px">Lesson 3 complete · Unit 2</div>
+  </div>
+  <div style="display:flex;gap:12px">
+    <div style="background:#fff;border:2.5px solid #2B2356;border-radius:16px;box-shadow:0 4px 0 #2B2356;padding:11px 20px;text-align:center;color:#2B2356;min-width:86px">
+      <div style="font-size:26px;font-weight:800;color:#4353FF;line-height:1.1">{{ xpGain }}</div>
+      <div style="font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:rgba(43,35,86,.5)">XP EARNED</div>
+    </div>
+    <div style="background:#fff;border:2.5px solid #2B2356;border-radius:16px;box-shadow:0 4px 0 #2B2356;padding:11px 20px;text-align:center;color:#2B2356;min-width:86px">
+      <div style="font-size:26px;font-weight:800;color:#FF6B5E;line-height:1.1">{{ accVal }}</div>
+      <div style="font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:rgba(43,35,86,.5)">ACCURACY</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 16px;font-size:12px;font-weight:800;letter-spacing:1px">
+    <div style="width:10px;height:10px;background:#FFC531;transform:rotate(45deg)"></div>
+    DAY 12 — STREAK SAFE
+  </div>
+  <div onClick="{{ finish }}" style="width:100%;max-width:270px;background:#FFC531;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:13px;text-align:center;font-weight:800;font-size:15px;color:#2B2356;letter-spacing:.5px;cursor:pointer;margin-top:4px" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">CONTINUE</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showSplash }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Splash" style="position:absolute;inset:0;z-index:40;background:#4353FF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transform:{{ splashT }};transition:transform .45s cubic-bezier(.55,0,.85,.4)">
+  <div style="position:absolute;top:15%;left:14%;width:8px;height:8px;background:#FFC531;transform:rotate(45deg);animation:kf-twinkle 1.8s ease-in-out infinite"></div>
+  <div style="position:absolute;top:24%;right:16%;width:6px;height:6px;background:#FFC531;transform:rotate(45deg);animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.6s"></div>
+  <div style="position:absolute;bottom:22%;left:20%;width:7px;height:7px;background:#FF6B5E;transform:rotate(45deg);animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.3s"></div>
+  <div style="animation:kf-float 3.2s ease-in-out infinite">
+    <svg viewBox="0 0 100 100" width="110" height="110">
+      <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+      <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+      <circle cx="50" cy="48" r="38" fill="rgba(255,255,255,.22)" stroke="#2B2356" stroke-width="2.5"></circle>
+      <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+      <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+      <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+      <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+      <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+      <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+      <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+      <path d="M44 62 Q50 66 56 62" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-weight:800;font-size:31px;color:#fff;letter-spacing:1px">SLOVO</span>
+    <div style="width:11px;height:11px;background:#FFC531;border:2px solid #2B2356;transform:rotate(45deg)"></div>
+  </div>
+  <div style="display:flex;gap:9px;position:absolute;bottom:44px">
+    <div style="width:9px;height:9px;background:#fff;transform:rotate(45deg);animation:kf-twinkle 1.2s ease-in-out infinite"></div>
+    <div style="width:9px;height:9px;background:#fff;transform:rotate(45deg);animation:kf-twinkle 1.2s ease-in-out infinite;animation-delay:.2s"></div>
+    <div style="width:9px;height:9px;background:#fff;transform:rotate(45deg);animation:kf-twinkle 1.2s ease-in-out infinite;animation-delay:.4s"></div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 402, &quot;height&quot;: 874}, &quot;platform&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;ios&quot;, &quot;android&quot;], &quot;default&quot;: &quot;ios&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Device&quot;}, &quot;bubbles&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Canvas&quot;}, &quot;dailyGoal&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 100, &quot;min&quot;: 50, &quot;max&quot;: 200, &quot;step&quot;: 50, &quot;unit&quot;: &quot;XP&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Gamification&quot;}}">
+class Component extends DCLogic {
+  state = { screen:'home', step:0, hearts:3, xp:240, done3:false, fb:null, mistakes:0,
+    sel:[], choice:null, mSel:null, mDone:[], mWrong:[], rec:false,
+    missed:[], reviewing:false, queue:[], qTotal:0, today:40, splash:true, splashOut:false };
+  PAIRS = [['хочу','want'],['чай','tea'],['кот','cat']];
+  componentDidMount(){
+    this._s1 = setTimeout(() => this.setState({ splashOut:true }), 1900);
+    this._s2 = setTimeout(() => this.setState({ splash:false }), 2400);
+  }
+  componentWillUnmount(){ clearTimeout(this._t); clearTimeout(this._t2); clearTimeout(this._s1); clearTimeout(this._s2); }
+  reset(){ return { sel:[], choice:null, mSel:null, mDone:[], mWrong:[], rec:false }; }
+  tapPair(key, pi, col){
+    const S = this.state;
+    if (S.fb || S.mDone.includes(key)) return;
+    if (S.mSel === key) return this.setState({ mSel:null });
+    if (S.mSel === null) return this.setState({ mSel:key });
+    const [ppi, pcol] = S.mSel.split('-').map(Number);
+    if (pcol === col) return this.setState({ mSel:key });
+    if (ppi === pi) {
+      const mDone = [...S.mDone, S.mSel, key];
+      this.setState({ mDone, mSel:null });
+      if (mDone.length === 6) this._t2 = setTimeout(() => this.setState({ fb:'ok' }), 450);
+    } else {
+      const P = this.PAIRS, ri = pcol === 0 ? ppi : pi;
+      const entry = { step:2, ru:P[ri][0], en:P[ri][1], wrong:(pcol === 1 ? P[ppi][1] : P[pi][1]), good:P[ri][1] };
+      this.setState(s => ({ mWrong:[s.mSel, key], mSel:null, hearts:Math.max(0, s.hearts-1), mistakes:s.mistakes+1,
+        missed: s.missed.some(m => m.ru === entry.ru) ? s.missed : [...s.missed, entry] }));
+      this._t2 = setTimeout(() => this.setState({ mWrong:[] }), 550);
+    }
+  }
+  renderVals(){
+    const S = this.state, plat = this.props.platform ?? 'ios', ios = plat !== 'android';
+    const BANK = ['хочу','кот','Я','чай','борщ','привет'];
+    const PAIRS = this.PAIRS;
+    const OPTS = ['Я хочу борщ','Я хочу чай','Я хочу кофе'];
+    const inLesson = S.screen === 'lesson', step = S.step;
+    const bankChips = BANK.map((w, i) => {
+      const used = S.sel.includes(i);
+      return { w, op: used ? '.25' : '1', sh: used ? 'none' : '0 3px 0 #2B2356',
+        onTap: () => { if (!used && !S.fb) this.setState(s => ({ sel:[...s.sel, i] })); } };
+    });
+    const ansChips = S.sel.map((bi, pos) => ({ w: BANK[bi],
+      onTap: () => { if (!S.fb) this.setState(s => ({ sel: s.sel.filter((_, j) => j !== pos) })); } }));
+    const opts = OPTS.map((t, i) => ({ t, n: i+1,
+      bg: S.choice === i ? '#E9EBFF' : '#fff', border: S.choice === i ? '#4353FF' : '#2B2356',
+      onTap: () => { if (!S.fb) this.setState({ choice:i }); } }));
+    const order = [[0,0],[1,1],[1,0],[2,1],[2,0],[0,1]];
+    const pairChips = order.map(([pi, col]) => {
+      const key = pi + '-' + col, w = PAIRS[pi][col];
+      const done = S.mDone.includes(key), sel = S.mSel === key, wrong = S.mWrong.includes(key);
+      return { w,
+        bg: done ? '#3FBF7F' : wrong ? '#FFE3DF' : sel ? '#E9EBFF' : '#fff',
+        border: done ? '#2B2356' : wrong ? '#FF6B5E' : sel ? '#4353FF' : '#2B2356',
+        color: done ? '#fff' : '#2B2356',
+        sh: done ? 'none' : '0 3px 0 #2B2356',
+        anim: wrong ? 'kf-shake .45s' : 'none',
+        onTap: () => this.tapPair(key, pi, col) };
+    });
+    const canCheck = step === 0 ? S.sel.length === 3 : step === 1 ? S.choice !== null : false;
+    const wrongAns = step === 0 ? 'Я хочу борщ' : 'Я хочу чай';
+    const goal = this.props.dailyGoal ?? 100;
+    return {
+      isHome: S.screen === 'home', isLesson: inLesson, isDone: S.screen === 'done',
+      showSplash: S.splash,
+      splashT: S.splashOut ? 'translateY(-103%)' : 'translateY(0)',
+      goalPct: Math.min(100, S.today / goal * 100) + '%',
+      goalText: S.today + '/' + goal + ' XP',
+      done3: S.done3, not3: !S.done3, xp: S.xp,
+      greeting: S.done3 ? 'Back in orbit!' : 'Ready for liftoff?',
+      nextTitle: S.done3 ? 'Numbers 1–20' : 'I want borscht',
+      nextSub: S.done3 ? 'Lesson 4 of 5 · Vocab' : 'Lesson 3 of 5 · Speaking',
+      ctaLabel: S.done3 ? 'START · +20 XP' : 'CONTINUE · +20 XP',
+      pips: [0,1,2,3,4].map(i => ({ bg: i < (S.done3 ? 3 : 2) ? '#FFC531' : 'rgba(255,255,255,.3)' })),
+      bubbles: this.props.bubbles ?? true,
+      padHome: ios ? '64px 18px 0' : '16px 18px 0',
+      padLesson: ios ? '58px 16px 0' : '14px 16px 0',
+      closeGlyph: ios ? '✕' : '←',
+      start: () => this.setState({ screen:'lesson', step:0, hearts:3, mistakes:0, fb:null, missed:[], reviewing:false, queue:[], qTotal:0, ...this.reset() }),
+      quit: () => this.setState({ screen:'home', fb:null, ...this.reset() }),
+      s0: inLesson && step === 0, s1: inLesson && step === 1,
+      s2: inLesson && step === 2, s3: inLesson && step === 3,
+      progressPct: (S.reviewing
+        ? (S.qTotal ? (S.qTotal - S.queue.length + (S.fb === 'ok' ? 1 : 0)) / S.qTotal * 100 : 0)
+        : (step + (S.fb === 'ok' ? 1 : 0)) / 4 * 100) + '%',
+      hearts: [0,1,2].map(i => ({ fill: i < S.hearts ? '#FF6B5E' : 'rgba(43,35,86,.18)' })),
+      bankChips, ansChips, selEmpty: S.sel.length === 0, opts, pairChips,
+      showCheck: inLesson && (step === 0 || step === 1),
+      checkBg: canCheck ? '#FFC531' : '#F0E6D6',
+      checkColor: canCheck ? '#2B2356' : 'rgba(43,35,86,.35)',
+      checkShadow: canCheck ? '0 4px 0 #2B2356' : 'none',
+      check: () => {
+        if (!canCheck || S.fb) return;
+        const ok = step === 0 ? S.sel.map(i => BANK[i]).join(' ') === 'Я хочу борщ' : S.choice === 1;
+        const entry = step === 0
+          ? { step:0, ru:'Я хочу борщ', en:'I want borscht', wrong:S.sel.map(i => BANK[i]).join(' '), good:'Я хочу борщ' }
+          : { step:1, ru:'Я хочу чай', en:'I want tea', wrong:OPTS[S.choice], good:'Я хочу чай' };
+        this.setState(s => ({ fb: ok ? 'ok' : 'no',
+          hearts: ok ? s.hearts : Math.max(0, s.hearts-1),
+          mistakes: ok ? s.mistakes : s.mistakes+1,
+          missed: (ok || s.missed.some(m => m.step === entry.step)) ? s.missed : [...s.missed, entry] }));
+      },
+      rec: S.rec, notRec: !S.rec,
+      micBg: S.rec ? '#FF6B5E' : '#FFC531',
+      micLabel: S.rec ? 'LISTENING…' : 'TAP TO SPEAK',
+      mic: () => {
+        if (S.rec || S.fb) return;
+        this.setState({ rec:true });
+        this._t = setTimeout(() => this.setState({ rec:false, fb:'ok' }), 1600);
+      },
+      skipSpeak: () => { if (!S.fb) this.setState({ fb:'ok' }); },
+      fbShow: !!S.fb,
+      fbBg: S.fb === 'ok' ? '#3FBF7F' : '#FF6B5E',
+      fbIcon: S.fb === 'ok' ? '✓' : '✕',
+      fbIconColor: S.fb === 'ok' ? '#3FBF7F' : '#FF6B5E',
+      fbTitle: S.fb === 'ok' ? 'NICE!' : 'OOPS!',
+      fbSub: S.fb === 'ok' ? '+5 XP' : 'Answer: ' + wrongAns,
+      fbBtn: S.fb === 'ok' ? 'CONTINUE' : 'GOT IT',
+      cont: () => {
+        if (S.fb === 'ok') {
+          if (S.reviewing) {
+            const q = S.queue.slice(1);
+            if (q.length) this.setState({ queue:q, step:q[0], fb:null, ...this.reset() });
+            else this.setState({ screen:'done', fb:null, ...this.reset() });
+          } else if (step < 3) this.setState({ step: step+1, fb:null, ...this.reset() });
+          else if (S.missed.length) this.setState({ screen:'review', fb:null, ...this.reset() });
+          else this.setState({ screen:'done', fb:null, ...this.reset() });
+        } else this.setState({ fb:null, ...this.reset() });
+      },
+      isReview: S.screen === 'review',
+      isReviewing: S.reviewing,
+      missedCount: S.missed.length,
+      missedList: S.missed,
+      drill: () => {
+        const q = [...new Set(S.missed.map(m => m.step))].sort();
+        this.setState({ screen:'lesson', reviewing:true, queue:q, qTotal:q.length, step:q[0], fb:null, ...this.reset() });
+      },
+      skipReview: () => this.setState({ screen:'done', fb:null, ...this.reset() }),
+      xpGain: S.reviewing ? '+30' : '+20',
+      accVal: Math.max(0, 100 - S.mistakes * 13) + '%',
+      finish: () => this.setState(s => { const g = s.reviewing ? 30 : 20; return { screen:'home', done3:true, xp: s.xp + g, today: s.today + g }; }),
+    };
+  }
+}
+</script>
+</body>
+</html>

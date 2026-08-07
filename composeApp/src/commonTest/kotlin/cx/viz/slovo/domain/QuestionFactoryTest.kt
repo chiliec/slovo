@@ -103,4 +103,36 @@ class QuestionFactoryTest {
         }
         assertTrue(checked, "no seed in 0..99 produced a PRODUCE question")
     }
+
+    @Test fun word_bank_chip_bank_contains_every_target_word_once() {
+        val q = QuestionFactory(Random(1)).buildWordBank(cards[0], cards)
+        assertEquals(QuestionMode.WORD_BANK, q.mode)
+        for (word in cards[0].english.split(" ")) assertEquals(1, q.options.count { it == word })
+    }
+
+    @Test fun word_bank_caps_chip_count_at_four() {
+        for (seed in 0 until 50) {
+            val q = QuestionFactory(Random(seed)).buildWordBank(cards[1], cards) // "thank you" — 2 target words
+            assertTrue(q.options.size in 2..4, "seed=$seed chip count ${q.options.size} out of range")
+        }
+    }
+
+    @Test fun pair_match_picks_three_distinct_cards() {
+        val q = QuestionFactory(Random(1)).buildPairMatch(cards)
+        assertEquals(QuestionMode.PAIR_MATCH, q.mode)
+        assertEquals(3, q.pairCards.size)
+        assertEquals(3, q.pairCards.map { it.id }.toSet().size)
+    }
+
+    @Test fun pair_match_caps_at_available_pool_size() {
+        val q = QuestionFactory(Random(1)).buildPairMatch(cards.take(2))
+        assertEquals(2, q.pairCards.size)
+    }
+
+    @Test fun speak_targets_the_given_card_with_its_audio() {
+        val q = QuestionFactory(Random(1)).buildSpeak(cards[2])
+        assertEquals(QuestionMode.SPEAK, q.mode)
+        assertEquals(cards[2], q.card)
+        assertEquals(cards[2].audio, q.audio)
+    }
 }

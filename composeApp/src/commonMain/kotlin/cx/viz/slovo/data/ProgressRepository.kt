@@ -1,6 +1,7 @@
 package cx.viz.slovo.data
 
 import cx.viz.slovo.db.SlovoDatabase
+import cx.viz.slovo.domain.AppSettings
 import cx.viz.slovo.domain.CardProgress
 import cx.viz.slovo.domain.MasteryCalculator
 import cx.viz.slovo.domain.ProfileStatsCalculator
@@ -8,6 +9,7 @@ import cx.viz.slovo.domain.ProfileSummary
 import cx.viz.slovo.domain.SrsScheduler
 import cx.viz.slovo.domain.SrsSnapshot
 import cx.viz.slovo.domain.StreakCalculator
+import cx.viz.slovo.domain.UserProfile
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.domain.XpCalculator
 
@@ -15,8 +17,10 @@ class ProgressRepository(private val db: SlovoDatabase) {
     private val cards = db.cardQueries
     private val lessons = db.lessonQueries
     private val statsQ = db.statsQueries
+    private val profileQ = db.userProfileQueries
+    private val settingsQ = db.settingsQueries
 
-    init { statsQ.initRow() }
+    init { statsQ.initRow(); profileQ.initRow(); settingsQ.initRow() }
 
     fun recordAnswer(cardId: String, correct: Boolean, todayEpochDay: Long) {
         cards.insertOrIgnore(cardId = cardId)
@@ -77,7 +81,21 @@ class ProgressRepository(private val db: SlovoDatabase) {
         lessons.selectAll().executeAsList().filter { it.completed == 1L }.map { it.lesson_id }.toSet()
 
     fun stats(): UserStats = statsQ.select().executeAsOne().let {
-        UserStats(xp = it.xp.toInt(), streakDays = it.streak_days.toInt(), lastActiveEpochDay = it.last_active_day)
+        UserStats(
+            xp = it.xp.toInt(), streakDays = it.streak_days.toInt(),
+            lastActiveEpochDay = it.last_active_day, streakFreezes = it.streak_freezes.toInt(),
+        )
+    }
+
+    /** Forgives one missed day: spends a freeze and rolls last-active forward so the streak survives. */
+    fun useStreakFreeze(todayEpochDay: Long): UserStats {
+        statsQ.useFreeze(day = todayEpochDay - 1)
+        return stats()
+    }
+
+    fun resetStreak(todayEpochDay: Long): UserStats {
+        statsQ.resetStreak(day = todayEpochDay)
+        return stats()
     }
 
     /** Awards drill XP on top of the current total; leaves streak and last-active day untouched. */
@@ -96,5 +114,35 @@ class ProgressRepository(private val db: SlovoDatabase) {
         val newXp = prev.xp + XpCalculator.sessionXp(correctCount)
         statsQ.update(xp = newXp.toLong(), streak = newStreak.toLong(), day = todayEpochDay)
         return stats()
+    }
+
+    fun userProfile(): UserProfile = profileQ.select().executeAsOne().let {
+        UserProfile(
+            goal = it.goal, level = it.level, dailyGoalMinutes = it.daily_goal_minutes.toInt(),
+            startUnitId = it.start_unit_id, onboarded = it.onboarded == 1L,
+        )
+    }
+
+    fun completeOnboarding(goal: String, level: String, dailyGoalMinutes: Int, startUnitId: String) {
+        profileQ.complete(
+            goal = goal, level = level,
+            dailyGoalMinutes = dailyGoalMinutes.toLong(), startUnitId = startUnitId,
+        )
+    }
+
+    fun settings(): AppSettings = settingsQ.select().executeAsOne().let {
+        AppSettings(
+            soundsEnabled = it.sounds_enabled == 1L,
+            hapticsEnabled = it.haptics_enabled == 1L,
+            notificationsEnabled = it.notifications_enabled == 1L,
+        )
+    }
+
+    fun updateSettings(settings: AppSettings) {
+        settingsQ.update(
+            sounds = if (settings.soundsEnabled) 1L else 0L,
+            haptics = if (settings.hapticsEnabled) 1L else 0L,
+            notifications = if (settings.notificationsEnabled) 1L else 0L,
+        )
     }
 }

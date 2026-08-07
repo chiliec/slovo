@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFF6EA}
+a{color:#4353FF}a:hover{color:#2B2356}
+@keyframes kf-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes kf-twinkle{0%,100%{opacity:.2;transform:rotate(45deg) scale(.8)}50%{opacity:1;transform:rotate(45deg) scale(1.15)}}
+@keyframes kf-spin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="height:100%;display:flex;flex-direction:column;background:#FFF6EA;font-family:'Baloo 2',system-ui;color:#2B2356;overflow:hidden;box-sizing:border-box;position:relative">
+
+<sc-if value="{{ s0 }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Welcome" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:64px 26px 34px;box-sizing:border-box;text-align:center">
+  <div style="position:relative;width:190px;height:190px;display:flex;align-items:center;justify-content:center">
+    <div style="position:absolute;inset:0;border:2.5px dashed rgba(43,35,86,.25);border-radius:50%;animation:kf-spin 24s linear infinite"></div>
+    <div style="position:absolute;top:-5px;left:50%;width:11px;height:11px;background:#FFC531;border:2px solid #2B2356;transform:rotate(45deg)"></div>
+    <div style="animation:kf-float 3.2s ease-in-out infinite">
+      <svg viewBox="0 0 100 100" width="140" height="140">
+        <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+        <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+        <circle cx="50" cy="48" r="38" fill="rgba(67,83,255,.08)" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+        <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+        <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+        <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+        <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+        <path d="M44 62 Q50 66 56 62" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <sc-if value="{{ bubbles }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;top:6px;right:-24px;background:#fff;border:2px solid #2B2356;border-radius:12px 12px 12px 2px;padding:3px 9px;font-size:11.5px;font-weight:800;white-space:nowrap">Привет!</div>
+      </sc-if>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:9px">
+    <div style="font-size:42px;font-weight:800;letter-spacing:1px;line-height:1">SLOVO</div>
+    <div style="width:13px;height:13px;background:#FFC531;border:2.5px solid #2B2356;transform:rotate(45deg)"></div>
+  </div>
+  <div style="font-size:14px;font-weight:700;color:rgba(43,35,86,.55);margin-top:-8px">Russian, but it's a game.</div>
+  <div style="display:flex;flex-direction:column;gap:11px;width:100%;max-width:300px;margin-top:10px">
+    <div onClick="{{ letsGo }}" style="background:#FFC531;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:14px;font-size:16px;font-weight:800;letter-spacing:.5px;cursor:pointer" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">LET'S GO</div>
+    <div style="font-size:12.5px;font-weight:700;color:#4353FF;text-decoration:underline;cursor:pointer;padding:5px">I already have an account</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showHeader }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:12px;padding:{{ padHead }};box-sizing:border-box">
+  <div onClick="{{ back }}" style="width:30px;font-size:22px;font-weight:700;color:rgba(43,35,86,.4);cursor:pointer;line-height:1">{{ backGlyph }}</div>
+  <div style="flex:1;height:16px;background:#fff;border:2.5px solid #2B2356;border-radius:99px;overflow:hidden">
+    <div style="height:100%;background:#FFC531;border-radius:99px;width:{{ progressPct }};transition:width .4s"></div>
+  </div>
+  <div style="width:30px"></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s1 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Goal pick" style="flex:1;display:flex;flex-direction:column;gap:14px;padding:14px 18px 0;box-sizing:border-box;min-height:0">
+  <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">MISSION BRIEFING · 1 OF 3</div>
+  <div style="font-size:24px;font-weight:800;line-height:1.15">Why Russian?</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ goals }}" as="o" hint-placeholder-count="5">
+      <div onClick="{{ o.onTap }}" style="background:{{ o.bg }};border:2.5px solid {{ o.border }};border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 0 #2B2356;cursor:pointer">
+        <div style="width:14px;height:14px;background:{{ o.c }};border:2px solid #2B2356;transform:rotate(45deg);flex-shrink:0"></div>
+        <div style="font-size:16px;font-weight:700">{{ o.t }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Level pick" style="flex:1;display:flex;flex-direction:column;gap:14px;padding:14px 18px 0;box-sizing:border-box;min-height:0">
+  <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">MISSION BRIEFING · 2 OF 3</div>
+  <div style="font-size:24px;font-weight:800;line-height:1.15">How much Russian do you know?</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ levels }}" as="o" hint-placeholder-count="4">
+      <div onClick="{{ o.onTap }}" style="background:{{ o.bg }};border:2.5px solid {{ o.border }};border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 0 #2B2356;cursor:pointer">
+        <div style="display:flex;gap:3px;flex-shrink:0;width:34px">
+          <sc-for list="{{ o.bars }}" as="b" hint-placeholder-count="4">
+            <div style="width:6px;height:16px;border-radius:3px;background:{{ b.bg }};border:1.5px solid #2B2356"></div>
+          </sc-for>
+        </div>
+        <div>
+          <div style="font-size:15.5px;font-weight:700;line-height:1.15">{{ o.t }}</div>
+          <div style="font-size:11px;font-weight:600;color:rgba(43,35,86,.5)">{{ o.sub }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Daily goal" style="flex:1;display:flex;flex-direction:column;gap:14px;padding:14px 18px 0;box-sizing:border-box;min-height:0">
+  <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">MISSION BRIEFING · 3 OF 3</div>
+  <div style="font-size:24px;font-weight:800;line-height:1.15">Pick your daily orbit</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ minsOpts }}" as="o" hint-placeholder-count="4">
+      <div onClick="{{ o.onTap }}" style="background:{{ o.bg }};border:2.5px solid {{ o.border }};border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 0 #2B2356;cursor:pointer">
+        <div style="width:52px;font-size:19px;font-weight:800;color:#4353FF;flex-shrink:0">{{ o.min }}</div>
+        <div style="flex:1;font-size:15.5px;font-weight:700">{{ o.t }}</div>
+        <div style="font-size:11px;font-weight:800;color:rgba(43,35,86,.5);letter-spacing:.5px">{{ o.xp }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ sQuiz }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Placement quiz" style="flex:1;display:flex;flex-direction:column;gap:14px;padding:14px 18px 0;box-sizing:border-box;min-height:0">
+  <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">PLACEMENT CHECK · {{ qNum }} OF 3</div>
+  <div style="font-size:23px;font-weight:800;line-height:1.2">{{ qText }}</div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
+    <sc-for list="{{ qOpts }}" as="o" hint-placeholder-count="3">
+      <div onClick="{{ o.onTap }}" style="background:{{ o.bg }};border:2.5px solid {{ o.border }};border-radius:14px;padding:13px 14px;font-size:16.5px;font-weight:700;box-shadow:0 3px 0 #2B2356;cursor:pointer;opacity:{{ o.op }}">{{ o.t }}</div>
+    </sc-for>
+  </div>
+  <div style="font-size:11.5px;font-weight:700;color:rgba(43,35,86,.45);margin-top:2px">No stress — this just picks your starting unit.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ sResult }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Placement result" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:14px 26px 0;box-sizing:border-box;text-align:center">
+  <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF">PLACEMENT RESULT</div>
+  <div style="width:112px;height:112px;border-radius:50%;background:#FFC531;border:3px solid #2B2356;box-shadow:0 5px 0 #2B2356;display:flex;flex-direction:column;align-items:center;justify-content:center">
+    <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:rgba(43,35,86,.55)">UNIT</div>
+    <div style="font-size:44px;font-weight:800;line-height:1">{{ resUnit }}</div>
+  </div>
+  <div>
+    <div style="font-size:24px;font-weight:800;line-height:1.15">{{ resTitle }}</div>
+    <div style="font-size:13px;font-weight:600;color:rgba(43,35,86,.55);margin-top:5px">{{ scoreLabel }} · {{ resSub }}</div>
+  </div>
+  <div onClick="{{ resCont }}" style="width:100%;max-width:300px;background:#FFC531;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:13px;font-size:15px;font-weight:800;letter-spacing:.5px;cursor:pointer;margin-top:8px" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">CONTINUE</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Streak commit" style="flex:1;display:flex;flex-direction:column;gap:15px;padding:14px 22px 0;box-sizing:border-box;min-height:0;align-items:center;text-align:center">
+  <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4353FF;margin-top:6px">ONE LAST THING</div>
+  <div style="font-size:24px;font-weight:800;line-height:1.15;max-width:280px">Streaks keep you in orbit</div>
+  <div style="font-size:13px;font-weight:600;color:rgba(43,35,86,.55);line-height:1.5;max-width:270px;margin-top:-6px">Learn every day to grow your streak. Miss a day and your comet fizzles out.</div>
+  <div style="display:flex;gap:9px;margin-top:8px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <div style="width:38px;height:38px;border-radius:50%;background:#FF6B5E;border:2.5px solid #2B2356;box-shadow:0 3px 0 #2B2356;display:flex;align-items:center;justify-content:center"><div style="width:13px;height:13px;background:#FFC531;border-radius:50% 0 50% 50%;transform:rotate(-45deg)"></div></div>
+      <span style="font-size:10px;font-weight:800;color:#FF6B5E">DAY 1</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <div style="width:38px;height:38px;border-radius:50%;background:#fff;border:2.5px dashed rgba(43,35,86,.35)"></div>
+      <span style="font-size:10px;font-weight:800;color:rgba(43,35,86,.4)">2</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <div style="width:38px;height:38px;border-radius:50%;background:#fff;border:2.5px dashed rgba(43,35,86,.35)"></div>
+      <span style="font-size:10px;font-weight:800;color:rgba(43,35,86,.4)">3</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <div style="width:38px;height:38px;border-radius:50%;background:#fff;border:2.5px dashed rgba(43,35,86,.35)"></div>
+      <span style="font-size:10px;font-weight:800;color:rgba(43,35,86,.4)">4</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <div style="width:38px;height:38px;border-radius:50%;background:#FFC531;border:2.5px solid #2B2356;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800">7</div>
+      <span style="font-size:10px;font-weight:800;color:rgba(43,35,86,.4)">BADGE</span>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:11px;width:100%;max-width:300px;margin-top:auto;padding-bottom:26px">
+    <div onClick="{{ remind }}" style="background:#FFC531;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:13px;font-size:15px;font-weight:800;letter-spacing:.5px;cursor:pointer" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">REMIND ME DAILY</div>
+    <div onClick="{{ next }}" style="background:#fff;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:12px;font-size:13.5px;font-weight:800;letter-spacing:.5px;cursor:pointer" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">MAYBE LATER</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Ready" style="flex:1;background:#4353FF;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;position:relative;overflow:hidden;padding:24px;box-sizing:border-box;text-align:center">
+  <div style="position:absolute;top:13%;left:12%;width:11px;height:11px;background:#FFC531;animation:kf-twinkle 1.8s ease-in-out infinite"></div>
+  <div style="position:absolute;top:9%;right:18%;width:8px;height:8px;background:#FFC531;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.5s"></div>
+  <div style="position:absolute;top:38%;right:8%;width:10px;height:10px;background:#FF6B5E;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.9s"></div>
+  <div style="position:absolute;bottom:24%;left:9%;width:9px;height:9px;background:#FF6B5E;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.3s"></div>
+  <div style="position:absolute;bottom:12%;right:14%;width:11px;height:11px;background:#FFC531;animation:kf-twinkle 1.8s ease-in-out infinite;animation-delay:.7s"></div>
+  <div style="animation:kf-float 3s ease-in-out infinite">
+    <svg viewBox="0 0 100 100" width="126" height="126">
+      <line x1="50" y1="10" x2="50" y2="4" stroke="#2B2356" stroke-width="2.5"></line>
+      <circle cx="50" cy="4" r="3.5" fill="#FF6B5E" stroke="#2B2356" stroke-width="2"></circle>
+      <circle cx="50" cy="48" r="38" fill="rgba(255,255,255,.22)" stroke="#2B2356" stroke-width="2.5"></circle>
+      <ellipse cx="31" cy="33" rx="8" ry="12" transform="rotate(-28 31 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+      <ellipse cx="69" cy="33" rx="8" ry="12" transform="rotate(28 69 33)" fill="#B96A34" stroke="#2B2356" stroke-width="2.5"></ellipse>
+      <circle cx="50" cy="50" r="25" fill="#F2A65A" stroke="#2B2356" stroke-width="2.5"></circle>
+      <ellipse cx="50" cy="58" rx="11" ry="8" fill="#FFD9A8" stroke="#2B2356" stroke-width="2"></ellipse>
+      <circle cx="41" cy="45" r="3" fill="#2B2356"></circle>
+      <circle cx="59" cy="45" r="3" fill="#2B2356"></circle>
+      <circle cx="50" cy="55" r="3.5" fill="#2B2356"></circle>
+      <path d="M42 60 Q50 68 58 60" fill="none" stroke="#2B2356" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </div>
+  <div>
+    <div style="font-size:37px;font-weight:800;color:#FFC531;letter-spacing:1px;line-height:1">Поехали!</div>
+    <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin-top:7px">po-YEH-kha-lee — "Let's go!"</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:300px">
+    <div style="background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 13px;font-size:11.5px;font-weight:800">{{ pickGoal }}</div>
+    <div style="background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 13px;font-size:11.5px;font-weight:800">{{ pickLevel }}</div>
+    <div style="background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 13px;font-size:11.5px;font-weight:800">{{ pickMins }} / DAY</div>
+  </div>
+  <div onClick="{{ restart }}" style="width:100%;max-width:280px;background:#FFC531;border:2.5px solid #2B2356;border-radius:15px;box-shadow:0 4px 0 #2B2356;padding:13px;text-align:center;font-weight:800;font-size:15px;color:#2B2356;letter-spacing:.5px;cursor:pointer;margin-top:6px" style-hover="transform:translateY(2px);box-shadow:0 2px 0 #2B2356">START LESSON 1</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showNext }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 18px 24px">
+  <div onClick="{{ next }}" style="background:{{ nextBg }};color:{{ nextColor }};box-shadow:{{ nextShadow }};border:2.5px solid #2B2356;border-radius:16px;padding:14px;text-align:center;font-weight:800;font-size:16px;letter-spacing:1px;cursor:pointer">NEXT</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ permShow }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.4);z-index:30;display:flex;align-items:center;justify-content:center;padding:30px;box-sizing:border-box">
+  <sc-if value="{{ permIos }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="iOS permission alert" style="width:270px;background:rgba(250,250,250,.97);border-radius:14px;overflow:hidden;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.25)">
+      <div style="padding:19px 16px 15px">
+        <div style="font-size:17px;font-weight:600;color:#000;line-height:1.25">“SLOVO” Would Like to Send You Notifications</div>
+        <div style="font-size:13px;color:rgba(0,0,0,.72);margin-top:5px;line-height:1.35">Notifications may include alerts, sounds, and icon badges.</div>
+      </div>
+      <div style="display:flex;border-top:.5px solid rgba(0,0,0,.25)">
+        <div onClick="{{ permDeny }}" style="flex:1;padding:11px;font-size:17px;color:#007AFF;cursor:pointer;border-right:.5px solid rgba(0,0,0,.25)">Don’t Allow</div>
+        <div onClick="{{ permAllow }}" style="flex:1;padding:11px;font-size:17px;font-weight:600;color:#007AFF;cursor:pointer">Allow</div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ permAndroid }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Android permission dialog" style="width:300px;background:#FDFBFF;border-radius:28px;font-family:Roboto,system-ui,sans-serif;padding:24px;box-sizing:border-box;box-shadow:0 10px 40px rgba(0,0,0,.3)">
+      <div style="width:40px;height:40px;border-radius:12px;background:#4353FF;margin:0 auto;display:flex;align-items:center;justify-content:center">
+        <div style="width:12px;height:12px;background:#FFC531;border:2px solid #2B2356;transform:rotate(45deg)"></div>
+      </div>
+      <div style="font-size:16px;color:#1C1B1F;text-align:center;margin-top:14px;line-height:1.4">Allow <b>SLOVO</b> to send you notifications?</div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:18px">
+        <div onClick="{{ permAllow }}" style="padding:10px;text-align:center;font-size:14px;font-weight:600;color:#fff;background:#4353FF;border-radius:999px;cursor:pointer">Allow</div>
+        <div onClick="{{ permDeny }}" style="padding:10px;text-align:center;font-size:14px;font-weight:600;color:#4353FF;cursor:pointer">Don’t allow</div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 402, &quot;height&quot;: 874}, &quot;platform&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;ios&quot;, &quot;android&quot;], &quot;default&quot;: &quot;ios&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Device&quot;}, &quot;bubbles&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Canvas&quot;}}">
+class Component extends DCLogic {
+  state = { step:0, goal:null, level:null, mins:null, qi:0, pick:null, score:0, perm:false };
+  componentWillUnmount(){ clearTimeout(this._q); }
+  QUIZ = [
+    { q:'«борщ» is…', opts:['beet soup','bread','hello'], a:0 },
+    { q:'«Как дела?» means…', opts:['Where is it?','How are you?','Good night'], a:1 },
+    { q:'"I want tea" in Russian:', opts:['Я хочу кофе','Мне пора','Я хочу чай'], a:2 },
+  ];
+  GOALS = [
+    { t:'Travel', c:'#FF6B5E' },
+    { t:'Family & friends', c:'#FFC531' },
+    { t:'Culture & music', c:'#4353FF' },
+    { t:'Big brain energy', c:'#3FBF7F' },
+    { t:'Work', c:'#2B2356' },
+  ];
+  LEVELS = [
+    { t:'Nothing yet', sub:'Ground control — starting from zero', n:1 },
+    { t:'I know Cyrillic', sub:'Can sound out А, Б, В…', n:2 },
+    { t:'Some phrases', sub:'Privet, spasibo, borscht', n:3 },
+    { t:'Conversational', sub:'Ready for real orbit', n:4 },
+  ];
+  MINS = [
+    { min:'5', t:'Chill', xp:'50 XP/DAY' },
+    { min:'10', t:'Steady', xp:'100 XP/DAY' },
+    { min:'15', t:'Serious', xp:'150 XP/DAY' },
+    { min:'20', t:'Cosmonaut', xp:'200 XP/DAY' },
+  ];
+  renderVals() {
+    const S = this.state, ios = (this.props.platform ?? 'ios') !== 'android';
+    const step = S.step;
+    const card = (sel) => ({ bg: sel ? '#E9EBFF' : '#fff', border: sel ? '#4353FF' : '#2B2356' });
+    const goals = this.GOALS.map((g, i) => ({ ...g, ...card(S.goal === i), onTap: () => this.setState({ goal:i }) }));
+    const levels = this.LEVELS.map((l, i) => ({ t:l.t, sub:l.sub, ...card(S.level === i),
+      bars: [0,1,2,3].map(b => ({ bg: b < l.n ? '#FFC531' : '#F0E6D6' })),
+      onTap: () => this.setState({ level:i }) }));
+    const minsOpts = this.MINS.map((m, i) => ({ ...m, ...card(S.mins === i), onTap: () => this.setState({ mins:i }) }));
+    const canNext = step === 1 ? S.goal !== null : step === 2 ? S.level !== null : step === 3 ? S.mins !== null : true;
+    const Q = this.QUIZ[S.qi];
+    const qOpts = Q.opts.map((t, i) => {
+      const picked = S.pick !== null, isA = i === Q.a, isPick = i === S.pick;
+      return { t,
+        bg: picked && isA ? '#DFF5E9' : picked && isPick ? '#FFE3DF' : '#fff',
+        border: picked && isA ? '#3FBF7F' : picked && isPick ? '#FF6B5E' : '#2B2356',
+        op: picked && !isA && !isPick ? '.5' : '1',
+        onTap: () => {
+          if (this.state.pick !== null) return;
+          this.setState(s => ({ pick:i, score: s.score + (i === Q.a ? 1 : 0) }));
+          this._q = setTimeout(() => {
+            const st = this.state;
+            if (st.qi < 2) this.setState({ qi: st.qi + 1, pick:null });
+            else this.setState({ step:5, pick:null });
+          }, 900);
+        } };
+    });
+    const unit = S.score === 3 ? 3 : S.score >= 1 ? 2 : 1;
+    return {
+      s0: step === 0, s1: step === 1, s2: step === 2, s3: step === 3, s4: step === 6, s5: step === 7,
+      sQuiz: step === 4, sResult: step === 5,
+      qNum: S.qi + 1, qText: Q.q, qOpts,
+      resUnit: unit,
+      resTitle: unit === 3 ? 'Getting around' : unit === 2 ? 'Food & cafés' : 'First words',
+      resSub: unit === 3 ? '10 lessons skipped' : unit === 2 ? '5 lessons skipped' : 'fresh start',
+      scoreLabel: S.score + '/3 correct',
+      resCont: () => this.setState({ step:6, qi:0 }),
+      bubbles: this.props.bubbles ?? true,
+      showHeader: (step >= 1 && step <= 4) || step === 6,
+      padHead: ios ? '58px 16px 0' : '14px 16px 0',
+      backGlyph: ios ? '‹' : '←',
+      progressPct: (step / 7 * 100) + '%',
+      goals, levels, minsOpts,
+      showNext: step >= 1 && step <= 3,
+      nextBg: canNext ? '#FFC531' : '#F0E6D6',
+      nextColor: canNext ? '#2B2356' : 'rgba(43,35,86,.35)',
+      nextShadow: canNext ? '0 4px 0 #2B2356' : 'none',
+      letsGo: () => this.setState({ step:1 }),
+      permShow: S.perm, permIos: S.perm && ios, permAndroid: S.perm && !ios,
+      remind: () => this.setState({ perm:true }),
+      permAllow: () => this.setState({ perm:false, step:7 }),
+      permDeny: () => this.setState({ perm:false, step:7 }),
+      back: () => this.setState({ step: (step === 4 || step === 6) ? 3 : Math.max(0, step - 1), pick:null }),
+      next: () => {
+        if (!canNext) return;
+        if (step === 3) this.setState({ step: S.level >= 2 ? 4 : 6, qi:0, pick:null, score:0 });
+        else this.setState({ step: step + 1 });
+      },
+      restart: () => this.setState({ step:0, goal:null, level:null, mins:null, qi:0, pick:null, score:0, perm:false }),
+      pickGoal: (S.goal !== null ? this.GOALS[S.goal].t : '—').toUpperCase(),
+      pickLevel: (S.level !== null ? this.LEVELS[S.level].t : '—').toUpperCase(),
+      pickMins: S.mins !== null ? this.MINS[S.mins].min + ' MIN' : '—',
+    };
+  }
+}
+</script>
+</body>
+</html>

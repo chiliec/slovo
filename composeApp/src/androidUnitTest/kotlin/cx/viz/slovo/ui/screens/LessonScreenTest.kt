@@ -15,6 +15,8 @@ import cx.viz.slovo.domain.Lesson
 import cx.viz.slovo.domain.LessonKind
 import cx.viz.slovo.domain.UnitMeta
 import cx.viz.slovo.platform.NoopAudioPlayer
+import cx.viz.slovo.platform.NoopHaptics
+import cx.viz.slovo.platform.NoopSoundPlayer
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.theme.SlovoTheme
 import org.junit.Rule
@@ -63,6 +65,8 @@ class LessonScreenTest {
             content = FakeContent(unit),
             progress = ProgressRepository(SlovoDatabase(driver)),
             audio = NoopAudioPlayer(),
+            sound = NoopSoundPlayer(),
+            haptics = NoopHaptics(),
         )
     }
 
@@ -122,14 +126,29 @@ class LessonScreenTest {
         rule.onNodeWithText("NEXT →").performClick()
         rule.onNodeWithText("PRACTICE").performClick()
 
-        // VOCAB + fresh cards → READ questions; the correct option is each card's
-        // English, and questions are built in card order.
+        // Fixed step sequence: word-bank warm-up (card 1, "hello"), then VOCAB + fresh
+        // cards → READ questions for all 3 cards, then a pair-match round, then a
+        // speaking step for the last card.
+        waitForText("1 / 6")
+        rule.onNodeWithText("hello").performClick()
+        rule.onNodeWithText("CHECK").performClick()
+        rule.onNodeWithText("CONTINUE →").performClick()
+
         for (english in cards.map { it.english }) {
             rule.onNodeWithText(english).performClick()
             rule.onNodeWithText("CONTINUE →").performClick()
         }
 
-        waitForText("LESSON DONE")
-        rule.onNodeWithText("3 / 3 correct").assertIsDisplayed()
+        waitForText("Match the pairs")
+        for (card in cards) {
+            rule.onNodeWithText(card.russian).performClick()
+            rule.onNodeWithText(card.english).performClick()
+        }
+
+        waitForText("🎤 SPEAK")
+        rule.onNodeWithText("🎤 SPEAK").performClick()
+
+        waitForText("LIFTOFF!")
+        rule.onNodeWithText("100%").assertIsDisplayed()
     }
 }

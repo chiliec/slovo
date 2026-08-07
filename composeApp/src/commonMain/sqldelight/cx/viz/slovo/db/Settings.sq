@@ -1,0 +1,15 @@
+CREATE TABLE app_settings (
+    id                      INTEGER NOT NULL PRIMARY KEY,
+    sounds_enabled          INTEGER NOT NULL DEFAULT 1,
+    haptics_enabled         INTEGER NOT NULL DEFAULT 1,
+    notifications_enabled   INTEGER NOT NULL DEFAULT 1
+);
+
+select:
+SELECT sounds_enabled, haptics_enabled, notifications_enabled FROM app_settings WHERE id = 0;
+
+initRow:
+INSERT OR IGNORE INTO app_settings(id, sounds_enabled, haptics_enabled, notifications_enabled) VALUES (0, 1, 1, 1);
+
+update:
+UPDATE app_settings SET sounds_enabled = :sounds, haptics_enabled = :haptics, notifications_enabled = :notifications WHERE id = 0;

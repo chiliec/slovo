@@ -8,29 +8,34 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.Font
-import slovo.composeapp.generated.resources.ArchivoBlack_Regular
+import slovo.composeapp.generated.resources.Nunito_Bold
+import slovo.composeapp.generated.resources.Nunito_ExtraBold
+import slovo.composeapp.generated.resources.Nunito_Medium
+import slovo.composeapp.generated.resources.Nunito_SemiBold
 import slovo.composeapp.generated.resources.Res
-import slovo.composeapp.generated.resources.SpaceGrotesk_Bold
-import slovo.composeapp.generated.resources.SpaceGrotesk_Medium
-import slovo.composeapp.generated.resources.SpaceGrotesk_Regular
 
-@Composable fun displayFamily() = FontFamily(Font(Res.font.ArchivoBlack_Regular))
-
-@Composable fun bodyFamily() = FontFamily(
-    Font(Res.font.SpaceGrotesk_Regular, FontWeight.Normal),
-    Font(Res.font.SpaceGrotesk_Medium, FontWeight.Medium),
-    Font(Res.font.SpaceGrotesk_Bold, FontWeight.Bold),
+@Composable fun nunitoFamily() = FontFamily(
+    Font(Res.font.Nunito_Medium, FontWeight.Medium),
+    Font(Res.font.Nunito_SemiBold, FontWeight.SemiBold),
+    Font(Res.font.Nunito_Bold, FontWeight.Bold),
+    Font(Res.font.Nunito_ExtraBold, FontWeight.ExtraBold),
 )
 
 @Composable
 fun slovoTypography(): Typography {
-    val display = displayFamily()
-    val body = bodyFamily()
+    val nunito = nunitoFamily()
     return Typography(
-        headlineLarge = TextStyle(fontFamily = display, fontSize = 26.sp),
-        headlineMedium = TextStyle(fontFamily = display, fontSize = 20.sp),
-        titleMedium = TextStyle(fontFamily = body, fontWeight = FontWeight.Bold, fontSize = 15.sp),
-        bodyMedium = TextStyle(fontFamily = body, fontWeight = FontWeight.Medium, fontSize = 13.sp),
-        labelSmall = TextStyle(fontFamily = display, fontSize = 10.sp),
+        // display — screen headlines ("LESSON DONE", "SLOVO")
+        headlineLarge = TextStyle(fontFamily = nunito, fontWeight = FontWeight.ExtraBold, fontSize = 37.sp),
+        // title — card titles, big stat numbers
+        headlineMedium = TextStyle(fontFamily = nunito, fontWeight = FontWeight.ExtraBold, fontSize = 24.sp),
+        // card title — prompts, subtitles
+        titleMedium = TextStyle(fontFamily = nunito, fontWeight = FontWeight.Bold, fontSize = 16.sp),
+        // body — secondary text
+        bodyMedium = TextStyle(fontFamily = nunito, fontWeight = FontWeight.SemiBold, fontSize = 13.sp),
+        // button — CAPS labels, chips, nav tabs
+        labelSmall = TextStyle(
+            fontFamily = nunito, fontWeight = FontWeight.ExtraBold, fontSize = 15.sp, letterSpacing = 0.5.sp,
+        ),
     )
 }

@@ -53,14 +53,18 @@ private class ProfileViewModel(private val module: AppModule) {
     fun dispose() = scope.cancel()
 }
 
-@Composable fun YouScreen(module: AppModule) {
+@Composable fun YouScreen(module: AppModule, onOpenSettings: () -> Unit) {
     val vm = remember { ProfileViewModel(module) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
     var showCredits by remember { mutableStateOf(false) }
     if (showCredits) CreditsDialog(onDismiss = { showCredits = false })
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
            verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("YOU", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+            Text("YOU", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
+            MishaButton("SETTINGS", background = Slovo.Ink) { onOpenSettings() }
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             MishaStatChip("${vm.stats.xp}", "TOTAL XP", Slovo.Red, Slovo.Card, Modifier.weight(1f))
             MishaStatChip("${vm.stats.streakDays}", "DAY STREAK", Slovo.Card, Slovo.Ink, Modifier.weight(1f))

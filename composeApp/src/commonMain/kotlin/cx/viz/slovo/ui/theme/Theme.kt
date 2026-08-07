@@ -8,10 +8,10 @@ import androidx.compose.runtime.Composable
 fun SlovoTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = lightColorScheme(
-            primary = Slovo.Red,
+            primary = Slovo.Yellow,
             background = Slovo.Sand,
             surface = Slovo.Card,
-            onPrimary = Slovo.Card,
+            onPrimary = Slovo.Ink,
             onBackground = Slovo.Ink,
             onSurface = Slovo.Ink,
         ),
