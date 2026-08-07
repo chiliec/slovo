@@ -87,7 +87,8 @@ fun App(module: AppModule) = SlovoTheme {
             }
             composable(Dest.Drill.route) { DrillScreen(module, onOpenLearn = { switchTab(nav, Dest.Learn.route) }) }
             composable(Dest.League.route) { LeagueScreen() }
-            composable(Dest.You.route) { YouScreen(module) }
+            composable(Dest.You.route) { YouScreen(module, onOpenSettings = { nav.navigate(Dest.Settings.route) }) }
+            composable(Dest.Settings.route) { SettingsScreen(module, onBack = { nav.popBackStack() }) }
             composable(Dest.Lesson.route) { back ->
                 LessonScreen(
                     module = module,

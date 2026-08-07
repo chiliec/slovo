@@ -5,6 +5,7 @@ sealed class Dest(val route: String) {
     data object Drill : Dest("drill")
     data object League : Dest("league")
     data object You : Dest("you")
+    data object Settings : Dest("settings")
     data object Lesson : Dest("lesson/{unitId}/{lessonId}") {
         fun of(unitId: String, lessonId: String) = "lesson/$unitId/$lessonId"
     }

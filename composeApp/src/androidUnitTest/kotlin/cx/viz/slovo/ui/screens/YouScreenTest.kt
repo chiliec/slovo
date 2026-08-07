@@ -27,7 +27,7 @@ class YouScreenTest {
 
     @Test
     fun freshProfileShowsMasteryAndEmptySrsMessage() {
-        rule.setContent { SlovoTheme { YouScreen(testModule()) } }
+        rule.setContent { SlovoTheme { YouScreen(testModule(), onOpenSettings = {}) } }
         waitForText("YOU")
 
         rule.onNodeWithText("TOTAL XP").assertIsDisplayed()
@@ -46,7 +46,7 @@ class YouScreenTest {
             recordAnswer("c1", correct = true, todayEpochDay = currentEpochDay())
             recordAnswer("c2", correct = false, todayEpochDay = currentEpochDay())
         }
-        rule.setContent { SlovoTheme { YouScreen(module) } }
+        rule.setContent { SlovoTheme { YouScreen(module, onOpenSettings = {}) } }
         waitForText("YOU")
 
         rule.onNodeWithText("OVERVIEW").assertIsDisplayed()
@@ -61,7 +61,7 @@ class YouScreenTest {
             recordAnswer("c1", correct = true, todayEpochDay = currentEpochDay())
             recordAnswer("c2", correct = false, todayEpochDay = currentEpochDay())
         }
-        rule.setContent { SlovoTheme { YouScreen(module) } }
+        rule.setContent { SlovoTheme { YouScreen(module, onOpenSettings = {}) } }
         waitForText("YOU")
 
         rule.onNodeWithText("BOX STRENGTH").assertIsDisplayed()

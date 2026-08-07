@@ -15,6 +15,8 @@ import cx.viz.slovo.domain.Lesson
 import cx.viz.slovo.domain.LessonKind
 import cx.viz.slovo.domain.UnitMeta
 import cx.viz.slovo.platform.NoopAudioPlayer
+import cx.viz.slovo.platform.NoopHaptics
+import cx.viz.slovo.platform.NoopSoundPlayer
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.theme.SlovoTheme
 import org.junit.Rule
@@ -63,6 +65,8 @@ class LessonScreenTest {
             content = FakeContent(unit),
             progress = ProgressRepository(SlovoDatabase(driver)),
             audio = NoopAudioPlayer(),
+            sound = NoopSoundPlayer(),
+            haptics = NoopHaptics(),
         )
     }
 

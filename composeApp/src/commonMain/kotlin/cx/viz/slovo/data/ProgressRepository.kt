@@ -1,6 +1,7 @@
 package cx.viz.slovo.data
 
 import cx.viz.slovo.db.SlovoDatabase
+import cx.viz.slovo.domain.AppSettings
 import cx.viz.slovo.domain.CardProgress
 import cx.viz.slovo.domain.MasteryCalculator
 import cx.viz.slovo.domain.ProfileStatsCalculator
@@ -17,8 +18,9 @@ class ProgressRepository(private val db: SlovoDatabase) {
     private val lessons = db.lessonQueries
     private val statsQ = db.statsQueries
     private val profileQ = db.userProfileQueries
+    private val settingsQ = db.settingsQueries
 
-    init { statsQ.initRow(); profileQ.initRow() }
+    init { statsQ.initRow(); profileQ.initRow(); settingsQ.initRow() }
 
     fun recordAnswer(cardId: String, correct: Boolean, todayEpochDay: Long) {
         cards.insertOrIgnore(cardId = cardId)
@@ -125,6 +127,22 @@ class ProgressRepository(private val db: SlovoDatabase) {
         profileQ.complete(
             goal = goal, level = level,
             dailyGoalMinutes = dailyGoalMinutes.toLong(), startUnitId = startUnitId,
+        )
+    }
+
+    fun settings(): AppSettings = settingsQ.select().executeAsOne().let {
+        AppSettings(
+            soundsEnabled = it.sounds_enabled == 1L,
+            hapticsEnabled = it.haptics_enabled == 1L,
+            notificationsEnabled = it.notifications_enabled == 1L,
+        )
+    }
+
+    fun updateSettings(settings: AppSettings) {
+        settingsQ.update(
+            sounds = if (settings.soundsEnabled) 1L else 0L,
+            haptics = if (settings.hapticsEnabled) 1L else 0L,
+            notifications = if (settings.notificationsEnabled) 1L else 0L,
         )
     }
 }

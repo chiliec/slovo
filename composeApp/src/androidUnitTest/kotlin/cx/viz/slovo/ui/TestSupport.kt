@@ -10,6 +10,8 @@ import cx.viz.slovo.domain.Lesson
 import cx.viz.slovo.domain.LessonKind
 import cx.viz.slovo.domain.UnitMeta
 import cx.viz.slovo.platform.NoopAudioPlayer
+import cx.viz.slovo.platform.NoopHaptics
+import cx.viz.slovo.platform.NoopSoundPlayer
 
 /** In-memory content backed by a single fixed unit, for driving screens in tests. */
 class FakeContent(private val unit: LearnUnit) : ContentRepository {
@@ -51,5 +53,8 @@ fun testModule(
     SlovoDatabase.Schema.create(driver)
     val progress = ProgressRepository(SlovoDatabase(driver))
     progress.seed()
-    return AppModule(content = FakeContent(unit), progress = progress, audio = NoopAudioPlayer())
+    return AppModule(
+        content = FakeContent(unit), progress = progress, audio = NoopAudioPlayer(),
+        sound = NoopSoundPlayer(), haptics = NoopHaptics(),
+    )
 }

@@ -69,3 +69,9 @@ data class UserProfile(
     val startUnitId: String = "",
     val onboarded: Boolean = false,
 )
+
+data class AppSettings(
+    val soundsEnabled: Boolean = true,
+    val hapticsEnabled: Boolean = true,
+    val notificationsEnabled: Boolean = true,
+)
