@@ -60,6 +60,7 @@ fun MishaButton(
     text: String,
     modifier: Modifier = Modifier,
     background: Color = Slovo.Red,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     var pressed by remember { mutableStateOf(false) }
@@ -68,12 +69,10 @@ fun MishaButton(
         Box(
             Modifier
                 .offset(offset, offset)
-                .background(background)
+                .background(if (enabled) background else background.copy(alpha = 0.4f))
                 .border(2.5.dp, Slovo.Ink)
-                .clickable {
-                    pressed = true
-                    onClick()
-                    pressed = false
+                .let {
+                    if (enabled) it.clickable { pressed = true; onClick(); pressed = false } else it
                 }
                 .padding(horizontal = 20.dp, vertical = 12.dp),
             contentAlignment = Alignment.Center,
@@ -105,6 +104,22 @@ fun HeartsRow(hearts: Int, modifier: Modifier = Modifier, max: Int = Hearts.MAX)
         repeat(max) { i ->
             Text("♥", color = Slovo.Red.copy(alpha = if (i < hearts) 1f else 0.18f),
                  style = MaterialTheme.typography.titleMedium)
+        }
+    }
+}
+
+/** Shared quiz-step header: position + hearts on top, an animated progress bar below. */
+@Composable
+fun QuizHeader(index: Int, total: Int, hearts: Int, modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Text("${index + 1} / $total", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
+            HeartsRow(hearts)
+        }
+        Spacer(Modifier.height(6.dp))
+        val fraction by animateFloatAsState(if (total == 0) 0f else (index + 1f) / total, animationSpec = tween(400))
+        Box(Modifier.fillMaxWidth().height(6.dp).background(Slovo.Card).border(1.dp, Slovo.Ink)) {
+            Box(Modifier.fillMaxHeight().fillMaxWidth(fraction).background(Slovo.Blue))
         }
     }
 }

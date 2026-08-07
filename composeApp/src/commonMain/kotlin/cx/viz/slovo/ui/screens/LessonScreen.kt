@@ -1,7 +1,9 @@
 package cx.viz.slovo.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,10 +25,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-private enum class Phase { LOADING, STUDY, QUIZ, OUT_OF_HEARTS, RESULT }
+private enum class Phase { LOADING, STUDY, QUIZ, MISTAKE_REVIEW, MISTAKE_DRILL, OUT_OF_HEARTS, RESULT }
 
 private class LessonViewModel(
     private val module: AppModule, private val unitId: String, private val lessonId: String,
@@ -40,6 +43,10 @@ private class LessonViewModel(
     var questions by mutableStateOf<List<Question>>(emptyList()); private set
     var correctCount by mutableStateOf(0); private set
     var hearts by mutableStateOf(Hearts.MAX); private set
+    var mistakes by mutableStateOf<List<Card>>(emptyList()); private set
+    var drillQuestions by mutableStateOf<List<Question>>(emptyList()); private set
+    var drillIndex by mutableStateOf(0); private set
+    var drillCorrect by mutableStateOf(0); private set
     var finalStats by mutableStateOf(UserStats()); private set
 
     init { scope.launch {
@@ -50,13 +57,18 @@ private class LessonViewModel(
         phase = Phase.STUDY
     } }
 
+    /** Fixed step sequence: word-bank warm-up, per-card mastery-gated MC/type, a pair-match round, a speaking step. */
     fun startQuiz() {
         val progress = module.progress.forCards(cards.map { it.id })
         val factory = QuestionFactory(Random(cards.size + 7))
-        questions = cards.map { c ->
-            factory.build(c, cards, kind, MasteryCalculator.isMastered(progress[c.id]))
+        val mc = cards.map { c -> factory.build(c, cards, kind, MasteryCalculator.isMastered(progress[c.id])) }
+        questions = buildList {
+            add(factory.buildWordBank(cards.first(), cards))
+            addAll(mc)
+            if (cards.size >= 3) add(factory.buildPairMatch(cards))
+            add(factory.buildSpeak(cards.last()))
         }
-        index = 0; correctCount = 0; hearts = Hearts.MAX; phase = Phase.QUIZ
+        index = 0; correctCount = 0; hearts = Hearts.MAX; mistakes = emptyList(); phase = Phase.QUIZ
     }
 
     fun answer(optionIndex: Int) {
@@ -70,17 +82,50 @@ private class LessonViewModel(
         record(q, correct)
     }
 
+    fun pairMismatch() {
+        hearts = Hearts.afterMiss(hearts)
+        if (Hearts.isDepleted(hearts)) phase = Phase.OUT_OF_HEARTS
+    }
+
+    fun pairMatchComplete() {
+        val q = questions[index]
+        correctCount++
+        q.pairCards.forEach { module.progress.recordAnswer(it.id, true, currentEpochDay()) }
+        advance()
+    }
+
+    fun speakComplete() = record(questions[index], true)
+
     private fun record(q: Question, correct: Boolean) {
-        if (correct) correctCount++ else hearts = Hearts.afterMiss(hearts)
+        if (correct) correctCount++ else { hearts = Hearts.afterMiss(hearts); mistakes = mistakes + q.card }
         module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
-        when {
-            Hearts.isDepleted(hearts) -> phase = Phase.OUT_OF_HEARTS
-            index + 1 < questions.size -> index++
-            else -> finish()
-        }
+        if (Hearts.isDepleted(hearts)) phase = Phase.OUT_OF_HEARTS else advance()
+    }
+
+    private fun advance() {
+        if (index + 1 < questions.size) index++ else finish()
     }
 
     private fun finish() {
+        if (mistakes.isNotEmpty()) phase = Phase.MISTAKE_REVIEW else completeAndCelebrate()
+    }
+
+    fun startMistakeDrill() {
+        val distinctMistakes = mistakes.distinctBy { it.id }
+        val factory = QuestionFactory(Random(distinctMistakes.size + 11))
+        drillQuestions = distinctMistakes.map { c -> factory.build(c, cards, kind, isMastered = false) }
+        drillIndex = 0; drillCorrect = 0
+        phase = Phase.MISTAKE_DRILL
+    }
+
+    fun answerMistakeDrill(correct: Boolean) {
+        if (correct) drillCorrect++
+        if (drillIndex + 1 < drillQuestions.size) drillIndex++ else completeAndCelebrate()
+    }
+
+    fun skipMistakeReview() = completeAndCelebrate()
+
+    private fun completeAndCelebrate() {
         finalStats = module.progress.completeLesson(lessonId, correctCount, currentEpochDay())
         phase = Phase.RESULT
     }
@@ -97,6 +142,8 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
         Phase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
         Phase.STUDY -> StudyView(vm, onPractice = vm::startQuiz)
         Phase.QUIZ -> QuizView(vm)
+        Phase.MISTAKE_REVIEW -> MistakeReviewView(vm)
+        Phase.MISTAKE_DRILL -> MistakeDrillView(vm)
         Phase.OUT_OF_HEARTS -> OutOfHeartsView(onDone)
         Phase.RESULT -> ResultView(vm, onDone)
     }
@@ -136,30 +183,44 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
 
 @Composable private fun QuizView(vm: LessonViewModel) {
     val q = vm.questions[vm.index]
-    if (q.mode == QuestionMode.TYPE) {
-        cx.viz.slovo.ui.components.TypedQuestionContent(
+    when (q.mode) {
+        QuestionMode.TYPE -> cx.viz.slovo.ui.components.TypedQuestionContent(
             question = q,
             header = "${vm.index + 1} / ${vm.questions.size}",
             hearts = vm.hearts,
             onPlay = { vm.playAudio(it) },
             onContinue = { vm.recordTyped(it) },
         )
-        return
+        QuestionMode.WORD_BANK -> WordBankView(vm, q)
+        QuestionMode.PAIR_MATCH -> PairMatchView(vm, q)
+        QuestionMode.SPEAK -> SpeakView(vm, q)
+        else -> McQuestionBody(
+            q = q,
+            headerContent = { cx.viz.slovo.ui.components.QuizHeader(vm.index, vm.questions.size, vm.hearts) },
+            onPlay = { vm.playAudio(it) },
+            onAnswer = { vm.answer(it) },
+        )
     }
-    var chosen by remember(vm.index) { mutableStateOf<Int?>(null) }
+}
+
+/** Shared prompt-card + options body for LISTEN/READ/PRODUCE questions and mistake-drill MC steps. */
+@Composable private fun McQuestionBody(
+    q: Question,
+    headerContent: @Composable () -> Unit,
+    onPlay: (String) -> Unit,
+    onAnswer: (Int) -> Unit,
+) {
+    var chosen by remember(q) { mutableStateOf<Int?>(null) }
     Column(Modifier.fillMaxSize().padding(16.dp)) {
         Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text("${vm.index + 1} / ${vm.questions.size}", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
-                cx.viz.slovo.ui.components.HeartsRow(vm.hearts)
-            }
+            headerContent()
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
                 Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
-                    if (q.mode == QuestionMode.LISTEN) MishaButton("🔊 PLAY", background = Slovo.Blue) { vm.playAudio(q.card.audio) }
+                    if (q.mode == QuestionMode.LISTEN) MishaButton("🔊 PLAY", background = Slovo.Blue) { onPlay(q.card.audio) }
                     else if (q.mode == QuestionMode.READ) Text(q.card.russian, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
                 }
             }
@@ -181,8 +242,169 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
         }
         if (chosen != null) {
             Spacer(Modifier.height(12.dp))
-            MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { vm.answer(chosen!!) }
+            MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { onAnswer(chosen!!) }
         }
+    }
+}
+
+@Composable private fun WordBankView(vm: LessonViewModel, q: Question) {
+    var selected by remember(vm.index) { mutableStateOf<List<Int>>(emptyList()) }
+    var result by remember(vm.index) { mutableStateOf<AnswerChecker.Result?>(null) }
+    Column(Modifier.fillMaxSize().padding(16.dp)) {
+        Column(
+            Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            cx.viz.slovo.ui.components.QuizHeader(vm.index, vm.questions.size, vm.hearts)
+            MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
+                Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
+                }
+            }
+            Box(Modifier.fillMaxWidth().defaultMinSize(minHeight = 56.dp).background(Slovo.Card).border(2.5.dp, Slovo.Ink).padding(10.dp)) {
+                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    selected.forEach { i ->
+                        WordChip(q.options[i]) { if (result == null) selected = selected - i }
+                    }
+                }
+            }
+            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                q.options.indices.filter { it !in selected }.forEach { i ->
+                    WordChip(q.options[i]) { if (result == null) selected = selected + i }
+                }
+            }
+            result?.let { r ->
+                val bg = if (r.verdict != AnswerChecker.Verdict.WRONG) Slovo.Blue else Slovo.Red
+                MishaCard(Modifier.fillMaxWidth(), shadow = 3.dp, background = bg) {
+                    Text(if (r.verdict != AnswerChecker.Verdict.WRONG) "Correct!" else "Answer: ${r.canonical}",
+                         Modifier.fillMaxWidth().padding(14.dp), color = Slovo.Card, style = MaterialTheme.typography.titleMedium)
+                }
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        if (result == null) {
+            MishaButton("CHECK", Modifier.fillMaxWidth(), enabled = selected.isNotEmpty()) {
+                val assembled = selected.joinToString(" ") { q.options[it] }
+                result = AnswerChecker.check(assembled, q.card.english)
+            }
+        } else {
+            MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { vm.recordTyped(result!!.verdict != AnswerChecker.Verdict.WRONG) }
+        }
+    }
+}
+
+@Composable private fun WordChip(text: String, onClick: () -> Unit) {
+    MishaCard(Modifier.clickable(onClick = onClick), shadow = 2.dp) {
+        Text(text, Modifier.padding(horizontal = 12.dp, vertical = 8.dp), color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable private fun PairMatchView(vm: LessonViewModel, q: Question) {
+    val pairs = q.pairCards
+    val ruOrder = remember(vm.index) { pairs.shuffled() }
+    val enOrder = remember(vm.index) { pairs.shuffled() }
+    var matched by remember(vm.index) { mutableStateOf(setOf<String>()) }
+    var selectedRuId by remember(vm.index) { mutableStateOf<String?>(null) }
+    Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        cx.viz.slovo.ui.components.QuizHeader(vm.index, vm.questions.size, vm.hearts)
+        Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center,
+             modifier = Modifier.fillMaxWidth())
+        Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                ruOrder.forEach { c ->
+                    val isMatched = c.id in matched
+                    MishaCard(
+                        Modifier.fillMaxWidth().let { if (!isMatched) it.clickable { selectedRuId = c.id } else it },
+                        shadow = 3.dp,
+                        background = when { isMatched -> Slovo.Blue; c.id == selectedRuId -> Slovo.Yellow; else -> Slovo.Card },
+                    ) {
+                        Text(c.russian, Modifier.fillMaxWidth().padding(12.dp),
+                             color = if (isMatched) Slovo.Card else Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+                    }
+                }
+            }
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                enOrder.forEach { c ->
+                    val isMatched = c.id in matched
+                    MishaCard(
+                        Modifier.fillMaxWidth().let {
+                            if (!isMatched) it.clickable {
+                                val ru = selectedRuId
+                                if (ru != null) {
+                                    if (ru == c.id) {
+                                        matched = matched + c.id
+                                        selectedRuId = null
+                                        if (matched.size == pairs.size) vm.pairMatchComplete()
+                                    } else {
+                                        vm.pairMismatch()
+                                        selectedRuId = null
+                                    }
+                                }
+                            } else it
+                        },
+                        shadow = 3.dp,
+                        background = if (isMatched) Slovo.Blue else Slovo.Card,
+                    ) {
+                        Text(c.english, Modifier.fillMaxWidth().padding(12.dp),
+                             color = if (isMatched) Slovo.Card else Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable private fun SpeakView(vm: LessonViewModel, q: Question) {
+    var recording by remember(vm.index) { mutableStateOf(false) }
+    LaunchedEffect(recording) {
+        if (recording) { delay(1600); vm.speakComplete() }
+    }
+    Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        cx.viz.slovo.ui.components.QuizHeader(vm.index, vm.questions.size, vm.hearts)
+        Spacer(Modifier.weight(1f))
+        MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
+            Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally,
+                   verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(q.card.russian, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink, textAlign = TextAlign.Center)
+                Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
+            }
+        }
+        MishaButton(if (recording) "LISTENING…" else "🎤 SPEAK", Modifier.fillMaxWidth(), enabled = !recording) { recording = true }
+        MishaButton("CAN'T SPEAK RIGHT NOW", Modifier.fillMaxWidth(), background = Slovo.Ink, enabled = !recording) { vm.speakComplete() }
+        Spacer(Modifier.weight(1f))
+    }
+}
+
+@Composable private fun MistakeReviewView(vm: LessonViewModel) {
+    val count = vm.mistakes.distinctBy { it.id }.size
+    Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+           verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Spacer(Modifier.weight(1f))
+        Text("$count TO PATCH UP", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink, textAlign = TextAlign.Center)
+        Text("Drill your mistakes for +10 XP, or skip and finish up.", color = Slovo.Ink,
+             style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+        Spacer(Modifier.weight(1f))
+        MishaButton("DRILL MISTAKES +10 XP", Modifier.fillMaxWidth()) { vm.startMistakeDrill() }
+        MishaButton("SKIP", Modifier.fillMaxWidth(), background = Slovo.Ink) { vm.skipMistakeReview() }
+    }
+}
+
+@Composable private fun MistakeDrillView(vm: LessonViewModel) {
+    val q = vm.drillQuestions[vm.drillIndex]
+    val header = "${vm.drillIndex + 1} / ${vm.drillQuestions.size}"
+    if (q.mode == QuestionMode.TYPE) {
+        cx.viz.slovo.ui.components.TypedQuestionContent(
+            question = q, header = header,
+            onPlay = { vm.playAudio(it) },
+            onContinue = { vm.answerMistakeDrill(it) },
+        )
+    } else {
+        McQuestionBody(
+            q = q,
+            headerContent = { Text(header, color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium) },
+            onPlay = { vm.playAudio(it) },
+            onAnswer = { i -> vm.answerMistakeDrill(i == q.correctIndex) },
+        )
     }
 }
 

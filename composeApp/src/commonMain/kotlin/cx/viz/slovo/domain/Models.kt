@@ -1,6 +1,6 @@
 package cx.viz.slovo.domain
 
-enum class QuestionMode { LISTEN, READ, PRODUCE, TYPE }
+enum class QuestionMode { LISTEN, READ, PRODUCE, TYPE, WORD_BANK, PAIR_MATCH, SPEAK }
 enum class LessonKind { VOCAB, LISTENING, RECALL }
 
 data class Card(
@@ -29,6 +29,8 @@ data class Question(
     val audio: String?,
     val options: List<String>,
     val correctIndex: Int,
+    /** PAIR_MATCH only: the 3 cards to match RU↔EN; [card] is [pairCards].first() for compatibility. */
+    val pairCards: List<Card> = emptyList(),
 )
 
 data class CardProgress(
