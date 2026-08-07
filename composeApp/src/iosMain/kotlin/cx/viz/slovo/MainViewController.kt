@@ -8,7 +8,7 @@ import cx.viz.slovo.data.ProgressRepository
 import cx.viz.slovo.db.SlovoDatabase
 import cx.viz.slovo.platform.IosAudioPlayer
 import cx.viz.slovo.platform.IosHaptics
-import cx.viz.slovo.platform.NoopSoundPlayer
+import cx.viz.slovo.platform.IosSoundPlayer
 import cx.viz.slovo.ui.App
 import cx.viz.slovo.ui.AppModule
 
@@ -19,7 +19,7 @@ fun MainViewController() = ComposeUIViewController(configure = { enforceStrictPl
             content = BundledContentRepository(),
             progress = ProgressRepository(db),
             audio = IosAudioPlayer(),
-            sound = NoopSoundPlayer(),
+            sound = IosSoundPlayer(),
             haptics = IosHaptics(),
         )
     }

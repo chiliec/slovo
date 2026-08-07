@@ -24,17 +24,18 @@ class IosAudioPlayer : AudioPlayer {
     /**
      * The default session category (.soloAmbient) is muted by the iPhone ringer
      * switch, so clips are silent on a silenced device. Simulators have no such
-     * switch, which is why this never reproduced there. Activate .playback once,
-     * lazily, so audio is audible regardless of the switch.
+     * switch, which is why this never reproduced there. Activate .playback so
+     * audio is audible regardless of the switch.
+     *
+     * Re-set on every play (not cached) because IosSoundPlayer shares this same
+     * process-wide AVAudioSession and switches it to .ambient for UI cues, which
+     * *should* honor the silent switch — a phrase clip must reclaim .playback
+     * afterwards or it would go silent too.
      */
-    private var sessionReady = false
-
     private fun ensurePlaybackSession() {
-        if (sessionReady) return
         val session = AVAudioSession.sharedInstance()
         session.setCategory(AVAudioSessionCategoryPlayback, null)
         session.setActive(true, null)
-        sessionReady = true
     }
 
     override suspend fun play(fileName: String) = withContext(Dispatchers.Default) {

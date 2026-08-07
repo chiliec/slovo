@@ -13,9 +13,11 @@ import cx.viz.slovo.domain.LearnUnit
 import cx.viz.slovo.domain.Lesson
 import cx.viz.slovo.domain.StreakCalculator
 import cx.viz.slovo.domain.UserStats
+import cx.viz.slovo.platform.Cue
 import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.*
+import cx.viz.slovo.ui.playCue
 import cx.viz.slovo.ui.theme.Slovo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +44,11 @@ private class HomeViewModel(private val module: AppModule) {
         streakLost = StreakCalculator.isBroken(stats.streakDays, stats.lastActiveEpochDay, currentEpochDay())
     }
 
-    fun useStreakFreeze() { module.progress.useStreakFreeze(currentEpochDay()); refresh() }
+    fun useStreakFreeze() {
+        module.progress.useStreakFreeze(currentEpochDay())
+        scope.launch { module.playCue(Cue.STREAK_RESCUED) }
+        refresh()
+    }
     fun startOverStreak() { module.progress.resetStreak(currentEpochDay()); refresh() }
 
     fun dispose() = scope.cancel()
