@@ -8,6 +8,7 @@ import cx.viz.slovo.domain.ProfileSummary
 import cx.viz.slovo.domain.SrsScheduler
 import cx.viz.slovo.domain.SrsSnapshot
 import cx.viz.slovo.domain.StreakCalculator
+import cx.viz.slovo.domain.UserProfile
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.domain.XpCalculator
 
@@ -15,8 +16,9 @@ class ProgressRepository(private val db: SlovoDatabase) {
     private val cards = db.cardQueries
     private val lessons = db.lessonQueries
     private val statsQ = db.statsQueries
+    private val profileQ = db.userProfileQueries
 
-    init { statsQ.initRow() }
+    init { statsQ.initRow(); profileQ.initRow() }
 
     fun recordAnswer(cardId: String, correct: Boolean, todayEpochDay: Long) {
         cards.insertOrIgnore(cardId = cardId)
@@ -96,5 +98,19 @@ class ProgressRepository(private val db: SlovoDatabase) {
         val newXp = prev.xp + XpCalculator.sessionXp(correctCount)
         statsQ.update(xp = newXp.toLong(), streak = newStreak.toLong(), day = todayEpochDay)
         return stats()
+    }
+
+    fun userProfile(): UserProfile = profileQ.select().executeAsOne().let {
+        UserProfile(
+            goal = it.goal, level = it.level, dailyGoalMinutes = it.daily_goal_minutes.toInt(),
+            startUnitId = it.start_unit_id, onboarded = it.onboarded == 1L,
+        )
+    }
+
+    fun completeOnboarding(goal: String, level: String, dailyGoalMinutes: Int, startUnitId: String) {
+        profileQ.complete(
+            goal = goal, level = level,
+            dailyGoalMinutes = dailyGoalMinutes.toLong(), startUnitId = startUnitId,
+        )
     }
 }

@@ -60,3 +60,11 @@ data class UserStats(
     val streakDays: Int = 0,
     val lastActiveEpochDay: Long = 0,
 )
+
+data class UserProfile(
+    val goal: String = "",
+    val level: String = "",
+    val dailyGoalMinutes: Int = 15,
+    val startUnitId: String = "",
+    val onboarded: Boolean = false,
+)
