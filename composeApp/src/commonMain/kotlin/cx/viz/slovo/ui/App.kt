@@ -36,7 +36,7 @@ import cx.viz.slovo.ui.theme.SlovoTheme
 fun App(module: AppModule) = SlovoTheme {
     var showSplash by remember { mutableStateOf(true) }
     var onboarded by remember { mutableStateOf(module.progress.userProfile().onboarded) }
-    Box(Modifier.fillMaxSize()) {
+    Box(Modifier.fillMaxSize().background(Slovo.Sand)) {
     if (!onboarded) {
         OnboardingScreen(module, onComplete = { onboarded = true })
     } else {

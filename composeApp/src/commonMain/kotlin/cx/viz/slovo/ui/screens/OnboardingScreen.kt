@@ -109,7 +109,7 @@ fun OnboardingScreen(module: AppModule, onComplete: () -> Unit) {
 
 @Composable private fun OnbScaffold(content: @Composable ColumnScope.() -> Unit) {
     Column(
-        Modifier.fillMaxSize().padding(24.dp),
+        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
         content = content,
