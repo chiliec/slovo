@@ -93,6 +93,45 @@ class ProgressRepositoryTest {
         assertEquals(1, repo.srsSnapshot(listOf("a"), today = 20002).dueForecast[0]) // now due
     }
 
+    // Simulates a device that already had the app installed at schema v2 (pre-Kosmo,
+    // i.e. build 1: card_progress.box present, but no streak_freezes/user_profile/
+    // app_settings). Regression test for the crash where those were added straight to
+    // the .sq files without a matching .sqm, so Schema.migrate() never created them and
+    // ProgressRepository's init block crashed on every launch. See 2.sqm.
+    @Test fun migrating_from_a_pre_kosmo_v2_database_does_not_crash_on_init() {
+        val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+        driver.execute(null, """
+            CREATE TABLE card_progress (
+                card_id   TEXT NOT NULL PRIMARY KEY,
+                seen      INTEGER NOT NULL DEFAULT 0,
+                correct   INTEGER NOT NULL DEFAULT 0,
+                wrong     INTEGER NOT NULL DEFAULT 0,
+                last_seen INTEGER,
+                box       INTEGER NOT NULL DEFAULT 0
+            )
+        """.trimIndent(), 0)
+        driver.execute(null, """
+            CREATE TABLE lesson_progress (
+                lesson_id    TEXT NOT NULL PRIMARY KEY,
+                completed    INTEGER NOT NULL DEFAULT 0,
+                best_correct INTEGER NOT NULL DEFAULT 0,
+                last_seen    INTEGER
+            )
+        """.trimIndent(), 0)
+        driver.execute(null, """
+            CREATE TABLE user_stats (
+                id              INTEGER NOT NULL PRIMARY KEY,
+                xp              INTEGER NOT NULL DEFAULT 0,
+                streak_days     INTEGER NOT NULL DEFAULT 0,
+                last_active_day INTEGER NOT NULL DEFAULT 0
+            )
+        """.trimIndent(), 0)
+
+        SlovoDatabase.Schema.migrate(driver, oldVersion = 2, newVersion = SlovoDatabase.Schema.version)
+
+        ProgressRepository(SlovoDatabase(driver))
+    }
+
     @Test fun profileSummary_aggregates_answers_seen_and_mastered() {
         repo.recordAnswer("c1", correct = true, todayEpochDay = 20000)
         repo.recordAnswer("c1", correct = true, todayEpochDay = 20001)

@@ -1,0 +1,21 @@
+-- Migrate schema v2 -> v3: Kosmo redesign additions.
+-- These tables/columns were added to the .sq files directly without a
+-- migration, so devices already on v2 never got them and crashed on
+-- ProgressRepository init (missing streak_freezes column on INSERT).
+ALTER TABLE user_stats ADD COLUMN streak_freezes INTEGER NOT NULL DEFAULT 2;
+
+CREATE TABLE user_profile (
+    id                 INTEGER NOT NULL PRIMARY KEY,
+    goal               TEXT NOT NULL DEFAULT '',
+    level              TEXT NOT NULL DEFAULT '',
+    daily_goal_minutes INTEGER NOT NULL DEFAULT 15,
+    start_unit_id      TEXT NOT NULL DEFAULT '',
+    onboarded          INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE app_settings (
+    id                      INTEGER NOT NULL PRIMARY KEY,
+    sounds_enabled          INTEGER NOT NULL DEFAULT 1,
+    haptics_enabled         INTEGER NOT NULL DEFAULT 1,
+    notifications_enabled   INTEGER NOT NULL DEFAULT 1
+);
