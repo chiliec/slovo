@@ -129,7 +129,7 @@ class LessonScreenTest {
             rule.onNodeWithText("CONTINUE →").performClick()
         }
 
-        waitForText("LESSON DONE")
-        rule.onNodeWithText("3 / 3 correct").assertIsDisplayed()
+        waitForText("LIFTOFF!")
+        rule.onNodeWithText("100%").assertIsDisplayed()
     }
 }

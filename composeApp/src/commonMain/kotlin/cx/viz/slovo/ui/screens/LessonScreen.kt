@@ -26,7 +26,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-private enum class Phase { LOADING, STUDY, QUIZ, RESULT }
+private enum class Phase { LOADING, STUDY, QUIZ, OUT_OF_HEARTS, RESULT }
 
 private class LessonViewModel(
     private val module: AppModule, private val unitId: String, private val lessonId: String,
@@ -39,6 +39,7 @@ private class LessonViewModel(
     var index by mutableStateOf(0); private set
     var questions by mutableStateOf<List<Question>>(emptyList()); private set
     var correctCount by mutableStateOf(0); private set
+    var hearts by mutableStateOf(Hearts.MAX); private set
     var finalStats by mutableStateOf(UserStats()); private set
 
     init { scope.launch {
@@ -55,22 +56,28 @@ private class LessonViewModel(
         questions = cards.map { c ->
             factory.build(c, cards, kind, MasteryCalculator.isMastered(progress[c.id]))
         }
-        index = 0; correctCount = 0; phase = Phase.QUIZ
+        index = 0; correctCount = 0; hearts = Hearts.MAX; phase = Phase.QUIZ
     }
 
     fun answer(optionIndex: Int) {
         val q = questions[index]
         val correct = optionIndex == q.correctIndex
-        if (correct) correctCount++
-        module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
-        if (index + 1 < questions.size) index++ else finish()
+        record(q, correct)
     }
 
     fun recordTyped(correct: Boolean) {
         val q = questions[index]
-        if (correct) correctCount++
+        record(q, correct)
+    }
+
+    private fun record(q: Question, correct: Boolean) {
+        if (correct) correctCount++ else hearts = Hearts.afterMiss(hearts)
         module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
-        if (index + 1 < questions.size) index++ else finish()
+        when {
+            Hearts.isDepleted(hearts) -> phase = Phase.OUT_OF_HEARTS
+            index + 1 < questions.size -> index++
+            else -> finish()
+        }
     }
 
     private fun finish() {
@@ -90,6 +97,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
         Phase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
         Phase.STUDY -> StudyView(vm, onPractice = vm::startQuiz)
         Phase.QUIZ -> QuizView(vm)
+        Phase.OUT_OF_HEARTS -> OutOfHeartsView(onDone)
         Phase.RESULT -> ResultView(vm, onDone)
     }
 }
@@ -132,6 +140,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
         cx.viz.slovo.ui.components.TypedQuestionContent(
             question = q,
             header = "${vm.index + 1} / ${vm.questions.size}",
+            hearts = vm.hearts,
             onPlay = { vm.playAudio(it) },
             onContinue = { vm.recordTyped(it) },
         )
@@ -143,7 +152,10 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text("${vm.index + 1} / ${vm.questions.size}", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text("${vm.index + 1} / ${vm.questions.size}", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
+                cx.viz.slovo.ui.components.HeartsRow(vm.hearts)
+            }
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
                 Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(q.promptText, color = Slovo.Ink, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
@@ -171,6 +183,17 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             Spacer(Modifier.height(12.dp))
             MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { vm.answer(chosen!!) }
         }
+    }
+}
+
+@Composable private fun OutOfHeartsView(onExit: () -> Unit) {
+    Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+           verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Spacer(Modifier.weight(1f))
+        Text("OUT OF HEARTS", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink, textAlign = TextAlign.Center)
+        Text("Come back and try this lesson again.", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+        Spacer(Modifier.weight(1f))
+        MishaButton("BACK TO HOME", Modifier.fillMaxWidth()) { onExit() }
     }
 }
 

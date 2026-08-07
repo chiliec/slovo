@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import cx.viz.slovo.domain.Hearts
 import cx.viz.slovo.ui.theme.Slovo
 
 /**
@@ -94,6 +95,16 @@ fun MishaStatChip(
         Column(Modifier.padding(10.dp)) {
             Text(value, color = textColor, style = MaterialTheme.typography.headlineMedium)
             Text(label, color = textColor.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+}
+
+@Composable
+fun HeartsRow(hearts: Int, modifier: Modifier = Modifier, max: Int = Hearts.MAX) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        repeat(max) { i ->
+            Text("♥", color = Slovo.Red.copy(alpha = if (i < hearts) 1f else 0.18f),
+                 style = MaterialTheme.typography.titleMedium)
         }
     }
 }
