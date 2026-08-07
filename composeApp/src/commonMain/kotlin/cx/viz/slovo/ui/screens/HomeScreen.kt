@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.LearnUnit
 import cx.viz.slovo.domain.Lesson
+import cx.viz.slovo.domain.StreakCalculator
 import cx.viz.slovo.domain.UserStats
 import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.ui.AppModule
@@ -29,6 +30,7 @@ private class HomeViewModel(private val module: AppModule) {
     var completed by mutableStateOf<Set<String>>(emptySet()); private set
     var stats by mutableStateOf(UserStats()); private set
     var dueCount by mutableStateOf(0); private set
+    var streakLost by mutableStateOf(false); private set
 
     init { refresh() }
     fun refresh() = scope.launch {
@@ -37,7 +39,11 @@ private class HomeViewModel(private val module: AppModule) {
         stats = module.progress.stats()
         val allIds = units.flatMap { it.cards }.map { it.id }.distinct()
         dueCount = module.progress.dueCount(allIds, currentEpochDay())
+        streakLost = StreakCalculator.isBroken(stats.streakDays, stats.lastActiveEpochDay, currentEpochDay())
     }
+
+    fun useStreakFreeze() { module.progress.useStreakFreeze(currentEpochDay()); refresh() }
+    fun startOverStreak() { module.progress.resetStreak(currentEpochDay()); refresh() }
 
     fun dispose() = scope.cancel()
 }
@@ -52,6 +58,14 @@ fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit, onOpen
     LaunchedEffect(Unit) { vm.refresh() }
     val units = vm.units
     if (units.isEmpty()) { Text("Loading…", Modifier.padding(24.dp)); return }
+    if (vm.streakLost) {
+        StreakLostView(
+            freezesLeft = vm.stats.streakFreezes,
+            onUseFreeze = vm::useStreakFreeze,
+            onStartOver = vm::startOverStreak,
+        )
+        return
+    }
 
     // Flatten every unit's lessons into one ordered sequence so unlocking carries across units:
     // a lesson opens once the lesson directly before it (even in the previous unit) is complete.
@@ -116,5 +130,20 @@ fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit, onOpen
                 )
             }
         }
+    }
+}
+
+@Composable private fun StreakLostView(freezesLeft: Int, onUseFreeze: () -> Unit, onStartOver: () -> Unit) {
+    Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+           verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Spacer(Modifier.weight(1f))
+        Text("STREAK LOST", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
+        Text("You missed a day. Use a freeze to keep your streak, or start fresh.",
+             color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
+        Spacer(Modifier.weight(1f))
+        if (freezesLeft > 0) {
+            MishaButton("USE STREAK FREEZE · $freezesLeft LEFT", Modifier.fillMaxWidth()) { onUseFreeze() }
+        }
+        MishaButton("START OVER", Modifier.fillMaxWidth(), background = Slovo.Ink) { onStartOver() }
     }
 }

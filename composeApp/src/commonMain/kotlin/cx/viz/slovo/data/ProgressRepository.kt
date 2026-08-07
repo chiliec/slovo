@@ -79,7 +79,21 @@ class ProgressRepository(private val db: SlovoDatabase) {
         lessons.selectAll().executeAsList().filter { it.completed == 1L }.map { it.lesson_id }.toSet()
 
     fun stats(): UserStats = statsQ.select().executeAsOne().let {
-        UserStats(xp = it.xp.toInt(), streakDays = it.streak_days.toInt(), lastActiveEpochDay = it.last_active_day)
+        UserStats(
+            xp = it.xp.toInt(), streakDays = it.streak_days.toInt(),
+            lastActiveEpochDay = it.last_active_day, streakFreezes = it.streak_freezes.toInt(),
+        )
+    }
+
+    /** Forgives one missed day: spends a freeze and rolls last-active forward so the streak survives. */
+    fun useStreakFreeze(todayEpochDay: Long): UserStats {
+        statsQ.useFreeze(day = todayEpochDay - 1)
+        return stats()
+    }
+
+    fun resetStreak(todayEpochDay: Long): UserStats {
+        statsQ.resetStreak(day = todayEpochDay)
+        return stats()
     }
 
     /** Awards drill XP on top of the current total; leaves streak and last-active day untouched. */

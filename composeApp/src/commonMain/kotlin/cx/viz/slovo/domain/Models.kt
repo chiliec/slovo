@@ -59,6 +59,7 @@ data class UserStats(
     val xp: Int = 0,
     val streakDays: Int = 0,
     val lastActiveEpochDay: Long = 0,
+    val streakFreezes: Int = 0,
 )
 
 data class UserProfile(

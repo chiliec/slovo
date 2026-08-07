@@ -48,6 +48,10 @@ private class LessonViewModel(
     var drillIndex by mutableStateOf(0); private set
     var drillCorrect by mutableStateOf(0); private set
     var finalStats by mutableStateOf(UserStats()); private set
+    var showQuitConfirm by mutableStateOf(false); private set
+
+    fun requestQuit() { showQuitConfirm = true }
+    fun cancelQuit() { showQuitConfirm = false }
 
     init { scope.launch {
         val unit = module.content.unit(unitId)
@@ -138,14 +142,38 @@ private class LessonViewModel(
 fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: () -> Unit) {
     val vm = remember { LessonViewModel(module, unitId, lessonId) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
-    when (vm.phase) {
-        Phase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
-        Phase.STUDY -> StudyView(vm, onPractice = vm::startQuiz)
-        Phase.QUIZ -> QuizView(vm)
-        Phase.MISTAKE_REVIEW -> MistakeReviewView(vm)
-        Phase.MISTAKE_DRILL -> MistakeDrillView(vm)
-        Phase.OUT_OF_HEARTS -> OutOfHeartsView(onDone)
-        Phase.RESULT -> ResultView(vm, onDone)
+    Box(Modifier.fillMaxSize()) {
+        when (vm.phase) {
+            Phase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
+            Phase.STUDY -> StudyView(vm, onPractice = vm::startQuiz)
+            Phase.QUIZ -> QuizView(vm)
+            Phase.MISTAKE_REVIEW -> MistakeReviewView(vm)
+            Phase.MISTAKE_DRILL -> MistakeDrillView(vm)
+            Phase.OUT_OF_HEARTS -> OutOfHeartsView(onDone)
+            Phase.RESULT -> ResultView(vm, onDone)
+        }
+        if (vm.phase == Phase.STUDY || vm.phase == Phase.QUIZ) {
+            Text(
+                "✕", color = Slovo.Ink, style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).clickable { vm.requestQuit() },
+            )
+        }
+        if (vm.showQuitConfirm) QuitConfirmOverlay(onKeepGoing = vm::cancelQuit, onQuit = onDone)
+    }
+}
+
+@Composable private fun QuitConfirmOverlay(onKeepGoing: () -> Unit, onQuit: () -> Unit) {
+    Box(Modifier.fillMaxSize().background(Slovo.Ink.copy(alpha = 0.55f)), contentAlignment = Alignment.Center) {
+        MishaCard(Modifier.padding(32.dp), shadow = 5.dp) {
+            Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally,
+                   verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("DON'T FLOAT AWAY", style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink, textAlign = TextAlign.Center)
+                Text("Your progress in this lesson will be lost.", color = Slovo.Ink,
+                     style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+                MishaButton("KEEP GOING", Modifier.fillMaxWidth()) { onKeepGoing() }
+                MishaButton("QUIT LESSON", Modifier.fillMaxWidth(), background = Slovo.Red) { onQuit() }
+            }
+        }
     }
 }
 
