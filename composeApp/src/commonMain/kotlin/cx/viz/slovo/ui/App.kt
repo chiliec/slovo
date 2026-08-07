@@ -36,7 +36,7 @@ fun App(module: AppModule) = SlovoTheme {
         containerColor = Slovo.Sand,
         bottomBar = {
             if (current in bottomTabs.map { it.first.route }) {
-                Row(Modifier.fillMaxWidth().background(Slovo.Card).border(3.dp, Slovo.Ink)) {
+                Row(Modifier.fillMaxWidth().background(Slovo.Card).border(2.5.dp, Slovo.Ink)) {
                     bottomTabs.forEach { (dest, label) ->
                         val active = current == dest.route
                         Box(

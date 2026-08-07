@@ -45,12 +45,12 @@ private fun HardShadow(modifier: Modifier, dx: Dp, dy: Dp, surface: @Composable 
 @Composable
 fun MishaCard(
     modifier: Modifier = Modifier,
-    shadow: Dp = 4.dp,
+    shadow: Dp = 3.dp,
     background: Color = Slovo.Card,
     content: @Composable BoxScope.() -> Unit,
 ) {
     HardShadow(modifier, shadow, shadow) {
-        Box(Modifier.background(background).border(3.dp, Slovo.Ink).padding(1.dp), content = content)
+        Box(Modifier.background(background).border(2.5.dp, Slovo.Ink).padding(1.dp), content = content)
     }
 }
 
@@ -68,7 +68,7 @@ fun MishaButton(
             Modifier
                 .offset(offset, offset)
                 .background(background)
-                .border(3.dp, Slovo.Ink)
+                .border(2.5.dp, Slovo.Ink)
                 .clickable {
                     pressed = true
                     onClick()
@@ -108,7 +108,7 @@ fun MishaTicker(text: String, modifier: Modifier = Modifier) {
         modifier
             .fillMaxWidth()
             .background(Slovo.Yellow)
-            .border(width = 3.dp, color = Slovo.Ink)
+            .border(width = 2.5.dp, color = Slovo.Ink)
             .clipToBounds()
             .padding(vertical = 6.dp),
     ) {
@@ -138,7 +138,7 @@ fun LessonRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Box(Modifier.background(Slovo.Yellow)
-                .border(3.dp, Slovo.Ink).padding(horizontal = 10.dp, vertical = 6.dp)) {
+                .border(2.dp, Slovo.Ink).padding(horizontal = 10.dp, vertical = 6.dp)) {
                 Text(index.toString().padStart(2, '0'), color = Slovo.Ink,
                      style = MaterialTheme.typography.labelSmall)
             }

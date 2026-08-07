@@ -66,7 +66,7 @@ fun HomeScreen(module: AppModule, onOpenLesson: (String, String) -> Unit, onOpen
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
             Text("SLOVO", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
-            MishaCard(shadow = 3.dp, background = Slovo.Bear) { MishaMascot(34.dp, Modifier.padding(4.dp)) }
+            MishaCard(shadow = 3.dp, background = Slovo.Mascot) { MishaMascot(34.dp, Modifier.padding(4.dp)) }
         }
         val duePart = if (vm.dueCount > 0) "${vm.dueCount} CARDS DUE  ◆  " else ""
         MishaTicker("${duePart}DAY ${vm.stats.streakDays} STREAK  ◆  ${vm.stats.xp} XP  ◆  LEAGUE COMING SOON  ◆  ")
