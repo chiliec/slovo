@@ -1,8 +1,10 @@
 package cx.viz.slovo.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,6 +13,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +34,8 @@ import cx.viz.slovo.ui.theme.SlovoTheme
 
 @Composable
 fun App(module: AppModule) = SlovoTheme {
+    var showSplash by remember { mutableStateOf(true) }
+    Box(Modifier.fillMaxSize()) {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val current = entry?.destination?.route
@@ -85,6 +92,14 @@ fun App(module: AppModule) = SlovoTheme {
                     onDone = { nav.popBackStack() },
                 )
             }
+        }
+    }
+
+        AnimatedVisibility(
+            visible = showSplash,
+            exit = slideOutVertically(tween(450)) { fullHeight -> -(fullHeight * 103 / 100) },
+        ) {
+            SplashScreen(onFinished = { showSplash = false })
         }
     }
 }

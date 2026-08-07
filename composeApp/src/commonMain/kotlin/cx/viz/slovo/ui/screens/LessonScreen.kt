@@ -1,5 +1,6 @@
 package cx.viz.slovo.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +17,7 @@ import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
+import cx.viz.slovo.ui.components.MishaStatChip
 import cx.viz.slovo.ui.theme.Slovo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -173,19 +175,28 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
 }
 
 @Composable private fun ResultView(vm: LessonViewModel, onDone: () -> Unit) {
-    Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
-           verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Spacer(Modifier.weight(1f))
-        Text("LESSON DONE", style = MaterialTheme.typography.headlineLarge, color = Slovo.Ink)
-        MishaCard(shadow = 5.dp, background = Slovo.Yellow) {
-            Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("+${cx.viz.slovo.domain.XpCalculator.sessionXp(vm.correctCount)} XP",
-                     style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink)
-                Text("${vm.correctCount} / ${vm.questions.size} correct", color = Slovo.Ink, style = MaterialTheme.typography.titleMedium)
-                Text("🔥 ${vm.finalStats.streakDays} day streak", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
+    val accuracy = if (vm.questions.isEmpty()) 0 else vm.correctCount * 100 / vm.questions.size
+    Box(Modifier.fillMaxSize().background(Slovo.Blue)) {
+        Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+               verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Spacer(Modifier.weight(1f))
+            Text("LIFTOFF!", style = MaterialTheme.typography.headlineLarge, color = Slovo.Card)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                MishaStatChip(
+                    value = "+${XpCalculator.sessionXp(vm.correctCount)}", label = "XP EARNED",
+                    background = Slovo.Yellow, textColor = Slovo.Ink, modifier = Modifier.weight(1f),
+                )
+                MishaStatChip(
+                    value = "$accuracy%", label = "ACCURACY",
+                    background = Slovo.Card, textColor = Slovo.Ink, modifier = Modifier.weight(1f),
+                )
             }
+            MishaCard(shadow = 3.dp, background = Slovo.Yellow) {
+                Text("DAY ${vm.finalStats.streakDays} — STREAK SAFE", Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                     color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
+            }
+            Spacer(Modifier.weight(1f))
+            MishaButton("CONTINUE", Modifier.fillMaxWidth()) { onDone() }
         }
-        Spacer(Modifier.weight(1f))
-        MishaButton("DONE", Modifier.fillMaxWidth()) { onDone() }
     }
 }
