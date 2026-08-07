@@ -8,18 +8,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.AppSettings
+import cx.viz.slovo.platform.Cue
 import cx.viz.slovo.ui.AppModule
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
 import cx.viz.slovo.ui.theme.Slovo
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(module: AppModule, onBack: () -> Unit) {
     var settings by remember { mutableStateOf(module.progress.settings()) }
+    val scope = rememberCoroutineScope()
     fun update(next: AppSettings) {
         settings = next
         module.progress.updateSettings(next)
         if (next.hapticsEnabled) module.haptics.light()
+        if (next.soundsEnabled) scope.launch { module.sound.play(Cue.SELECT) }
     }
 
     Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {

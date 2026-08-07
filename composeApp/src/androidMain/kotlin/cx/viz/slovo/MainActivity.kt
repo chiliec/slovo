@@ -9,7 +9,7 @@ import cx.viz.slovo.data.ProgressRepository
 import cx.viz.slovo.db.SlovoDatabase
 import cx.viz.slovo.platform.AndroidAudioPlayer
 import cx.viz.slovo.platform.AndroidHaptics
-import cx.viz.slovo.platform.NoopSoundPlayer
+import cx.viz.slovo.platform.AndroidSoundPlayer
 import cx.viz.slovo.ui.App
 import cx.viz.slovo.ui.AppModule
 
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             content = BundledContentRepository(),
             progress = ProgressRepository(db),
             audio = AndroidAudioPlayer(applicationContext),
-            sound = NoopSoundPlayer(),
+            sound = AndroidSoundPlayer(applicationContext),
             haptics = AndroidHaptics(applicationContext),
         )
         setContent { App(module) }

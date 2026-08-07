@@ -15,8 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cx.viz.slovo.domain.*
+import cx.viz.slovo.platform.Cue
 import cx.viz.slovo.platform.currentEpochDay
 import cx.viz.slovo.ui.AppModule
+import cx.viz.slovo.ui.playCue
 import cx.viz.slovo.ui.components.MishaButton
 import cx.viz.slovo.ui.components.MishaCard
 import cx.viz.slovo.ui.components.MishaStatChip
@@ -53,6 +55,8 @@ private class LessonViewModel(
     fun requestQuit() { showQuitConfirm = true }
     fun cancelQuit() { showQuitConfirm = false }
 
+    fun chipAdded() { scope.launch { module.playCue(Cue.SELECT) } }
+
     init { scope.launch {
         val unit = module.content.unit(unitId)
         val lesson = unit.lessons.first { it.id == lessonId }
@@ -88,6 +92,7 @@ private class LessonViewModel(
 
     fun pairMismatch() {
         hearts = Hearts.afterMiss(hearts)
+        scope.launch { module.playCue(Cue.ERROR) }
         if (Hearts.isDepleted(hearts)) phase = Phase.OUT_OF_HEARTS
     }
 
@@ -95,6 +100,7 @@ private class LessonViewModel(
         val q = questions[index]
         correctCount++
         q.pairCards.forEach { module.progress.recordAnswer(it.id, true, currentEpochDay()) }
+        scope.launch { module.playCue(Cue.PAIR_MATCH) }
         advance()
     }
 
@@ -103,6 +109,7 @@ private class LessonViewModel(
     private fun record(q: Question, correct: Boolean) {
         if (correct) correctCount++ else { hearts = Hearts.afterMiss(hearts); mistakes = mistakes + q.card }
         module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
+        scope.launch { module.playCue(if (correct) Cue.SUCCESS else Cue.ERROR) }
         if (Hearts.isDepleted(hearts)) phase = Phase.OUT_OF_HEARTS else advance()
     }
 
@@ -131,6 +138,7 @@ private class LessonViewModel(
 
     private fun completeAndCelebrate() {
         finalStats = module.progress.completeLesson(lessonId, correctCount, currentEpochDay())
+        scope.launch { module.playCue(Cue.LESSON_COMPLETE) }
         phase = Phase.RESULT
     }
 
@@ -298,7 +306,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             }
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 q.options.indices.filter { it !in selected }.forEach { i ->
-                    WordChip(q.options[i]) { if (result == null) selected = selected + i }
+                    WordChip(q.options[i]) { if (result == null) { selected = selected + i; vm.chipAdded() } }
                 }
             }
             result?.let { r ->
