@@ -239,6 +239,36 @@ Like the iOS `release` lane, the Android lanes keep `store-assets/` as the singl
 source of truth and stage a copy into supply's `<lang>/images/…` layout at run time
 (`fastlane/play-metadata/`, gitignored, rebuilt each run). Never edit the staged tree.
 
+### CI — GitHub Actions (`.github/workflows/android-play.yml`)
+
+The same lanes run in CI on a `v*` tag or manual dispatch (`track=internal`). The
+job **degrades gracefully**: with no signing secret it builds unsigned and only
+saves the AAB as a workflow artifact; with no `PLAY_JSON_KEY` it skips the upload.
+Wire these secrets to enable the real path (run from a checkout, with the keystore
+and service-account JSON on hand):
+
+```bash
+# 1. Upload keystore — base64 the .jks into a secret
+gh secret set ANDROID_KEYSTORE_BASE64   --repo chiliec/slovo < <(base64 -i slovo-upload.jks)
+gh secret set ANDROID_KEYSTORE_PASSWORD --repo chiliec/slovo --body '<store password>'
+gh secret set ANDROID_KEY_ALIAS         --repo chiliec/slovo --body 'slovo'
+gh secret set ANDROID_KEY_PASSWORD      --repo chiliec/slovo --body '<key password>'
+
+# 2. Play service account — base64 the JSON into a secret
+gh secret set PLAY_JSON_KEY --repo chiliec/slovo < <(base64 -i play-service-account.json)
+
+# verify
+gh secret list --repo chiliec/slovo
+```
+
+> `base64 -i` is macOS/BSD. On GNU/Linux use `base64 -w0 <file>`. The workflow
+> rebuilds `keystore.properties` from the four `ANDROID_*` values, writing
+> `storeFile=slovo-upload.jks` — the decoded keystore filename must match (it does).
+
+Trigger a credential-free dry run first — **Actions → Android Play → Run workflow
+→ track: none** — builds the AAB with no upload. Once green, wire `PLAY_JSON_KEY`
+and run with `track: internal`.
+
 ---
 
 ## 7. Pre-upload checklist
