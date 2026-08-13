@@ -262,8 +262,9 @@ gh secret list --repo chiliec/slovo
 ```
 
 > `base64 -i` is macOS/BSD. On GNU/Linux use `base64 -w0 <file>`. The workflow
-> rebuilds `keystore.properties` from the four `ANDROID_*` values, writing
-> `storeFile=slovo-upload.jks` — the decoded keystore filename must match (it does).
+> decodes the keystore into `$RUNNER_TEMP` (never the checkout) and writes a
+> `keystore.properties` at the repo root pointing `storeFile` at it, then deletes
+> both once the build is done.
 
 Trigger a credential-free dry run first — **Actions → Android Play → Run workflow
 → track: none** — builds the AAB with no upload. Once green, wire `PLAY_JSON_KEY`

@@ -67,13 +67,18 @@ jobs:
             echo "signed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > slovo-upload.jks
-          cat > keystore.properties <<EOF
-          storeFile=slovo-upload.jks
-          storePassword=${ANDROID_KEYSTORE_PASSWORD}
-          keyAlias=${ANDROID_KEY_ALIAS}
-          keyPassword=${ANDROID_KEY_PASSWORD}
-          EOF
+          # Keep the .jks out of the checkout, like ios-testflight.yml does with
+          # the .p12. keystore.properties itself has to sit at the repo root —
+          # composeApp/build.gradle.kts reads rootProject.file("keystore.properties")
+          # — but rootProject.file() passes an absolute storeFile through unchanged.
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/slovo-upload.jks"
+          # printf, not a heredoc: an unquoted heredoc runs command substitution
+          # on the password and swallows backslashes.
+          printf '%s\n' \
+            "storeFile=$RUNNER_TEMP/slovo-upload.jks" \
+            "storePassword=$ANDROID_KEYSTORE_PASSWORD" \
+            "keyAlias=$ANDROID_KEY_ALIAS" \
+            "keyPassword=$ANDROID_KEY_PASSWORD" > keystore.properties
           echo "signed=true" >> "$GITHUB_OUTPUT"
 
       # One build, not two: play_internal builds the AAB itself (with the
@@ -107,3 +112,8 @@ jobs:
           path: composeApp/build/outputs/bundle/release/composeApp-release.aab
           retention-days: 14
           if-no-files-found: warn
+
+      # Runners are ephemeral, but don't leave the upload key lying around mid-job.
+      - name: Clean up signing material
+        if: always()
+        run: rm -f keystore.properties "$RUNNER_TEMP/slovo-upload.jks"

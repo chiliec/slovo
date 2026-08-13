@@ -31,6 +31,13 @@
 #
 # Android/Play auth (see the android platform block at the bottom):
 #   PLAY_JSON_KEY       Play service account JSON contents (base64) — CI only
+#   ANDROID_VERSION_CODE  Pin the versionCode; play_internal otherwise derives it
+# Upload-key signing. The lanes read the gitignored keystore.properties at the
+# repo root; CI rebuilds that file from these four secrets (android-play.yml):
+#   ANDROID_KEYSTORE_BASE64    The upload .jks as base64 — CI only
+#   ANDROID_KEYSTORE_PASSWORD  storePassword
+#   ANDROID_KEY_ALIAS          keyAlias (currently "slovo")
+#   ANDROID_KEY_PASSWORD       keyPassword
 
 require "base64"
 
