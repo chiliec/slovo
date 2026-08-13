@@ -1,0 +1,107 @@
+name: Android Play
+
+# Build the signed AAB and upload it to the Play internal-testing track.
+# Manual dispatch, or push a version tag (e.g. v1.0.0). The upload step only runs
+# when the Play + signing secrets are configured; without them the job still
+# builds and uploads the AAB as a workflow artifact so the pipeline is verifiable
+# before the Play account exists.
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "Play track to upload to (leave 'none' to only build the AAB artifact)"
+        type: choice
+        options: [none, internal]
+        default: none
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: android-play-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  play:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      # compileSdk is 37, newer than the platform preinstalled on ubuntu-latest,
+      # so install it explicitly. The package is "android-37.0" (minor version).
+      - name: Install Android SDK platform 37
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0"
+
+      - name: Set up Ruby + bundler cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      # Materialize the upload keystore + keystore.properties from secrets so the
+      # release build is signed. Absent the secret the build still runs (unsigned)
+      # and only the artifact path is useful.
+      - name: Configure signing
+        id: signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "${ANDROID_KEYSTORE_BASE64:-}" ]; then
+            echo "No ANDROID_KEYSTORE_BASE64 secret — building UNSIGNED (artifact only)."
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > slovo-upload.jks
+          cat > keystore.properties <<EOF
+          storeFile=slovo-upload.jks
+          storePassword=${ANDROID_KEYSTORE_PASSWORD}
+          keyAlias=${ANDROID_KEY_ALIAS}
+          keyPassword=${ANDROID_KEY_PASSWORD}
+          EOF
+          echo "signed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Build signed AAB
+        env:
+          ANDROID_VERSION_CODE: ${{ github.run_number }}
+        run: bundle exec fastlane android bundle
+
+      - name: Upload AAB artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: slovo-aab
+          path: composeApp/build/outputs/bundle/release/composeApp-release.aab
+          retention-days: 14
+          if-no-files-found: warn
+
+      # Only when a real Play upload is requested AND both the signing key and the
+      # Play service account are present.
+      - name: Upload to Play internal track
+        if: >-
+          steps.signing.outputs.signed == 'true' &&
+          (github.event_name == 'push' || github.event.inputs.track == 'internal')
+        env:
+          PLAY_JSON_KEY: ${{ secrets.PLAY_JSON_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PLAY_JSON_KEY:-}" ]; then
+            echo "No PLAY_JSON_KEY secret — skipping the Play upload."
+            exit 0
+          fi
+          bundle exec fastlane android play_internal
