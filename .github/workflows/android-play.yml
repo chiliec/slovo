@@ -76,10 +76,28 @@ jobs:
           EOF
           echo "signed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Build signed AAB
+      # One build, not two: play_internal builds the AAB itself (with the
+      # versionCode it resolves from Play), so invoking `bundle` as well would
+      # rebuild and leave the artifact holding a different binary than the one
+      # shipped. Pick the lane instead. PLAY_JSON_KEY has to be probed in the
+      # shell — the `secrets` context is not available in a step-level `if:`.
+      - name: Build AAB (upload to Play when configured)
         env:
+          PLAY_JSON_KEY: ${{ secrets.PLAY_JSON_KEY }}
+          PLAY_REQUESTED: >-
+            ${{ steps.signing.outputs.signed == 'true' &&
+            (github.event_name == 'push' || github.event.inputs.track == 'internal') }}
           ANDROID_VERSION_CODE: ${{ github.run_number }}
-        run: bundle exec fastlane android bundle
+        run: |
+          set -euo pipefail
+          if [ "$PLAY_REQUESTED" = "true" ] && [ -n "${PLAY_JSON_KEY:-}" ]; then
+            # play_internal derives the versionCode from Play; don't pin it here.
+            unset ANDROID_VERSION_CODE
+            bundle exec fastlane android play_internal
+          else
+            echo "Artifact-only build (unsigned and/or no Play credentials)."
+            bundle exec fastlane android bundle
+          fi
 
       - name: Upload AAB artifact
         if: always()
@@ -89,19 +107,3 @@ jobs:
           path: composeApp/build/outputs/bundle/release/composeApp-release.aab
           retention-days: 14
           if-no-files-found: warn
-
-      # Only when a real Play upload is requested AND both the signing key and the
-      # Play service account are present.
-      - name: Upload to Play internal track
-        if: >-
-          steps.signing.outputs.signed == 'true' &&
-          (github.event_name == 'push' || github.event.inputs.track == 'internal')
-        env:
-          PLAY_JSON_KEY: ${{ secrets.PLAY_JSON_KEY }}
-        run: |
-          set -euo pipefail
-          if [ -z "${PLAY_JSON_KEY:-}" ]; then
-            echo "No PLAY_JSON_KEY secret — skipping the Play upload."
-            exit 0
-          fi
-          bundle exec fastlane android play_internal
