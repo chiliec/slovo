@@ -31,6 +31,13 @@
 #
 # Android/Play auth (see the android platform block at the bottom):
 #   PLAY_JSON_KEY       Play service account JSON contents (base64) — CI only
+#   ANDROID_VERSION_CODE  Pin the versionCode; play_internal otherwise derives it
+# Upload-key signing. The lanes read the gitignored keystore.properties at the
+# repo root; CI rebuilds that file from these four secrets (android-play.yml):
+#   ANDROID_KEYSTORE_BASE64    The upload .jks as base64 — CI only
+#   ANDROID_KEYSTORE_PASSWORD  storePassword
+#   ANDROID_KEY_ALIAS          keyAlias (currently "slovo")
+#   ANDROID_KEY_PASSWORD       keyPassword
 
 require "base64"
 
@@ -353,7 +360,7 @@ end
 #
 # version_code is passed through to Gradle as -PversionCode; nil leaves the
 # build file's default of 1 (fine for local verification, never for an upload).
-def build_aab(version_code: nil)
+def build_aab(version_code: nil, require_signing: true)
   UI.message("Building AAB with versionCode=#{version_code || '1 (build file default)'}")
   gradle(
     task: ":composeApp:bundle",
@@ -363,8 +370,11 @@ def build_aab(version_code: nil)
   )
   UI.user_error!("Expected an AAB at #{AAB_PATH}") unless File.exist?(AAB_PATH)
   unless File.exist?(File.expand_path("../keystore.properties", __dir__))
-    UI.user_error!("No keystore.properties at the repo root — the AAB is unsigned and Play " \
-                   "will reject it. See docs/release-android.md.")
+    msg = "No keystore.properties at the repo root — the AAB is UNSIGNED and Play " \
+          "will reject it. See docs/release-android.md."
+    # Only an upload needs a signed AAB; the bundle lane exists precisely to be
+    # runnable without credentials (CI dry run), so there it is a warning.
+    require_signing ? UI.user_error!(msg) : UI.important(msg)
   end
   AAB_PATH
 end
@@ -386,7 +396,7 @@ platform :android do
   # ANDROID_VERSION_CODE to pin a code, otherwise the build file default (1) is
   # used. play_internal is what resolves the real code from Play.
   lane :bundle do
-    build_aab(version_code: ENV["ANDROID_VERSION_CODE"])
+    build_aab(version_code: ENV["ANDROID_VERSION_CODE"], require_signing: false)
     UI.success("AAB: #{AAB_PATH}")
   end
 
