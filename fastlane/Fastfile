@@ -422,6 +422,10 @@ platform :android do
       package_name: PACKAGE_NAME,
       json_key: play_json_key,
       metadata_path: stage_play_metadata,
+      # supply resolves a track+release even for a listing-only push (uploader.rb
+      # perform_upload_meta runs whenever ANY skip_upload_* is false) and defaults
+      # to production, which has no release until launch. Point it at internal.
+      track: ENV.fetch("PLAY_LISTING_TRACK", "internal"),
       skip_upload_aab: true,
       skip_upload_apk: true,
       skip_upload_changelogs: true,    # changelogs belong to a release, not the listing
