@@ -31,10 +31,12 @@ fun TypedQuestionContent(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            // end padding keeps the last heart clear of the ✕ quit button overlaid at the top-right.
+            Row(Modifier.fillMaxWidth().padding(end = 32.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text(header, color = Slovo.Ink, style = MaterialTheme.typography.labelSmall)
                 hearts?.let { HeartsRow(it) }
             }
+
             MishaCard(Modifier.fillMaxWidth(), shadow = 5.dp) {
                 Column(
                     Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally,

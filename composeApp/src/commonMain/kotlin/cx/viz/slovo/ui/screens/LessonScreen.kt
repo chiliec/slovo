@@ -151,20 +151,25 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
     val vm = remember { LessonViewModel(module, unitId, lessonId) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
     Box(Modifier.fillMaxSize()) {
-        when (vm.phase) {
-            Phase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
-            Phase.STUDY -> StudyView(vm, onPractice = vm::startQuiz)
-            Phase.QUIZ -> QuizView(vm)
-            Phase.MISTAKE_REVIEW -> MistakeReviewView(vm)
-            Phase.MISTAKE_DRILL -> MistakeDrillView(vm)
-            Phase.OUT_OF_HEARTS -> OutOfHeartsView(onDone)
-            Phase.RESULT -> ResultView(vm, onDone)
-        }
-        if (vm.phase == Phase.STUDY || vm.phase == Phase.QUIZ) {
-            Text(
-                "✕", color = Slovo.Ink, style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).clickable { vm.requestQuit() },
-            )
+        // RESULT bleeds its background into the system bars; every other phase is inset here.
+        if (vm.phase == Phase.RESULT) {
+            ResultView(vm, onDone)
+        } else Box(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+            when (vm.phase) {
+                Phase.LOADING -> Text("Loading…", Modifier.padding(24.dp))
+                Phase.STUDY -> StudyView(vm, onPractice = vm::startQuiz)
+                Phase.QUIZ -> QuizView(vm)
+                Phase.MISTAKE_REVIEW -> MistakeReviewView(vm)
+                Phase.MISTAKE_DRILL -> MistakeDrillView(vm)
+                Phase.OUT_OF_HEARTS -> OutOfHeartsView(onDone)
+                Phase.RESULT -> Unit
+            }
+            if (vm.phase == Phase.STUDY || vm.phase == Phase.QUIZ) {
+                Text(
+                    "✕", color = Slovo.Ink, style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).clickable { vm.requestQuit() },
+                )
+            }
         }
         if (vm.showQuitConfirm) QuitConfirmOverlay(onKeepGoing = vm::cancelQuit, onQuit = onDone)
     }
@@ -458,7 +463,8 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
 @Composable private fun ResultView(vm: LessonViewModel, onDone: () -> Unit) {
     val accuracy = if (vm.questions.isEmpty()) 0 else vm.correctCount * 100 / vm.questions.size
     Box(Modifier.fillMaxSize().background(Slovo.Blue)) {
-        Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+        Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).padding(24.dp),
+               horizontalAlignment = Alignment.CenterHorizontally,
                verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Spacer(Modifier.weight(1f))
             Text("LIFTOFF!", style = MaterialTheme.typography.headlineLarge, color = Slovo.Card)

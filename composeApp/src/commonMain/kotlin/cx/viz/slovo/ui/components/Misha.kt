@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
@@ -77,7 +78,9 @@ fun MishaButton(
                 .padding(horizontal = 20.dp, vertical = 12.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(text, color = Slovo.Card, style = MaterialTheme.typography.labelSmall)
+            // Card/Yellow backgrounds would swallow a near-white label ("← BACK" rendered blank).
+            Text(text, color = if (background.luminance() > 0.5f) Slovo.Ink else Slovo.Card,
+                 style = MaterialTheme.typography.labelSmall)
         }
     }
 }
@@ -112,7 +115,8 @@ fun HeartsRow(hearts: Int, modifier: Modifier = Modifier, max: Int = Hearts.MAX)
 @Composable
 fun QuizHeader(index: Int, total: Int, hearts: Int, modifier: Modifier = Modifier) {
     Column(modifier.fillMaxWidth()) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+        // end padding keeps the last heart clear of the ✕ quit button overlaid at the top-right.
+        Row(Modifier.fillMaxWidth().padding(end = 32.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text("${index + 1} / $total", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium)
             HeartsRow(hearts)
         }
