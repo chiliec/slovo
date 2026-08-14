@@ -21,6 +21,8 @@ fun TypedQuestionContent(
     header: String,
     hearts: Int? = null,
     onPlay: (String) -> Unit,
+    /** Fires as the verdict is revealed, so hearts/XP update alongside it. */
+    onChecked: (correct: Boolean) -> Unit = {},
     onContinue: (correct: Boolean) -> Unit,
 ) {
     var text by remember(question) { mutableStateOf("") }
@@ -82,6 +84,7 @@ fun TypedQuestionContent(
         if (result == null) {
             MishaButton("SUBMIT", Modifier.fillMaxWidth()) {
                 result = AnswerChecker.check(text, question.card.english)
+                onChecked(result!!.verdict != AnswerChecker.Verdict.WRONG)
             }
         } else {
             MishaButton("CONTINUE →", Modifier.fillMaxWidth()) {

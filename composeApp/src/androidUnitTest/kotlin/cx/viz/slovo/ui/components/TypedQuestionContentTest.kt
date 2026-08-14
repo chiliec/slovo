@@ -42,13 +42,14 @@ class TypedQuestionContentTest {
         correctIndex = 0,
     )
 
-    private fun setContent(onContinue: (Boolean) -> Unit = {}) {
+    private fun setContent(onChecked: (Boolean) -> Unit = {}, onContinue: (Boolean) -> Unit = {}) {
         rule.setContent {
             SlovoTheme {
                 TypedQuestionContent(
                     question = question,
                     header = "TYPED RECALL",
                     onPlay = {},
+                    onChecked = onChecked,
                     onContinue = onContinue,
                 )
             }
@@ -98,5 +99,17 @@ class TypedQuestionContentTest {
         rule.onNodeWithText("CONTINUE →").performClick()
 
         assert(continued == false) { "expected onContinue(false) for a wrong answer, got $continued" }
+    }
+
+    /** The heart has to drop next to the verdict, not one question later on CONTINUE. */
+    @Test
+    fun submitScoresBeforeContinueIsTapped() {
+        var checked: Boolean? = null
+        setContent(onChecked = { checked = it })
+
+        rule.onNode(hasSetTextAction()).performTextInput("goodbye")
+        rule.onNodeWithText("SUBMIT").performClick()
+
+        assert(checked == false) { "expected onChecked(false) on SUBMIT, got $checked" }
     }
 }
