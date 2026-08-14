@@ -50,7 +50,9 @@ class QuestionFactory(private val rng: Random = Random.Default) {
 
         val prompt = when (mode) {
             QuestionMode.LISTEN -> "What does this mean?"
-            QuestionMode.READ -> "What does \"${card.russian}\" mean?"
+            // No phrase in the prompt: every READ surface renders card.russian below it in
+            // headline size, so quoting it here printed the phrase twice.
+            QuestionMode.READ -> "What does this mean?"
             QuestionMode.PRODUCE -> "How do you say \"${card.english}\"?"
             else -> ""   // TYPE handled above; WORD_BANK/PAIR_MATCH/SPEAK built elsewhere
         }

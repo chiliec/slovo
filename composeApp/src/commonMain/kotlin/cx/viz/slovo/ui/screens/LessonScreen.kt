@@ -79,17 +79,6 @@ private class LessonViewModel(
         index = 0; correctCount = 0; hearts = Hearts.MAX; mistakes = emptyList(); phase = Phase.QUIZ
     }
 
-    fun answer(optionIndex: Int) {
-        val q = questions[index]
-        val correct = optionIndex == q.correctIndex
-        record(q, correct)
-    }
-
-    fun recordTyped(correct: Boolean) {
-        val q = questions[index]
-        record(q, correct)
-    }
-
     fun pairMismatch() {
         hearts = Hearts.afterMiss(hearts)
         scope.launch { module.playCue(Cue.ERROR) }
@@ -104,12 +93,22 @@ private class LessonViewModel(
         advance()
     }
 
-    fun speakComplete() = record(questions[index], true)
+    fun speakComplete() { record(true); continueAfterAnswer() }
 
-    private fun record(q: Question, correct: Boolean) {
+    /**
+     * Scores the current question the moment its feedback appears. Every quiz mode reveals the
+     * verdict first and advances on CONTINUE, so scoring from CONTINUE left the lost heart
+     * showing up a question late, next to the *following* question.
+     */
+    fun record(correct: Boolean) {
+        val q = questions[index]
         if (correct) correctCount++ else { hearts = Hearts.afterMiss(hearts); mistakes = mistakes + q.card }
         module.progress.recordAnswer(q.card.id, correct, currentEpochDay())
         scope.launch { module.playCue(if (correct) Cue.SUCCESS else Cue.ERROR) }
+    }
+
+    /** CONTINUE: the verdict has been seen, so a depleted heart bar can end the lesson now. */
+    fun continueAfterAnswer() {
         if (Hearts.isDepleted(hearts)) phase = Phase.OUT_OF_HEARTS else advance()
     }
 
@@ -230,7 +229,8 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             header = "${vm.index + 1} / ${vm.questions.size}",
             hearts = vm.hearts,
             onPlay = { vm.playAudio(it) },
-            onContinue = { vm.recordTyped(it) },
+            onChecked = { vm.record(it) },
+            onContinue = { vm.continueAfterAnswer() },
         )
         QuestionMode.WORD_BANK -> WordBankView(vm, q)
         QuestionMode.PAIR_MATCH -> PairMatchView(vm, q)
@@ -239,7 +239,8 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             q = q,
             headerContent = { cx.viz.slovo.ui.components.QuizHeader(vm.index, vm.questions.size, vm.hearts) },
             onPlay = { vm.playAudio(it) },
-            onAnswer = { vm.answer(it) },
+            onChosen = { vm.record(it) },
+            onContinue = { vm.continueAfterAnswer() },
         )
     }
 }
@@ -249,7 +250,9 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
     q: Question,
     headerContent: @Composable () -> Unit,
     onPlay: (String) -> Unit,
-    onAnswer: (Int) -> Unit,
+    /** Fires as the verdict is revealed, so hearts/XP update alongside it. */
+    onChosen: (correct: Boolean) -> Unit = {},
+    onContinue: (correct: Boolean) -> Unit,
 ) {
     var chosen by remember(q) { mutableStateOf<Int?>(null) }
     Column(Modifier.fillMaxSize().padding(16.dp)) {
@@ -273,7 +276,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
                     else -> Slovo.Card
                 }
                 MishaCard(Modifier.fillMaxWidth().let {
-                    if (chosen == null) it.clickable { chosen = i } else it
+                    if (chosen == null) it.clickable { chosen = i; onChosen(i == q.correctIndex) } else it
                 }, shadow = 3.dp, background = bg) {
                     Text(opt, Modifier.fillMaxWidth().padding(14.dp),
                          color = if (chosen != null && (i == q.correctIndex || i == chosen)) Slovo.Card else Slovo.Ink,
@@ -283,7 +286,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
         }
         if (chosen != null) {
             Spacer(Modifier.height(12.dp))
-            MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { onAnswer(chosen!!) }
+            MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { onContinue(chosen == q.correctIndex) }
         }
     }
 }
@@ -327,9 +330,10 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             MishaButton("CHECK", Modifier.fillMaxWidth(), enabled = selected.isNotEmpty()) {
                 val assembled = selected.joinToString(" ") { q.options[it] }
                 result = AnswerChecker.check(assembled, q.card.english)
+                vm.record(result!!.verdict != AnswerChecker.Verdict.WRONG)
             }
         } else {
-            MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { vm.recordTyped(result!!.verdict != AnswerChecker.Verdict.WRONG) }
+            MishaButton("CONTINUE →", Modifier.fillMaxWidth()) { vm.continueAfterAnswer() }
         }
     }
 }
@@ -444,7 +448,7 @@ fun LessonScreen(module: AppModule, unitId: String, lessonId: String, onDone: ()
             q = q,
             headerContent = { Text(header, color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium) },
             onPlay = { vm.playAudio(it) },
-            onAnswer = { i -> vm.answerMistakeDrill(i == q.correctIndex) },
+            onContinue = { vm.answerMistakeDrill(it) },
         )
     }
 }

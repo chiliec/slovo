@@ -131,7 +131,6 @@ fun OnboardingScreen(module: AppModule, onComplete: () -> Unit) {
 @Composable private fun GoalStep(onChoose: (String) -> Unit) {
     OnbScaffold {
         Text("WHY ARE YOU LEARNING RUSSIAN?", style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.weight(1f))
         listOf("Travel" to "travel", "Family & friends" to "family", "Just for fun" to "fun").forEach { (label, value) ->
             OptionRow(label) { onChoose(value) }
         }
@@ -142,7 +141,6 @@ fun OnboardingScreen(module: AppModule, onComplete: () -> Unit) {
 @Composable private fun LevelStep(onChoose: (String) -> Unit) {
     OnbScaffold {
         Text("HOW MUCH RUSSIAN DO YOU KNOW?", style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.weight(1f))
         listOf("Just starting" to "new", "I know some phrases" to "some", "I'm conversational" to "fluent").forEach { (label, value) ->
             OptionRow(label) { onChoose(value) }
         }
@@ -153,7 +151,6 @@ fun OnboardingScreen(module: AppModule, onComplete: () -> Unit) {
 @Composable private fun DailyOrbitStep(onChoose: (Int) -> Unit) {
     OnbScaffold {
         Text("SET YOUR DAILY GOAL", style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.weight(1f))
         listOf(5, 10, 15, 20).forEach { minutes ->
             OptionRow("$minutes MIN/DAY  ·  ${minutes * 10} XP/DAY") { onChoose(minutes) }
         }
@@ -166,6 +163,8 @@ fun OnboardingScreen(module: AppModule, onComplete: () -> Unit) {
         Text("${index + 1} / $total", color = Slovo.Ink, style = MaterialTheme.typography.bodyMedium,
              modifier = Modifier.fillMaxWidth())
         Text(question.promptText, style = MaterialTheme.typography.titleMedium, color = Slovo.Ink, textAlign = TextAlign.Center)
+        // The prompt no longer quotes the phrase, so placement has to show it like the quiz does.
+        Text(question.card.russian, style = MaterialTheme.typography.headlineMedium, color = Slovo.Ink, textAlign = TextAlign.Center)
         question.options.forEachIndexed { i, opt -> OptionRow(opt) { onAnswer(i) } }
         Spacer(Modifier.weight(1f))
     }
