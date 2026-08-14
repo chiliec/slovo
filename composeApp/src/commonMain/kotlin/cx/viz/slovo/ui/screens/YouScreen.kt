@@ -38,7 +38,10 @@ private class ProfileViewModel(private val module: AppModule) {
     var unitPercents by mutableStateOf<List<Pair<UnitMeta, Int>>>(emptyList()); private set
     var srs by mutableStateOf<SrsSnapshot?>(null); private set
     var summary by mutableStateOf<ProfileSummary?>(null); private set
-    init { scope.launch {
+    init { reload() }
+    // Same shape as Home/Drill: the tab is re-created on every visit, and the init-time
+    // load alone doesn't survive the nav crossfade, so the screen also calls reload().
+    fun reload() = scope.launch {
         stats = module.progress.stats()
         val metas = module.content.units()
         val learnUnits = metas.map { module.content.unit(it.id) }
@@ -48,7 +51,7 @@ private class ProfileViewModel(private val module: AppModule) {
         val lessonsCompleted = (module.progress.completedLessonIds() intersect lessonIds).size
         srs = module.progress.srsSnapshot(allIds, currentEpochDay())
         summary = module.progress.profileSummary(allIds, lessonsCompleted, lessonIds.size)
-    } }
+    }
 
     fun dispose() = scope.cancel()
 }
@@ -56,6 +59,7 @@ private class ProfileViewModel(private val module: AppModule) {
 @Composable fun YouScreen(module: AppModule, onOpenSettings: () -> Unit) {
     val vm = remember { ProfileViewModel(module) }
     DisposableEffect(vm) { onDispose { vm.dispose() } }
+    LaunchedEffect(Unit) { vm.reload() }
     var showCredits by remember { mutableStateOf(false) }
     if (showCredits) CreditsDialog(onDismiss = { showCredits = false })
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),

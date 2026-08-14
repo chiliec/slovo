@@ -71,7 +71,9 @@ fun App(module: AppModule) = SlovoTheme {
         NavHost(
             nav,
             startDestination = Dest.Learn.route,
-            modifier = Modifier.padding(pad),
+            // The lesson's LIFTOFF screen paints a full-bleed background, so that route goes
+            // edge-to-edge and applies the safe-area insets itself.
+            modifier = if (current == Dest.Lesson.route) Modifier else Modifier.padding(pad),
             // Tabs shouldn't slide like a push; a quick crossfade avoids the torn look on iOS.
             enterTransition = { fadeIn(tween(150)) },
             exitTransition = { fadeOut(tween(150)) },
