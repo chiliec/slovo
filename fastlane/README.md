@@ -76,6 +76,14 @@ Build the signed release AAB
 
 Build and upload a new build to the Play internal testing track
 
+### android play_closed
+
+```sh
+[bundle exec] fastlane android play_closed
+```
+
+Build and upload a new build to the closed testing track
+
 ### android play_listing
 
 ```sh
