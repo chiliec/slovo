@@ -379,6 +379,23 @@ def build_aab(version_code: nil, require_signing: true)
   AAB_PATH
 end
 
+# Shared body for the testing-track lanes: one build, uploaded to [track].
+def play_upload_build(track)
+  build_aab(version_code: ENV["ANDROID_VERSION_CODE"] || next_play_version_code)
+
+  upload_to_play_store(
+    package_name: PACKAGE_NAME,
+    json_key: play_json_key,
+    aab: AAB_PATH,
+    track: track,
+    metadata_path: stage_play_metadata,
+    # a human reviews in the console before rollout
+    release_status: ENV.fetch("PLAY_RELEASE_STATUS", "draft"),
+    skip_upload_apk: true,
+    validate_only: ENV["PLAY_VALIDATE_ONLY"] == "1"
+  )
+end
+
 platform :android do
   desc "Stage the Play listing from store-assets/ without uploading (no credentials needed)"
   # Verification lane: proves the store-assets -> supply layout mapping works
@@ -402,18 +419,17 @@ platform :android do
 
   desc "Build and upload a new build to the Play internal testing track"
   lane :play_internal do
-    build_aab(version_code: ENV["ANDROID_VERSION_CODE"] || next_play_version_code)
+    play_upload_build("internal")
+  end
 
-    upload_to_play_store(
-      package_name: PACKAGE_NAME,
-      json_key: play_json_key,
-      aab: AAB_PATH,
-      track: "internal",
-      metadata_path: stage_play_metadata,
-      release_status: "draft",         # a human reviews in the console before rollout
-      skip_upload_apk: true,
-      validate_only: ENV["PLAY_VALIDATE_ONLY"] == "1"
-    )
+  desc "Build and upload a new build to the closed testing track"
+  # Production access for personal accounts created after 2023-11-13 needs 12
+  # testers opted in to a CLOSED track for 14 consecutive days — internal and open
+  # testing do not count towards it. This lane starts that clock. The default
+  # draft status does NOT: a draft is invisible to testers, so publish the release
+  # in the console (or pass PLAY_RELEASE_STATUS=completed) before counting days.
+  lane :play_closed do
+    play_upload_build(ENV.fetch("PLAY_CLOSED_TRACK", "alpha"))
   end
 
   desc "Push the Play listing (text, screenshots, graphics) without a binary"

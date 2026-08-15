@@ -11,7 +11,7 @@ on:
       track:
         description: "Play track to upload to (leave 'none' to only build the AAB artifact)"
         type: choice
-        options: [none, internal]
+        options: [none, internal, closed]
         default: none
   push:
     tags:
@@ -91,14 +91,21 @@ jobs:
           PLAY_JSON_KEY: ${{ secrets.PLAY_JSON_KEY }}
           PLAY_REQUESTED: >-
             ${{ steps.signing.outputs.signed == 'true' &&
-            (github.event_name == 'push' || github.event.inputs.track == 'internal') }}
+            (github.event_name == 'push' || github.event.inputs.track == 'internal'
+            || github.event.inputs.track == 'closed') }}
+          # A tag push keeps shipping to internal; closed is dispatch-only.
+          PLAY_TRACK: ${{ github.event_name == 'push' && 'internal' || github.event.inputs.track }}
           ANDROID_VERSION_CODE: ${{ github.run_number }}
         run: |
           set -euo pipefail
           if [ "$PLAY_REQUESTED" = "true" ] && [ -n "${PLAY_JSON_KEY:-}" ]; then
-            # play_internal derives the versionCode from Play; don't pin it here.
+            # The upload lanes derive the versionCode from Play; don't pin it here.
             unset ANDROID_VERSION_CODE
-            bundle exec fastlane android play_internal
+            if [ "$PLAY_TRACK" = "closed" ]; then
+              bundle exec fastlane android play_closed
+            else
+              bundle exec fastlane android play_internal
+            fi
           else
             echo "Artifact-only build (unsigned and/or no Play credentials)."
             bundle exec fastlane android bundle
