@@ -76,7 +76,15 @@ tasks.withType<Test>().configureEach {
 
 sqldelight {
     databases {
-        register("SlovoDatabase") { packageName.set("cx.viz.slovo.db") }
+        register("SlovoDatabase") {
+            packageName.set("cx.viz.slovo.db")
+            // Archives a .db snapshot per schema version. Setting this is what makes
+            // SQLDelight create the verifyMigration task at all — without it there is
+            // no check that the .sqm files actually reproduce the .sq schema, which is
+            // exactly the drift that crashed build 4 on every launch (a .sq gained
+            // columns/tables with no matching .sqm, so upgrades never migrated).
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+        }
     }
 }
 

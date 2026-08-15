@@ -32,6 +32,13 @@ jobs:
         run: |
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0"
 
+      # Fails when a .sq is edited without a matching .sqm, so migrating the
+      # archived schema forward no longer reproduces it. That drift shipped once
+      # and crashed build 4 on launch for every upgrading install; unit tests
+      # cannot catch it, because a fresh install builds the schema directly.
+      - name: Verify SQLDelight migrations
+        run: ./gradlew :composeApp:verifySqlDelightMigration
+
       # These run on the JVM via Robolectric — no emulator required.
       - name: Run unit tests
         run: ./gradlew :composeApp:testDebugUnitTest
