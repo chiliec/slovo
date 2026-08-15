@@ -170,6 +170,20 @@ SLOVO is fully offline and collects nothing — these forms are quick:
 These are **web-UI only** — there is no supply/API path for any of them, the same
 trap the iOS side hit with App Privacy and Pricing.
 
+**Verified against `versionCode 2` on 2026-08-15** — Data safety is a legal declaration, so
+"it's offline" was checked rather than assumed:
+
+| Check | Result |
+|---|---|
+| `uses-permission` in the merged release manifest **and** the shipped `.aab` | **No `INTERNET` permission** — the app is physically incapable of transmitting data |
+| Permissions actually requested | `VIBRATE` only, plus androidx's internal `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` |
+| `android.permission.DUMP` (appears in the AAB) | **Not requested** — it is the `android:permission=` guard on androidx's `ProfileInstallReceiver`, limiting callers to shell/system. Benign |
+| Analytics / crash / ads SDKs, network code, billing, accounts | **None** (version catalog + source grep) |
+| On-device SQLDelight data | Progress and settings only, never leaves the device — **not "collection"** under Play policy |
+
+Re-run these checks if the app ever gains `INTERNET`, an ads/analytics SDK, billing, or accounts;
+each one invalidates the answers below.
+
 - **Data safety:** No data collected, no data shared. (No network at runtime; progress
   and settings stay on-device in SQLDelight.) Concretely: answer *no* to "Does your app
   collect or share any of the required user data types?", and *no* to the encryption /
@@ -184,7 +198,11 @@ trap the iOS side hit with App Privacy and Pricing.
 - **Target audience:** not directed at children (choose 13+ to avoid Families policy
   overhead), unless you intend otherwise.
 - **Ads:** contains no ads.
-- **Government / financial / health:** no to all.
+- **App access:** all functionality is available without special access — no login, no
+  gated content. Do **not** provide test credentials.
+- **Advertising ID:** not used. There is no `play-services-ads-identifier` dependency,
+  so declare *no* — declaring yes without the dependency is itself a policy mismatch.
+- **Government / financial / health / news / COVID-19:** no to all.
 
 ---
 
@@ -205,10 +223,14 @@ enrolment don't exist yet, and supply cannot create them.
 
 Once the app record exists, create a service account so supply can authenticate:
 
-1. Play Console → **Setup → API access → Create new service account**, which sends you
-   to Google Cloud. Create the account, then create a **JSON key** for it.
+1. Create the service account in **Google Cloud Console**
+   (`console.cloud.google.com/iam-admin/serviceaccounts`) and enable the **androidpublisher**
+   API there, then create a **JSON key** for it.
+   *Play Console's old Setup → API access page was removed by Google in Oct 2023 —
+   `…/developers/<devId>/api-access` now silently redirects to the app list.*
 2. Back in Play Console, grant that account **Release manager** (or at minimum: view
-   app information, manage production/testing releases, manage store presence).
+   app information, manage production/testing releases, manage store presence) via
+   **Users and permissions → Invite new user**, using the service-account email.
 3. Save the JSON to the repo root as `play-service-account.json` — **gitignored**.
    For CI, base64 it into a `PLAY_JSON_KEY` secret instead.
 
@@ -285,17 +307,55 @@ and run with `track: internal`.
 - [ ] `PLAY_VALIDATE_ONLY=1` dry run passes
 - [ ] Privacy-policy URL live
 - [ ] Data-safety / content-rating / target-audience forms answered **in the web UI**
+- [ ] First release **published in the console** — until it is, the app is a "draft app"
+      and the API refuses any non-draft release (see §8)
+
+---
+
+## 8. Closed testing — the "draft app" wall and the 12-tester clock
+
+A personal Play account created after 2023-11-13 needs **12 testers opted in to a CLOSED
+track for 14 consecutive days** before production access is granted. Internal and open
+testing do not count. The 14 days are wall-clock, so this gates the earliest possible
+launch date and should be started before anything else is scheduled.
+
+`play_closed` uploads to that track (`PLAY_CLOSED_TRACK`, default `alpha`). **But there is
+a wall in front of it:**
+
+```
+Google Api Error: Invalid request -
+Only releases with status draft may be created on draft app.
+```
+
+An app stays a **draft app** until its *first* release is published through the console web
+UI. Until then the Publishing API can only ever create `draft` releases, on any track — so
+`PLAY_RELEASE_STATUS=completed` cannot work and **the clock cannot be started from fastlane
+at all.** A draft release is invisible to testers and counts for nothing.
+
+Order of operations:
+
+1. Answer every form in §5 — the app cannot be published with them outstanding.
+2. Attach a **tester list** to the closed track (12+ real Google accounts).
+3. **Publish the release in the console.** This clears draft-app status.
+4. From then on, `PLAY_RELEASE_STATUS=completed bundle exec fastlane android play_closed`
+   works for every subsequent build.
+5. Count 14 consecutive days with 12 testers actually opted in.
+
+Check track state at any point without touching the console:
+
+```bash
+bundle exec fastlane run google_play_track_version_codes \
+  package_name:cx.viz.slovo json_key:play-service-account.json track:alpha
+```
 
 ---
 
 ## Known follow-ups (not blockers for internal testing)
 
-- **`versionCode` auto-increment is untested against a live Play account.** The
-  Gradle plumbing is verified (`-PversionCode`, `ANDROID_VERSION_CODE`, and the
-  default all produce the expected code in the AAB manifest), but
-  `next_play_version_code` has never run against real credentials — the
-  `google_play_track_version_codes` call and the 404-on-empty-track rescue are
-  unproven. Confirm on the first `PLAY_VALIDATE_ONLY=1` dry run.
+- ~~**`versionCode` auto-increment is untested against a live Play account.**~~
+  **Verified 2026-08-15.** `next_play_version_code` ran against real credentials and
+  resolved `2` from a live `internal=[1]`; the 404-on-empty-track rescue was exercised by
+  the then-empty alpha/beta/production tracks and behaved as intended.
 - **R8/minify** — release ships un-minified (`isMinifyEnabled = false`). Enabling R8
   shrinks the APK but needs keep-rules verified against the KMP/SQLDelight/serialization
   stack; defer until there's a reason.
