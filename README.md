@@ -2,6 +2,24 @@
 
 Offline Russian words-&-phrases trainer. Kotlin Multiplatform + Compose Multiplatform (Android + iOS).
 
+| Home | Study | Quiz | Progress |
+| --- | --- | --- | --- |
+| ![Home](store-assets/screenshots/android/01-home.png) | ![Study](store-assets/screenshots/android/02-study.png) | ![Quiz](store-assets/screenshots/android/03-quiz.png) | ![Progress](store-assets/screenshots/android/04-you-overview.png) |
+
+## Features
+
+- **Spaced repetition (SRS)** scheduler with per-card mastery tracking
+- **Multiple question types** — multiple-choice and typed-answer with fuzzy checking
+- **Gamified progress** — XP, streaks, hearts, and leagues
+- **Placement test** to skip what you already know
+- **Fully offline** — no account, no network, no data collected; audio is CC-BY from Tatoeba
+
+## Built with
+
+- **Kotlin Multiplatform** — one `commonMain` codebase, `expect/actual` for platform bits (audio, haptics, clock, DB driver)
+- **Compose Multiplatform** UI for Android + iOS
+- **SQLDelight** local storage; pure-Kotlin domain layer (SRS, XP, streak, mastery, placement) with unit + UI tests
+
 ## Install (Android)
 
 Scan the QR code or open the [latest release](https://github.com/chiliec/slovo/releases/latest) on your phone, download the APK, and tap to install. Requires **Android 7.0+**. Fully offline — no account, no network, no data collected.
