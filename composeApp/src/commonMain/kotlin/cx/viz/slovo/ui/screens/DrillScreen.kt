@@ -151,7 +151,10 @@ private class DrillViewModel(private val module: AppModule) {
         if (chosen != null) {
             Spacer(Modifier.height(12.dp))
             val last = vm.index + 1 == vm.questions.size
-            MishaButton(if (last) "FINISH →" else "NEXT →", Modifier.fillMaxWidth()) { vm.answer(chosen!!) }
+            val answer = chosen
+            MishaButton(if (last) "FINISH →" else "NEXT →", Modifier.fillMaxWidth()) {
+                answer?.let { vm.answer(it) }
+            }
         }
     }
 }
