@@ -4,7 +4,7 @@ Offline Russian words-&-phrases trainer. Kotlin Multiplatform + Compose Multipla
 
 ## Install (Android)
 
-Scan the QR code or open the [latest release](https://github.com/chiliec/slovo/releases/latest) on your phone, download the APK, and tap to install. Requires **Android 7.0+**. Fully offline — no account, no network, no data collected.
+Scan the QR code or open the [latest release](https://github.com/chiliec/slovo/releases/latest) on your phone, download the APK, and tap to install. Requires **Android 7.0+**. Works offline — no account, no ads, no tracking; the only network traffic is anonymous screen-view analytics to our own [Umami](https://analytics.nextgensoft.co) (see [privacy policy](docs/privacy.html)).
 
 <img src="docs/install-qr.png" width="200" alt="QR code to the latest SLOVO Android release" />
 

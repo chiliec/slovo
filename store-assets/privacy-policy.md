@@ -1,18 +1,25 @@
 # SLOVO — Privacy Policy
 
-_Last updated: 2026-08-01_
+_Last updated: 2026-10-02_
 
 SLOVO ("the app") is a Russian words-and-phrases learning app. Your privacy is
 simple to explain because the app is built to need nothing from you.
 
 ## What we collect
 
-**Nothing.** SLOVO does not collect, transmit, or share any personal data.
+SLOVO does not collect personal data.
 
 - The app has **no account or sign-up**.
-- The app makes **no network requests**. All learning content and audio is
-  bundled inside the app and runs fully offline.
-- There is **no analytics, no advertising, and no tracking** of any kind.
+- All learning content and audio is bundled inside the app and works offline.
+- There is **no advertising and no tracking** of any kind.
+- **Anonymous usage analytics.** The app sends which screen you opened (for
+  example "learn" or "review") to our self-hosted [Umami](https://umami.is)
+  instance at analytics.nextgensoft.co, together with the app version and your
+  device model / OS version. Umami is cookieless and stores no persistent
+  identifier: your IP address is used only to derive an approximate
+  (country/city) location and a short-lived session hash, and is not stored.
+  This data is never shared with third parties and is used only to see which
+  parts of the app are used.
 
 ## Data stored on your device
 
@@ -23,7 +30,7 @@ the app removes this data.
 
 ## Children's privacy
 
-SLOVO does not collect data from anyone, including children.
+SLOVO does not collect personal data from anyone, including children.
 
 ## Audio attribution
 

@@ -11,7 +11,7 @@
 ## Conventions
 - Never name a type `Unit` (Kotlin builtin) — use `LearnUnit`.
 - Keep `domain/` pure and TDD'd; put time/IO behind `platform/` seams.
-- No runtime network. All content is bundled and offline.
+- All content is bundled and offline. The only runtime network call is `platform/Analytics.kt` — a fire-and-forget POST of the current route to self-hosted Umami, off by default and switched on only in `MainActivity`/`MainViewController` (never in tests). Keep it that way; don't add other network code without updating `docs/privacy.html`, the store listings and the Data safety / App Privacy answers.
 - Changing a `.sq` schema ALWAYS needs a matching `.sqm` migration — existing installs are never re-created, only migrated. `./gradlew :composeApp:verifySqlDelightMigration` enforces this and runs in CI; after a legitimate schema change, add the `.sqm` and commit the new `databases/<version>.db`.
 - Every audio clip is CC-BY from Tatoeba and MUST be listed in ATTRIBUTION.md.
 - Commit messages: conventional style, no Co-Authored-By trailer.

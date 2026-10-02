@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Only for the Umami screen-view ping (platform/Analytics.kt). -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="SLOVO"
         android:icon="@mipmap/ic_launcher"

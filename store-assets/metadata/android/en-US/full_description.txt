@@ -9,7 +9,7 @@ WHY SLOVO
 • Optional transliteration — see Latin-letter spellings while you get comfortable with Cyrillic, then switch it off.
 • Gamified progress — earn XP, keep a daily streak, and watch each unit's mastery climb.
 • Smart review — spaced-repetition scheduling brings phrases back just before you'd forget them.
-• Fully offline — everything is bundled in the app. No account, no network, no ads, no tracking.
+• Works offline — everything is bundled in the app. No account, no ads, no tracking; only anonymous screen-view analytics on our own server.
 
 Whether you're planning a trip, reconnecting with family roots, or just love the sound of Russian, SLOVO makes daily practice quick and satisfying.
 
