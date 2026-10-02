@@ -21,7 +21,7 @@ How to cut a TestFlight or App Store release of SLOVO. The Android counterpart i
 | Bundle ID | `cx.viz.slovo` |
 | Apple Team ID | `7JF6XQC536` |
 | ASC API Key ID | `948K3FKL2H` (account-wide, shared with the sibling app) |
-| Marketing version | `1.0.0` (`MARKETING_VERSION`, both build configs) |
+| Marketing version | `1.0.1` (`MARKETING_VERSION`, both build configs) |
 | Build number | auto-incremented from TestFlight; committed value is a floor |
 | Apple App ID | set `ASC_APP_ID` in `fastlane/.env` after creating the record |
 

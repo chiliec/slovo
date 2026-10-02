@@ -74,10 +74,10 @@ on the reset flow — losing it before enrolling would mean you can never update
   record (no builds on any track) yields `1`. Tracks that 404 because they have no
   releases are skipped with a warning, not treated as fatal.
 - `versionName` — human string shown to users, set in `composeApp/build.gradle.kts`
-  `defaultConfig`. Currently `"1.0.0"`; still edited by hand per release.
+  `defaultConfig`. Currently `"1.0.1"`; still edited by hand per release.
 
 Keep `versionName` in sync with the iOS `MARKETING_VERSION` when releasing both;
-both are `1.0.0` today.
+both are `1.0.1` today.
 
 ### Overriding the version code
 
