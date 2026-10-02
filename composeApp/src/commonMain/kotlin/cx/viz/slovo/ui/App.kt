@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.savedstate.read
+import cx.viz.slovo.platform.Analytics
 import cx.viz.slovo.ui.nav.Dest
 import cx.viz.slovo.ui.nav.bottomTabs
 import cx.viz.slovo.ui.screens.*
@@ -38,11 +40,14 @@ fun App(module: AppModule) = SlovoTheme {
     var onboarded by remember { mutableStateOf(module.progress.userProfile().onboarded) }
     Box(Modifier.fillMaxSize().background(Slovo.Sand)) {
     if (!onboarded) {
+        LaunchedEffect(Unit) { Analytics.screen("onboarding") }
         OnboardingScreen(module, onComplete = { onboarded = true })
     } else {
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val current = entry?.destination?.route
+    // Route patterns ("lesson/{unitId}/{lessonId}") → screen name, never the ids.
+    LaunchedEffect(current) { current?.let { Analytics.screen(it.substringBefore('/')) } }
     Scaffold(
         containerColor = Slovo.Sand,
         bottomBar = {

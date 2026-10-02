@@ -1,7 +1,9 @@
-SLOVO is a fully offline Russian words-and-phrases trainer. No account, login, or
+SLOVO is an offline Russian words-and-phrases trainer. No account, login, or
 demo credentials are needed — launch the app and tap START on the first lesson.
-The app makes no network connections at runtime; all content, audio, and progress
-are on-device.
+All content, audio, and progress are on-device. The only network traffic is
+anonymous screen-view analytics (screen name, app/OS version, device model; no
+identifiers) sent to our self-hosted Umami at analytics.nextgensoft.co, as
+declared in App Privacy and the privacy manifest.
 
 Third-party content: every audio clip is a human recording from the Tatoeba
 project (https://tatoeba.org), licensed under Creative Commons Attribution

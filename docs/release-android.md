@@ -165,29 +165,31 @@ Text fields (title, short/full description) — copy verbatim from
 
 ## 5. Play Console content forms
 
-SLOVO is fully offline and collects nothing — these forms are quick:
+SLOVO is offline except for anonymous screen-view analytics — these forms are quick:
 
 These are **web-UI only** — there is no supply/API path for any of them, the same
 trap the iOS side hit with App Privacy and Pricing.
 
-**Verified against `versionCode 2` on 2026-08-15** — Data safety is a legal declaration, so
-"it's offline" was checked rather than assumed:
+**Verified against `versionCode 2` on 2026-08-15, re-answered 2026-10-02** when the app
+gained `INTERNET` for self-hosted Umami screen-view analytics (`platform/Analytics.kt`,
+no SDK) — Data safety is a legal declaration, so what the app sends was read, not assumed:
 
 | Check | Result |
 |---|---|
-| `uses-permission` in the merged release manifest **and** the shipped `.aab` | **No `INTERNET` permission** — the app is physically incapable of transmitting data |
-| Permissions actually requested | `VIBRATE` only, plus androidx's internal `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` |
+| `uses-permission` in the merged release manifest | `INTERNET` (analytics POST only) + `VIBRATE`, plus androidx's internal `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` |
 | `android.permission.DUMP` (appears in the AAB) | **Not requested** — it is the `android:permission=` guard on androidx's `ProfileInstallReceiver`, limiting callers to shell/system. Benign |
-| Analytics / crash / ads SDKs, network code, billing, accounts | **None** (version catalog + source grep) |
+| What leaves the device | Screen name, app version, OS version + device model (User-Agent) to `analytics.nextgensoft.co`; the server derives approximate location from the IP and stores a short-lived session hash, not the IP. No identifiers |
+| Analytics / crash / ads SDKs, billing, accounts | **None** (version catalog + source grep) |
 | On-device SQLDelight data | Progress and settings only, never leaves the device — **not "collection"** under Play policy |
 
-Re-run these checks if the app ever gains `INTERNET`, an ads/analytics SDK, billing, or accounts;
-each one invalidates the answers below.
+Re-run these checks if the app ever gains an ads/analytics SDK, billing, accounts, or any
+other network code; each one invalidates the answers below.
 
-- **Data safety:** No data collected, no data shared. (No network at runtime; progress
-  and settings stay on-device in SQLDelight.) Concretely: answer *no* to "Does your app
-  collect or share any of the required user data types?", and *no* to the encryption /
-  deletion follow-ups, which disappear once nothing is collected.
+- **Data safety:** *yes* to "Does your app collect or share any of the required user data
+  types?". Collected, **not shared**, not optional, encrypted in transit (HTTPS), no
+  deletion request path (nothing identifies the user):
+  - *App activity → App interactions* — purpose Analytics.
+  - *Location → Approximate location* — purpose Analytics (derived server-side from IP).
 - **App content / privacy policy:** `https://chiliec.github.io/slovo/privacy.html`
   (live via GitHub Pages, verified 200 on 2026-08-01) — same URL the App Store record uses.
 - **Content rating (IARC questionnaire):** educational vocabulary app, no objectionable

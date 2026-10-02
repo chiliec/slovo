@@ -7,6 +7,7 @@ import cx.viz.slovo.data.BundledContentRepository
 import cx.viz.slovo.data.DriverFactory
 import cx.viz.slovo.data.ProgressRepository
 import cx.viz.slovo.db.SlovoDatabase
+import cx.viz.slovo.platform.Analytics
 import cx.viz.slovo.platform.AndroidAudioPlayer
 import cx.viz.slovo.platform.AndroidHaptics
 import cx.viz.slovo.platform.AndroidSoundPlayer
@@ -16,6 +17,7 @@ import cx.viz.slovo.ui.AppModule
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Analytics.enabled = true
         val db = SlovoDatabase(DriverFactory(applicationContext).createDriver())
         val module = AppModule(
             content = BundledContentRepository(),

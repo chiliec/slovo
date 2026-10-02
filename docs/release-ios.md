@@ -150,7 +150,7 @@ Sources: text from `store-assets/metadata/ios/`, screenshots from
 | Content rights | same script — `USES_THIRD_PARTY_CONTENT` (Tatoeba CC-BY audio) |
 | Export compliance | `ITSAppUsesNonExemptEncryption=false` in `Info.plist` + the `submit` lane |
 | Pricing → Free | web UI only (ASC → Pricing and Availability) |
-| App Privacy → No data collected | web UI only, and **Publish** is a separate button from answering |
+| App Privacy → Product Interaction + Coarse Location, purpose Analytics, not linked, not tracking (self-hosted Umami screen views since 2026-10-02, `platform/Analytics.kt`; mirrors `PrivacyInfo.xcprivacy`) | web UI only, and **Publish** is a separate button from answering |
 
 `ruby scripts/asc_state.rb` prints the current state read-only.
 
