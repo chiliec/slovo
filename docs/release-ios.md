@@ -158,7 +158,7 @@ Sources: text from `store-assets/metadata/ios/`, screenshots from
 bundle exec fastlane ios submit     # attaches the latest build, submits for review
 ```
 
-`automatic_release: false`, so **click Release manually** in App Store Connect
+`AUTO_RELEASE=1 bundle exec fastlane ios submit` releases on approval; without it **click Release manually** in App Store Connect
 after approval.
 
 ## 7. Known fragilities
